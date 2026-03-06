@@ -6,6 +6,16 @@ const FREE_LIMIT = 3;
 const KEY = "hojyokin_count";
 const PREFECTURES = ["北海道","青森","岩手","宮城","秋田","山形","福島","茨城","栃木","群馬","埼玉","千葉","東京","神奈川","新潟","富山","石川","福井","山梨","長野","岐阜","静岡","愛知","三重","滋賀","京都","大阪","兵庫","奈良","和歌山","鳥取","島根","岡山","広島","山口","徳島","香川","愛媛","高知","福岡","佐賀","長崎","熊本","大分","宮崎","鹿児島","沖縄"];
 
+async function startCheckout(plan: string) {
+  const res = await fetch("/api/stripe/checkout", {
+    method: "POST",
+    headers: { "Content-Type": "application/json" },
+    body: JSON.stringify({ plan }),
+  });
+  const { url } = await res.json();
+  if (url) window.location.href = url;
+}
+
 function Paywall({ onClose }: { onClose: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
@@ -14,8 +24,8 @@ function Paywall({ onClose }: { onClose: () => void }) {
         <h2 className="text-lg font-bold mb-2">無料診断回数を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-5">引き続きご利用いただくには有料プランをご選択ください</p>
         <div className="space-y-3 mb-4">
-          <a href="https://gumroad.com/l/REPLACE" target="_blank" rel="noopener noreferrer" className="block bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600">スタンダード ¥4,980/月</a>
-          <a href="https://gumroad.com/l/REPLACE" target="_blank" rel="noopener noreferrer" className="block bg-gray-100 text-gray-700 py-3 rounded-xl text-sm">ビジネス ¥9,800/月</a>
+          <button onClick={() => startCheckout("standard")} className="block w-full bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600">スタンダード ¥4,980/月</button>
+          <button onClick={() => startCheckout("business")} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl text-sm hover:bg-gray-200">ビジネス ¥9,800/月</button>
         </div>
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>

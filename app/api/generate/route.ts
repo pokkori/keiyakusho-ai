@@ -20,8 +20,9 @@ export async function POST(req: NextRequest) {
   if (!checkRateLimit(ip)) {
     return NextResponse.json({ error: "リクエストが多すぎます。しばらく待ってから再試行してください。" }, { status: 429 });
   }
+  const isPremium = req.cookies.get("stripe_premium")?.value === "1";
   const cookieCount = parseInt(req.cookies.get(COOKIE_KEY)?.value || "0");
-  if (cookieCount >= FREE_LIMIT) {
+  if (!isPremium && cookieCount >= FREE_LIMIT) {
     return NextResponse.json({ error: "LIMIT_REACHED" }, { status: 429 });
   }
   let body: Record<string, unknown>;
