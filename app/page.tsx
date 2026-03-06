@@ -73,7 +73,10 @@ export default function HojyokinLP() {
         <Link href="/tool" className="inline-block bg-white text-amber-600 font-bold px-8 py-4 rounded-xl hover:bg-amber-50">無料で診断する →</Link>
       </section>
 
-      <footer className="border-t py-6 text-center text-xs text-gray-400">AI補助金診断 © 2026 ※本サービスは情報提供を目的としており、申請を保証するものではありません。必ず公募要領をご確認ください。</footer>
+      <footer className="border-t py-6 text-center text-xs text-gray-400 space-y-2">
+        <p>AI補助金診断 © 2026 ※本サービスは情報提供を目的としており、申請を保証するものではありません。必ず公募要領をご確認ください。</p>
+        <p><Link href="/privacy" className="underline hover:text-gray-600">プライバシーポリシー</Link></p>
+      </footer>
     </main>
   );
 }
