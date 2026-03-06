@@ -3,7 +3,9 @@ import { NextRequest, NextResponse } from "next/server";
 
 export const dynamic = "force-dynamic";
 
-const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!);
+function getStripe() {
+  return new Stripe(process.env.STRIPE_SECRET_KEY!);
+}
 
 const PRICES: Record<string, string> = {
   standard: process.env.STRIPE_PRICE_STD!,
@@ -13,7 +15,7 @@ const PRICES: Record<string, string> = {
 async function createSession(plan: string, origin: string) {
   const priceId = PRICES[plan];
   if (!priceId) return null;
-  return stripe.checkout.sessions.create({
+  return getStripe().checkout.sessions.create({
     mode: "subscription",
     line_items: [{ price: priceId, quantity: 1 }],
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
