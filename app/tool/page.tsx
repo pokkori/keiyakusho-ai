@@ -44,18 +44,24 @@ function Paywall({ onClose }: { onClose: () => void }) {
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
         <div className="text-3xl mb-3">💰</div>
         <h2 className="text-lg font-bold mb-2">無料診断回数を使い切りました</h2>
-        <p className="text-sm text-gray-500 mb-1">補助金診断・申請書ドラフトを何度でも作成</p>
+        <p className="text-sm text-gray-500 mb-1">申請書ドラフトをそのまま提出できるレベルで生成</p>
         <ul className="text-xs text-gray-400 text-left mb-5 space-y-1 mt-3">
-          <li>✓ 補助金5件の優先度付き診断</li>
+          <li>✓ 補助金5件の優先度付き診断（採択率順）</li>
           <li>✓ 申請書ドラフト自動生成（提出ベース）</li>
-          <li>✓ 申請要件チェックリスト</li>
-          <li>✓ 採択率を上げるアドバイス</li>
+          <li>✓ 申請要件チェックリスト付き</li>
+          <li>✓ 採択率を上げる具体的アドバイス</li>
           <li>✓ 印刷・PDF保存してそのまま使える</li>
         </ul>
         <div className="space-y-3 mb-4">
-          <button onClick={() => startCheckout("standard")} className="block w-full bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600">スタンダード ¥4,980/月</button>
-          <button onClick={() => startCheckout("business")} className="block w-full bg-gray-100 text-gray-700 py-3 rounded-xl text-sm hover:bg-gray-200">ビジネス ¥9,800/月（無制限）</button>
+          <button onClick={() => startCheckout("one_time")} className="block w-full bg-amber-500 text-white font-bold py-3 rounded-xl hover:bg-amber-600">
+            <span className="text-base">¥2,980</span>
+            <span className="text-sm font-normal ml-1">で今回の申請を完成させる（1回限り）</span>
+          </button>
+          <button onClick={() => startCheckout("standard")} className="block w-full bg-gray-100 text-gray-700 py-2.5 rounded-xl text-sm hover:bg-gray-200">
+            月額プラン ¥4,980/月（複数申請・何度でも）
+          </button>
         </div>
+        <p className="text-xs text-gray-400 mb-3">行政書士に頼むと10〜30万円。AIなら¥2,980で今すぐ。</p>
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>
     </div>
@@ -210,7 +216,7 @@ export default function HojyokinTool() {
 
           <button type="submit" disabled={loading}
             className={`w-full font-bold py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300"}`}>
-            {loading ? "診断中..." : isLimit ? "有料プランに申し込む" : "補助金を診断する（無料）"}
+            {loading ? "診断中..." : isLimit ? "¥2,980で申請書を完成させる" : "補助金を診断する（無料）"}
           </button>
           {error && <p className="text-sm text-red-500 text-center">{error}</p>}
         </form>

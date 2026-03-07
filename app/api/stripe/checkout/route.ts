@@ -7,17 +7,18 @@ function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
 }
 
-const PRICES: Record<string, string> = {
-  standard: process.env.STRIPE_PRICE_STD!,
-  business: process.env.STRIPE_PRICE_BIZ!,
+const PRICES: Record<string, { id: string; mode: "payment" | "subscription" }> = {
+  one_time: { id: process.env.STRIPE_PRICE_ONCE!, mode: "payment" },
+  standard: { id: process.env.STRIPE_PRICE_STD!, mode: "subscription" },
+  business: { id: process.env.STRIPE_PRICE_BIZ!, mode: "subscription" },
 };
 
 async function createSession(plan: string, origin: string) {
-  const priceId = PRICES[plan];
-  if (!priceId) return null;
+  const price = PRICES[plan];
+  if (!price) return null;
   return getStripe().checkout.sessions.create({
-    mode: "subscription",
-    line_items: [{ price: priceId, quantity: 1 }],
+    mode: price.mode,
+    line_items: [{ price: price.id, quantity: 1 }],
     success_url: `${origin}/success?session_id={CHECKOUT_SESSION_ID}`,
     cancel_url: `${origin}/#pricing`,
     locale: "ja",
