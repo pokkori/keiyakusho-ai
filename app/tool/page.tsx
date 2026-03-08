@@ -214,6 +214,10 @@ export default function HojyokinTool() {
             <p className="text-xs text-gray-400 mt-1">詳しく書くほど精度が上がります（{purpose.length}/1000文字）</p>
           </div>
 
+          <div className="bg-amber-50 border border-amber-200 rounded-lg p-3 text-xs text-amber-800">
+            ⚠️ <strong>ご注意</strong>：この診断はAIによる参考情報です。補助金の採択可否は公式審査によります。申請前に必ず各補助金の<strong>公式サイト・所管機関（中小企業庁・経済産業省等）</strong>で最新の要領をご確認ください。
+          </div>
+
           <button type="submit" disabled={loading}
             className={`w-full font-bold py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-amber-500 hover:bg-amber-600 disabled:bg-amber-300"}`}>
             {loading ? "診断中..." : isLimit ? "¥2,980で申請書を完成させる" : "補助金を診断する（無料）"}
@@ -254,6 +258,7 @@ export default function HojyokinTool() {
       <footer className="text-center py-6 text-xs text-gray-400 border-t mt-4 space-x-4">
         <a href="/legal" className="hover:text-gray-600">特定商取引法に基づく表記</a>
         <a href="/privacy" className="hover:text-gray-600">プライバシーポリシー</a>
+        <p className="mt-2 text-gray-300">本サービスはAI生成情報を提供します。採択を保証するものではありません。専門家（行政書士・中小企業診断士）への相談を推奨します。</p>
       </footer>
     </main>
   );
