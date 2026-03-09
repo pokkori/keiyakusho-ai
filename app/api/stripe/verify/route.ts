@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
 
   const res = NextResponse.json({ ok: true });
   res.cookies.set("stripe_premium", "1", {
-    maxAge: 60 * 60 * 24 * 30,
+    maxAge: 60 * 60 * 24 * 366,
     httpOnly: true,
     secure: true,
     sameSite: "lax",
