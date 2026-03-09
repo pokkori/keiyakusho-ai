@@ -33,8 +33,11 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "customer.subscription.updated") {
-    const sub = event.data.object as Stripe.Subscription;
-    const currentPeriodEnd = new Date(sub.current_period_end * 1000).toISOString();
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const sub = event.data.object as any;
+    const currentPeriodEnd = sub.current_period_end
+      ? new Date(sub.current_period_end * 1000).toISOString()
+      : new Date().toISOString();
     await supabase
       .from("subscriptions")
       .update({
