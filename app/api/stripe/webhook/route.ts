@@ -50,7 +50,8 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === "invoice.payment_failed") {
-    const invoice = event.data.object as Stripe.Invoice;
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const invoice = event.data.object as any;
     const subId = invoice.subscription as string;
     if (subId) {
       await supabase
