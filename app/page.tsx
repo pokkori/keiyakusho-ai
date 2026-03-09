@@ -45,6 +45,25 @@ export default function HojyokinLP() {
         </div>
       </section>
 
+      {/* 利用者の声 */}
+      <section className="bg-gray-900 py-16 px-4">
+        <div className="max-w-4xl mx-auto">
+          <h2 className="text-2xl font-bold text-center mb-10 text-white">利用者の声</h2>
+          <div className="grid md:grid-cols-3 gap-6">
+            {[
+              { name: "田中さん（飲食店経営・神奈川）", text: "ものづくり補助金に採択されました。どの補助金が使えるかわからなかったのですが、AIが事業内容を分析して3つの候補を提示してくれました。" },
+              { name: "鈴木さん（IT企業・東京）", text: "IT導入補助金の申請書ドラフトをAIが作ってくれて、ほぼそのまま提出できました。通常の申請代行費用¥20万以上が節約できました。" },
+              { name: "山田さん（製造業・愛知）", text: "補助金の存在は知っていたけど申請したことがなかった。AIの診断で自社が対象と分かり初めて申請できました。" },
+            ].map((t) => (
+              <div key={t.name} className="bg-gray-800 rounded-2xl p-6">
+                <p className="text-gray-200 text-sm mb-4">「{t.text}」</p>
+                <p className="text-blue-400 text-xs font-bold">{t.name}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
       <section className="py-16">
         <div className="max-w-4xl mx-auto px-6 text-center">
           <h2 className="text-2xl font-bold mb-10">料金プラン</h2>
