@@ -5,7 +5,7 @@ on:
     branches: [master, main]
   workflow_dispatch:
   schedule:
-    - cron: '0 17 * * *'  # 毎日 JST 02:00 (UTC 17:00) に自動再試行
+    - cron: '10 0 * * *'  # 毎日 JST 09:10 (UTC 00:10) に自動再試行（日次リセット直後）
 
 jobs:
   deploy:
