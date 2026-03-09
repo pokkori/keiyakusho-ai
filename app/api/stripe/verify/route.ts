@@ -4,7 +4,7 @@ import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
-const APP_ID = "hojyokin";
+const APP_ID = "keiyakusho";
 
 function getStripe() {
   return new Stripe(process.env.STRIPE_SECRET_KEY!);
@@ -24,13 +24,9 @@ export async function GET(req: NextRequest) {
     const email = session.customer_details?.email;
     const subId = session.subscription as string | null;
     let currentPeriodEnd: string | null = null;
-    let plan = "once";
     if (subId) {
       const stripeSub = await stripe.subscriptions.retrieve(subId);
       currentPeriodEnd = new Date(stripeSub.current_period_end * 1000).toISOString();
-      const priceId = stripeSub.items.data[0]?.price.id;
-      if (priceId === process.env.STRIPE_PRICE_BIZ) plan = "biz";
-      else plan = "std";
     }
 
     if (email) {
@@ -41,7 +37,7 @@ export async function GET(req: NextRequest) {
           stripe_customer_id: session.customer as string,
           stripe_subscription_id: subId,
           stripe_session_id: sessionId,
-          plan, status: "active",
+          plan: "std", status: "active",
           current_period_end: currentPeriodEnd,
           updated_at: new Date().toISOString(),
         },
