@@ -4,7 +4,7 @@ const ITEMS = [
   { label: "販売業者", value: "levonadesign" },
   { label: "運営責任者", value: "levonadesign" },
   { label: "お問い合わせ", value: "levonadesign@gmail.com" },
-  { label: "販売価格", value: "スタンダードプラン ¥4,980/月、ビジネスプラン ¥9,800/月（税込）" },
+  { label: "販売価格", value: "詳細レポート ¥2,980（一回払い）、スタンダードプラン ¥4,980/月、ビジネスプラン ¥9,800/月（税込）" },
   { label: "支払方法", value: "クレジットカード（Visa・Mastercard・American Express・JCB）" },
   { label: "支払時期", value: "お申込み時に即時決済。以降、毎月同日に自動更新" },
   { label: "サービス提供時期", value: "決済完了後、即時ご利用いただけます" },
