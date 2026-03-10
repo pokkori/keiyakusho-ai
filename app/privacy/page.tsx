@@ -2,7 +2,7 @@ import Link from "next/link";
 import type { Metadata } from "next";
 
 export const metadata: Metadata = {
-  title: "プライバシーポリシー｜AI補助金診断",
+  title: "プライバシーポリシー｜契約書AIレビュー",
 };
 
 export default function PrivacyPage() {
@@ -22,14 +22,14 @@ export default function PrivacyPage() {
         <section className="space-y-8 text-sm text-gray-700 leading-relaxed">
           <div>
             <h2 className="font-bold text-gray-900 mb-2">1. 事業者情報</h2>
-            <p>本サービス「AI補助金診断」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
+            <p>本サービス「契約書AIレビュー」（以下「本サービス」）は、個人が運営するWebサービスです。</p>
           </div>
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">2. 取得する情報</h2>
             <p>本サービスでは、以下の情報を取得する場合があります。</p>
             <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>フォームに入力いただいた情報（業種・従業員数・事業目的など）</li>
+              <li>フォームに入力いただいた情報（契約書のテキスト内容など）</li>
               <li>Cookie（利用回数の管理に使用）</li>
               <li>アクセスログ（IPアドレス・ブラウザ情報）</li>
             </ul>
@@ -38,7 +38,7 @@ export default function PrivacyPage() {
           <div>
             <h2 className="font-bold text-gray-900 mb-2">3. 利用目的</h2>
             <ul className="list-disc list-inside mt-2 space-y-1">
-              <li>AIによる補助金診断サービスの提供</li>
+              <li>AIによる契約書レビューサービスの提供</li>
               <li>無料利用回数の管理</li>
               <li>不正利用の防止</li>
               <li>サービス改善のための利用状況分析</li>
@@ -51,6 +51,7 @@ export default function PrivacyPage() {
             <ul className="list-disc list-inside mt-2 space-y-1">
               <li>法令に基づく場合</li>
               <li>AI生成のためにAnthropicのAPIへ入力内容を送信する場合（Anthropicのプライバシーポリシーが適用されます）</li>
+              <li>決済処理のためPAY.JP（PAY.JP株式会社）に提供する場合（PAY.JPのプライバシーポリシーに従います）</li>
             </ul>
           </div>
 
@@ -66,7 +67,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">7. 免責事項</h2>
-            <p>本サービスが提供する診断結果はAIによる情報提供であり、補助金の申請を保証するものではありません。実際の申請にあたっては、必ず最新の公募要領をご確認の上、専門家（中小企業診断士・行政書士等）にご相談ください。</p>
+            <p>本サービスが提供するレビュー結果はAIによる情報提供であり、法的アドバイスではありません。実際の契約書締結にあたっては、必ず弁護士等の専門家にご確認ください。</p>
           </div>
 
           <div>
@@ -76,7 +77,7 @@ export default function PrivacyPage() {
 
           <div>
             <h2 className="font-bold text-gray-900 mb-2">9. お問い合わせ</h2>
-            <p>本ポリシーに関するご質問は、サービス内のお問い合わせ方法からご連絡ください。</p>
+            <p>本ポリシーに関するご質問は levonadesign@gmail.com までご連絡ください。</p>
           </div>
         </section>
       </article>
