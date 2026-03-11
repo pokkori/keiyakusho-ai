@@ -6,9 +6,9 @@ import "./globals.css";
 const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
-const SITE_URL = "https://hojyokin-ai-delta.vercel.app";
-const TITLE = "AI補助金診断｜申請可能な補助金を診断＋申請書ドラフトを自動生成";
-const DESC = "事業内容を入力するだけ。AIが使える補助金5件を優先度順に診断し、申請書ドラフト・チェックリスト・採択率アドバイスまで自動生成。行政書士不要。¥2,980/1申請〜。";
+const SITE_URL = "https://keiyakusho-ai.vercel.app";
+const TITLE = "契約書AIレビュー｜契約書のリスクをAIが即チェック・修正案を自動生成";
+const DESC = "契約書をアップロードするだけ。AIが不利な条項・リスク箇所を即時指摘し、修正案・交渉ポイントまで自動生成。弁護士費用ゼロで契約書を守る。¥1,980/回〜。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -18,7 +18,7 @@ export const metadata: Metadata = {
     title: TITLE,
     description: DESC,
     url: SITE_URL,
-    siteName: "AI補助金診断",
+    siteName: "契約書AIレビュー",
     locale: "ja_JP",
     type: "website",
   },
