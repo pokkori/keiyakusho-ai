@@ -13,6 +13,7 @@ const DESC = "事業内容を入力するだけ。AIが使える補助金5件を
 export const metadata: Metadata = {
   title: TITLE,
   description: DESC,
+  icons: { icon: "data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><text y='.9em' font-size='90'>📜</text></svg>" },
   openGraph: {
     title: TITLE,
     description: DESC,
