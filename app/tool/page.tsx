@@ -45,7 +45,7 @@ function Paywall({ onClose, onOpenPayjp }: { onClose: () => void; onOpenPayjp: (
           <li>✓ いつでもキャンセル可能</li>
         </ul>
         <button onClick={onOpenPayjp} className="block w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 mb-3">
-          ¥1,980/月で始める
+          ¥2,980/月で始める
         </button>
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>
@@ -134,7 +134,7 @@ export default function KeiyakushoTool() {
       {showPayjp && (
         <PayjpModal
           publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="契約書AIレビュー プレミアム ¥1,980/月（いつでもキャンセル可）"
+          planLabel="契約書AIレビュー プレミアム ¥2,980/月（いつでもキャンセル可）"
           onSuccess={() => { setShowPayjp(false); setShowPaywall(false); setIsPremium(true); }}
           onClose={() => setShowPayjp(false)}
         />

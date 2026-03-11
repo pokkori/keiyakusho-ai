@@ -1,9 +1,12 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
+import PayjpModal from "@/components/PayjpModal";
 
 export default function Home() {
   const [loading, setLoading] = useState(false);
+  const [showPayjpSub, setShowPayjpSub] = useState(false);
+  const [showPayjpOnce, setShowPayjpOnce] = useState(false);
 
   async function startCheckout() {
     setLoading(true);
@@ -15,6 +18,23 @@ export default function Home() {
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
+      {showPayjpOnce && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="1回払い ¥980 — 30日間有効（契約書レビュー何回でも使用可）"
+          apiPath="/api/payjp/charge"
+          onSuccess={() => { setShowPayjpOnce(false); window.location.href = "/tool"; }}
+          onClose={() => setShowPayjpOnce(false)}
+        />
+      )}
+      {showPayjpSub && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="プレミアム ¥2,980/月 — 無制限"
+          onSuccess={() => { setShowPayjpSub(false); window.location.href = "/tool"; }}
+          onClose={() => setShowPayjpSub(false)}
+        />
+      )}
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
         <div className="inline-block bg-indigo-600 text-white text-sm font-bold px-4 py-1 rounded-full mb-6">
@@ -40,7 +60,7 @@ export default function Home() {
             disabled={loading}
             className="bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl text-lg transition-all disabled:opacity-50"
           >
-            {loading ? "処理中..." : "¥1,980/月で無制限に使う"}
+            {loading ? "処理中..." : "¥2,980/月で無制限に使う"}
           </button>
         </div>
         <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • いつでもキャンセル可能</p>
@@ -116,7 +136,7 @@ export default function Home() {
           <div className="bg-indigo-600 rounded-2xl p-8 border border-indigo-400">
             <div className="inline-block bg-white text-indigo-600 text-xs font-black px-3 py-1 rounded-full mb-3">おすすめ</div>
             <h3 className="text-xl font-bold mb-2">プレミアム</h3>
-            <div className="text-4xl font-black mb-4">¥1,980<span className="text-lg font-normal">/月</span></div>
+            <div className="text-4xl font-black mb-4">¥2,980<span className="text-lg font-normal">/月</span></div>
             <ul className="space-y-2 mb-6 text-left">
               <li>✓ 無制限に使える</li>
               <li>✓ 4タブ詳細分析</li>
