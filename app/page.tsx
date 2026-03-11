@@ -56,6 +56,12 @@ export default function Home() {
             無料で試す（3回）
           </Link>
           <button
+            onClick={() => setShowPayjpOnce(true)}
+            className="bg-yellow-400 text-slate-900 hover:bg-yellow-500 font-bold py-4 px-8 rounded-xl text-lg transition-all"
+          >
+            今すぐ1回試す ¥980
+          </button>
+          <button
             onClick={startCheckout}
             disabled={loading}
             className="bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl text-lg transition-all disabled:opacity-50"
@@ -63,7 +69,7 @@ export default function Home() {
             {loading ? "処理中..." : "¥2,980/月で無制限に使う"}
           </button>
         </div>
-        <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • いつでもキャンセル可能</p>
+        <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • 1回払い¥980 • いつでもキャンセル可能</p>
       </section>
 
       {/* Features */}
@@ -118,28 +124,49 @@ export default function Home() {
       </section>
 
       {/* Pricing */}
-      <section className="max-w-4xl mx-auto px-4 py-16 text-center">
-        <h2 className="text-3xl font-black mb-12">シンプルな料金体系</h2>
-        <div className="grid md:grid-cols-2 gap-6 max-w-2xl mx-auto">
+      <section className="max-w-5xl mx-auto px-4 py-16 text-center">
+        <h2 className="text-3xl font-black mb-12">料金プラン</h2>
+        <div className="grid md:grid-cols-3 gap-6">
+          {/* 無料プラン */}
           <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
             <h3 className="text-xl font-bold mb-2">無料プラン</h3>
             <div className="text-4xl font-black mb-4">¥0</div>
             <ul className="text-slate-300 space-y-2 mb-6 text-left">
               <li>✓ 3回まで無料</li>
-              <li>✓ 4タブ分析</li>
+              <li>✓ 総合評価・問題条項・修正提案</li>
               <li>✗ 回数制限あり</li>
             </ul>
             <Link href="/tool" className="block bg-slate-700 hover:bg-slate-600 font-bold py-3 px-6 rounded-xl transition-all">
               無料で試す
             </Link>
           </div>
+          {/* 1回払いプラン */}
+          <div className="bg-yellow-400 rounded-2xl p-8 border border-yellow-300 text-slate-900 relative">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-slate-900 text-yellow-400 text-xs font-black px-3 py-1 rounded-full whitespace-nowrap">入口プラン</div>
+            <h3 className="text-xl font-bold mb-2">1回払い</h3>
+            <div className="text-4xl font-black mb-1">¥980</div>
+            <div className="text-sm font-medium mb-4 text-slate-700">30日間有効</div>
+            <ul className="space-y-2 mb-6 text-left text-slate-800">
+              <li>✓ 30日間使い放題</li>
+              <li>✓ 総合評価・問題条項・修正提案</li>
+              <li>✓ 月額不要・都度払い</li>
+              <li>✗ 有利不利タブはPremium限定</li>
+            </ul>
+            <button
+              onClick={() => setShowPayjpOnce(true)}
+              className="w-full bg-slate-900 text-yellow-400 hover:bg-slate-800 font-bold py-3 px-6 rounded-xl transition-all"
+            >
+              今すぐ1回試す ¥980
+            </button>
+          </div>
+          {/* プレミアムプラン */}
           <div className="bg-indigo-600 rounded-2xl p-8 border border-indigo-400">
             <div className="inline-block bg-white text-indigo-600 text-xs font-black px-3 py-1 rounded-full mb-3">おすすめ</div>
             <h3 className="text-xl font-bold mb-2">プレミアム</h3>
             <div className="text-4xl font-black mb-4">¥2,980<span className="text-lg font-normal">/月</span></div>
             <ul className="space-y-2 mb-6 text-left">
               <li>✓ 無制限に使える</li>
-              <li>✓ 4タブ詳細分析</li>
+              <li>✓ 4タブ詳細分析（有利不利含む）</li>
               <li>✓ いつでもキャンセル</li>
             </ul>
             <button

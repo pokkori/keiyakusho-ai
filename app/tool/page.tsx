@@ -31,21 +31,23 @@ function parseResult(text: string): ParsedResult {
   return { sections, raw: text };
 }
 
-function Paywall({ onClose, onOpenPayjp }: { onClose: () => void; onOpenPayjp: () => void }) {
+function Paywall({ onClose, onOpenPayjp, onOpenOnce }: { onClose: () => void; onOpenPayjp: () => void; onOpenOnce: () => void }) {
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
         <div className="text-3xl mb-3">📋</div>
         <h2 className="text-lg font-bold mb-2">無料レビュー回数を使い切りました</h2>
-        <p className="text-sm text-gray-500 mb-4">プレミアムプランで無制限に契約書をチェックできます</p>
-        <ul className="text-xs text-gray-400 text-left mb-5 space-y-1">
-          <li>✓ 契約書レビュー無制限</li>
-          <li>✓ 4タブ詳細分析（総合評価/問題条項/有利不利/修正提案）</li>
-          <li>✓ 修正文案をそのままコピー</li>
-          <li>✓ いつでもキャンセル可能</li>
+        <p className="text-sm text-gray-500 mb-4">続けて使うにはプランをお選びください</p>
+        <button onClick={onOpenOnce} className="block w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-xl hover:bg-yellow-500 mb-3">
+          今すぐ1回試す ¥980（30日間有効）
+        </button>
+        <ul className="text-xs text-gray-400 text-left mb-3 space-y-1 border border-gray-100 rounded-lg p-3">
+          <li>✓ 契約書レビュー30日間使い放題</li>
+          <li>✓ 総合評価・問題条項・修正提案</li>
+          <li>✗ 有利不利タブはPremium限定</li>
         </ul>
         <button onClick={onOpenPayjp} className="block w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 mb-3">
-          ¥2,980/月で始める
+          ¥2,980/月で無制限に使う（有利不利タブ含む）
         </button>
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>
@@ -97,6 +99,7 @@ export default function KeiyakushoTool() {
   const [count, setCount] = useState(0);
   const [showPaywall, setShowPaywall] = useState(false);
   const [showPayjp, setShowPayjp] = useState(false);
+  const [showPayjpOnce, setShowPayjpOnce] = useState(false);
   const [error, setError] = useState("");
   const [isPremium, setIsPremium] = useState(false);
 
@@ -139,7 +142,22 @@ export default function KeiyakushoTool() {
           onClose={() => setShowPayjp(false)}
         />
       )}
-      {showPaywall && <Paywall onClose={() => setShowPaywall(false)} onOpenPayjp={() => { setShowPaywall(false); setShowPayjp(true); }} />}
+      {showPayjpOnce && (
+        <PayjpModal
+          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
+          planLabel="1回払い ¥980 — 30日間有効（契約書レビュー使い放題）"
+          apiPath="/api/payjp/charge"
+          onSuccess={() => { setShowPayjpOnce(false); setShowPaywall(false); setIsPremium(true); }}
+          onClose={() => setShowPayjpOnce(false)}
+        />
+      )}
+      {showPaywall && (
+        <Paywall
+          onClose={() => setShowPaywall(false)}
+          onOpenPayjp={() => { setShowPaywall(false); setShowPayjp(true); }}
+          onOpenOnce={() => { setShowPaywall(false); setShowPayjpOnce(true); }}
+        />
+      )}
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
           <Link href="/" className="font-bold text-slate-900">📋 契約書AIレビュー</Link>

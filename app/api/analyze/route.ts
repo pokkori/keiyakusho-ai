@@ -43,6 +43,10 @@ export async function POST(req: NextRequest) {
     const cookiePremium = req.cookies.get("stripe_premium")?.value;
     if (cookiePremium === "1") isPremium = true;
   }
+  if (!isPremium) {
+    const oneTimePremium = req.cookies.get("one_time_premium")?.value;
+    if (oneTimePremium === "1") isPremium = true;
+  }
 
   const supabase = getSupabaseAdmin();
   let count = 0;
