@@ -40,7 +40,7 @@ export async function POST(req: NextRequest) {
   }
 
   if (!isPremium) {
-    const cookiePremium = req.cookies.get("stripe_premium")?.value;
+    const cookiePremium = req.cookies.get("premium")?.value;
     if (cookiePremium === "1") isPremium = true;
   }
   if (!isPremium) {

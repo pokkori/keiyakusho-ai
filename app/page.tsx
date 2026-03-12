@@ -4,17 +4,8 @@ import Link from "next/link";
 import PayjpModal from "@/components/PayjpModal";
 
 export default function Home() {
-  const [loading, setLoading] = useState(false);
   const [showPayjpSub, setShowPayjpSub] = useState(false);
   const [showPayjpOnce, setShowPayjpOnce] = useState(false);
-
-  async function startCheckout() {
-    setLoading(true);
-    const res = await fetch("/api/stripe/checkout", { method: "POST" });
-    const data = await res.json();
-    if (data.url) window.location.href = data.url;
-    else setLoading(false);
-  }
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
@@ -62,11 +53,10 @@ export default function Home() {
             今すぐ1回試す ¥980
           </button>
           <button
-            onClick={startCheckout}
-            disabled={loading}
-            className="bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl text-lg transition-all disabled:opacity-50"
+            onClick={() => setShowPayjpSub(true)}
+            className="bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl text-lg transition-all"
           >
-            {loading ? "処理中..." : "¥2,980/月で無制限に使う"}
+            ¥2,980/月で無制限に使う
           </button>
         </div>
         <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • 1回払い¥980 • いつでもキャンセル可能</p>
@@ -170,11 +160,10 @@ export default function Home() {
               <li>✓ いつでもキャンセル</li>
             </ul>
             <button
-              onClick={startCheckout}
-              disabled={loading}
-              className="w-full bg-white text-indigo-600 hover:bg-slate-100 font-bold py-3 px-6 rounded-xl transition-all disabled:opacity-50"
+              onClick={() => setShowPayjpSub(true)}
+              className="w-full bg-white text-indigo-600 hover:bg-slate-100 font-bold py-3 px-6 rounded-xl transition-all"
             >
-              {loading ? "処理中..." : "今すぐ始める"}
+              今すぐ始める
             </button>
           </div>
         </div>
