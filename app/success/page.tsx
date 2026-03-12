@@ -1,7 +1,6 @@
 "use client";
 
 import { useEffect, useState, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
 import Link from "next/link";
 
 function Confetti() {
@@ -50,35 +49,12 @@ function Confetti() {
 }
 
 function SuccessContent() {
-  const params = useSearchParams();
-  const [status, setStatus] = useState<"loading" | "ok" | "error">("loading");
-  const [showConfetti, setShowConfetti] = useState(false);
+  const [showConfetti, setShowConfetti] = useState(true);
 
   useEffect(() => {
-    const sessionId = params.get("session_id");
-    if (!sessionId) { setStatus("error"); return; }
-    fetch(`/api/stripe/verify?session_id=${sessionId}`)
-      .then(r => {
-        if (r.ok) { setStatus("ok"); setShowConfetti(true); }
-        else setStatus("error");
-      })
-      .catch(() => setStatus("error"));
-  }, [params]);
-
-  useEffect(() => {
-    if (showConfetti) {
-      const timer = setTimeout(() => setShowConfetti(false), 4000);
-      return () => clearTimeout(timer);
-    }
-  }, [showConfetti]);
-
-  if (status === "loading") return <div className="text-center text-gray-500">認証中...</div>;
-  if (status === "error") return (
-    <div className="text-center">
-      <p className="text-red-500 mb-4">認証に失敗しました。</p>
-      <Link href="/" className="text-blue-600 underline">トップへ戻る</Link>
-    </div>
-  );
+    const timer = setTimeout(() => setShowConfetti(false), 4000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <>
