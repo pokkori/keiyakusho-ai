@@ -9,11 +9,24 @@ const KEY = "keiyakusho_count";
 type Section = { title: string; icon: string; content: string };
 type ParsedResult = { sections: Section[]; raw: string };
 
+const CHECK_MODES = [
+  { id: "standard", label: "通常レビュー", desc: "一般的な契約書リスクチェック" },
+  { id: "toitekihou", label: "取適法チェック ★", desc: "取引適正化法（旧下請法）違反リスク判定 — 2026年1月施行対応", badge: "NEW" },
+] as const;
+type CheckModeId = typeof CHECK_MODES[number]["id"];
+
+const PARTY_ROLES = [
+  { id: "consignor", label: "委託者（発注側）" },
+  { id: "consignee", label: "受託者（受注側）" },
+] as const;
+type PartyRoleId = typeof PARTY_ROLES[number]["id"];
+
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
     { key: "総合評価", icon: "📊" },
     { key: "問題条項", icon: "⚠️" },
     { key: "有利不利", icon: "⚖️" },
+    { key: "取適法チェック", icon: "⚖️" },
     { key: "修正提案", icon: "✏️" },
   ];
   const sections: Section[] = [];
@@ -119,6 +132,8 @@ export default function KeiyakushoTool() {
   const [showPayjpOnce, setShowPayjpOnce] = useState(false);
   const [error, setError] = useState("");
   const [isPremium, setIsPremium] = useState(false);
+  const [checkMode, setCheckMode] = useState<CheckModeId>("standard");
+  const [partyRole, setPartyRole] = useState<PartyRoleId>("consignee");
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
@@ -135,7 +150,7 @@ export default function KeiyakushoTool() {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contractText }),
+        body: JSON.stringify({ contractText, checkMode, partyRole }),
       });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
       const data = await res.json();
@@ -191,6 +206,36 @@ export default function KeiyakushoTool() {
             <p className="text-sm text-gray-500 mt-1">全文またはチェックしたい条項をそのまま貼り付けてください。AIが4つの視点で分析します。</p>
           </div>
 
+          {/* チェックモード選択 */}
+          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+            <p className="text-xs font-semibold text-slate-600">チェックモード</p>
+            <div className="flex flex-col gap-2">
+              {CHECK_MODES.map(mode => (
+                <label key={mode.id} className={`flex items-start gap-3 p-3 rounded-lg border cursor-pointer transition-colors ${checkMode === mode.id ? "border-indigo-500 bg-indigo-50" : "border-slate-200 hover:border-indigo-300"}`}>
+                  <input type="radio" name="checkMode" value={mode.id} checked={checkMode === mode.id} onChange={() => setCheckMode(mode.id)} className="mt-0.5 accent-indigo-600" />
+                  <div>
+                    <span className="text-sm font-semibold text-slate-800">{mode.label}</span>
+                    {"badge" in mode && <span className="ml-2 inline-block bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded">{mode.badge}</span>}
+                    <p className="text-xs text-slate-500 mt-0.5">{mode.desc}</p>
+                  </div>
+                </label>
+              ))}
+            </div>
+            {checkMode === "toitekihou" && (
+              <div className="mt-2 pt-3 border-t border-slate-200">
+                <p className="text-xs font-semibold text-slate-600 mb-2">あなたの立場</p>
+                <div className="flex gap-3">
+                  {PARTY_ROLES.map(role => (
+                    <label key={role.id} className={`flex items-center gap-2 px-3 py-2 rounded-lg border cursor-pointer text-xs font-medium transition-colors ${partyRole === role.id ? "border-indigo-500 bg-indigo-50 text-indigo-700" : "border-slate-200 text-slate-600 hover:border-indigo-300"}`}>
+                      <input type="radio" name="partyRole" value={role.id} checked={partyRole === role.id} onChange={() => setPartyRole(role.id)} className="accent-indigo-600" />
+                      {role.label}
+                    </label>
+                  ))}
+                </div>
+              </div>
+            )}
+          </div>
+
           <textarea
             value={contractText}
             onChange={e => setContractText(e.target.value)}
@@ -225,7 +270,11 @@ export default function KeiyakushoTool() {
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-3" />
                 <p className="text-sm text-gray-500 font-medium">契約書を分析しています...</p>
-                <p className="text-xs text-gray-400 mt-2">📊 総合評価 → ⚠️ 問題条項 → ✏️ 修正提案</p>
+                <p className="text-xs text-gray-400 mt-2">
+                  {checkMode === "toitekihou"
+                    ? "📊 総合評価 → ⚠️ 問題条項 → ⚖️ 取適法チェック → ✏️ 修正提案"
+                    : "📊 総合評価 → ⚠️ 問題条項 → ✏️ 修正提案"}
+                </p>
               </div>
             </div>
           ) : parsed ? (

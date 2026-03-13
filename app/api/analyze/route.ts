@@ -12,7 +12,7 @@ function getClient() {
 }
 
 export async function POST(req: NextRequest) {
-  const { contractText } = await req.json();
+  const { contractText, checkMode, partyRole } = await req.json();
   if (!contractText?.trim()) {
     return NextResponse.json({ error: "契約書の内容を入力してください" }, { status: 400 });
   }
@@ -98,7 +98,34 @@ export async function POST(req: NextRequest) {
 【交渉すべきポイント】
 ` : "";
 
-  const prompt = `あなたは契約書レビューの専門家です。以下の契約書を詳細にレビューしてください。
+  const isToitekihou = checkMode === "toitekihou";
+  const partyRoleText = partyRole === "consignor" ? "委託者（発注側）" : partyRole === "consignee" ? "受託者（受注側）" : "不明";
+
+  const toitekihouSection = isToitekihou ? `
+
+---
+
+## 取適法チェック（取引適正化法 2026年1月施行）
+2026年1月1日施行の取引適正化法（旧下請法）に基づき、以下の観点でチェックしてください。
+依頼者の立場: ${partyRoleText}
+
+チェック観点：
+1. 代金の支払い条件（60日以内の支払義務等）に問題がないか
+2. 不当な代金減額・返品・買いたたきの禁止に反する条項がないか
+3. 発注書面交付義務への準拠
+4. 給付の受領拒否の禁止に反する条項がないか
+5. 購入・利用強制の禁止に反する条項がないか
+6. 報復措置の禁止に反する条項がないか
+
+違反リスクがある場合は条文番号・文言を明示し、${partyRoleText}の立場からのリスクを具体的に説明してください。
+問題がない場合は「取適法上の違反リスクは検出されませんでした」と明記してください。
+` : "";
+
+  const basePrompt = isToitekihou
+    ? `あなたは契約書レビューの専門家であり、取引適正化法（旧下請法・2026年1月施行）の専門知識も持ちます。以下の契約書を詳細にレビューしてください。`
+    : `あなたは契約書レビューの専門家です。以下の契約書を詳細にレビューしてください。`;
+
+  const prompt = `${basePrompt}
 
 ## 総合評価
 契約書全体のリスクレベルをA（低リスク）〜E（高リスク）で評価し、主な問題点を3点以内で要約してください。
@@ -110,7 +137,7 @@ export async function POST(req: NextRequest) {
 - 該当箇所（条文番号や文言）
 - 問題の内容
 - なぜリスクなのか
-${premiumSection}
+${premiumSection}${toitekihouSection}
 ---
 
 ## 修正提案

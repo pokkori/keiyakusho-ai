@@ -35,8 +35,14 @@ export default function Home() {
 
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
-        <div className="inline-block bg-indigo-600 text-white text-sm font-bold px-4 py-1 rounded-full mb-6">
-          AI × 契約書レビュー
+        <div className="flex flex-wrap justify-center gap-2 mb-6">
+          <div className="inline-block bg-indigo-600 text-white text-sm font-bold px-4 py-1 rounded-full">
+            AI × 契約書レビュー
+          </div>
+          <div className="inline-flex items-center gap-1 bg-orange-500 text-white text-xs font-bold px-3 py-1 rounded-full">
+            <span>★ NEW</span>
+            <span>2026年1月施行 取適法（旧下請法）対応</span>
+          </div>
         </div>
         <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
           契約書の落とし穴、<br />
@@ -126,10 +132,21 @@ export default function Home() {
               title: "業務提携・NDA",
               desc: "秘密保持の範囲・損害賠償・契約期間など、ビジネス契約のリスクを分析",
             },
+            {
+              icon: "⚖️",
+              title: "取引適正化法チェックモード",
+              desc: "旧下請法から改正された取適法（2026年1月施行）に基づき、委託契約書の違反リスクをAIが判定。中小企業の委託事業者向けに特化。",
+              badge: "NEW",
+            },
           ].map((f) => (
-            <div key={f.title} className="bg-slate-800 rounded-2xl p-6">
+            <div key={f.title} className={`bg-slate-800 rounded-2xl p-6 ${"badge" in f && f.badge ? "border border-orange-500/50" : ""}`}>
               <div className="text-4xl mb-4">{f.icon}</div>
-              <h3 className="text-xl font-bold mb-2">{f.title}</h3>
+              <h3 className="text-xl font-bold mb-2 flex items-center gap-2">
+                {f.title}
+                {"badge" in f && f.badge && (
+                  <span className="inline-block bg-orange-500 text-white text-[10px] font-bold px-1.5 py-0.5 rounded align-middle">{f.badge}</span>
+                )}
+              </h3>
               <p className="text-slate-300">{f.desc}</p>
             </div>
           ))}
@@ -197,6 +214,31 @@ export default function Home() {
           <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all text-sm">
             自分の契約書を無料でチェック →
           </Link>
+        </div>
+      </section>
+
+      {/* FAQ — 取適法 */}
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <h2 className="text-2xl font-black text-center mb-8">よくある質問</h2>
+        <div className="space-y-4">
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+            <p className="font-bold text-white mb-2">Q: 取引適正化法（取適法）のチェックはできますか？</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              はい。2026年1月に施行された取引適正化法（旧下請法）に対応したチェックモードを搭載。委託契約書・業務委託書の違反リスク（代金減額・返品・買いたたき等）を判定します。委託者・受託者どちらの立場からのリスクかも明示します。
+            </p>
+          </div>
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+            <p className="font-bold text-white mb-2">Q: 取適法チェックモードはどんな企業に向いていますか？</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              取適法の対象となる中小企業約358万社の委託事業者に特に有効です。発注側（委託者）・受注側（受託者）どちらの立場でも利用できます。弁護士への相談前の事前確認として最適です。
+            </p>
+          </div>
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+            <p className="font-bold text-white mb-2">Q: 通常レビューと取適法チェックモードの違いは？</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              通常レビューは著作権・競業禁止・損害賠償など一般的な契約リスクを幅広くチェックします。取適法チェックモードは取引適正化法（旧下請法）の6つの禁止行為に特化したチェックを追加で実施します。両方を組み合わせてご活用いただけます。
+            </p>
+          </div>
         </div>
       </section>
 
