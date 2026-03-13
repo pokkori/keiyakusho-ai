@@ -43,12 +43,21 @@ export async function POST(req: NextRequest) {
     const cookiePremium = req.cookies.get("premium")?.value;
     if (cookiePremium === "1") isPremium = true;
   }
+  const supabase = getSupabaseAdmin();
   if (!isPremium) {
     const oneTimePremium = req.cookies.get("one_time_premium")?.value;
-    if (oneTimePremium === "1") isPremium = true;
+    // charge IDをSupabaseで検証（"1"等の手動設定を拒否）
+    if (oneTimePremium?.startsWith("ch_")) {
+      const { data: chargeData } = await supabase
+        .from("usage_counts")
+        .select("updated_at")
+        .eq("key", `charge:${oneTimePremium}`)
+        .single();
+      if (chargeData && new Date(chargeData.updated_at) > new Date()) {
+        isPremium = true;
+      }
+    }
   }
-
-  const supabase = getSupabaseAdmin();
   let count = 0;
   if (!isPremium) {
     const ip = req.headers.get("x-forwarded-for") || "unknown";

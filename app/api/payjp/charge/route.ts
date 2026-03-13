@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -37,9 +38,17 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: charge.error.message }, { status: 400 });
     }
 
-    // 30日間有効なone-time_premiumクッキーを設定
+    // chargeIDをSupabaseに保存（サーバー側検証用）
+    const supabase = getSupabaseAdmin();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 24 * 30 * 1000).toISOString();
+    await supabase.from("usage_counts").upsert(
+      { key: `charge:${charge.id}`, count: 1, updated_at: expiresAt },
+      { onConflict: "key" }
+    );
+
+    // 30日間有効なone_time_premiumクッキーにcharge IDを格納
     const res = NextResponse.json({ ok: true });
-    res.cookies.set("one_time_premium", "1", {
+    res.cookies.set("one_time_premium", charge.id, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
