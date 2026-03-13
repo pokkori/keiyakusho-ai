@@ -281,7 +281,17 @@ export default function Home() {
           <Link href="/privacy" className="hover:text-white">プライバシーポリシー</Link>
           <Link href="/terms" className="hover:text-white">利用規約</Link>
         </div>
-        <p>© 2026 契約書AIレビュー</p>
+        <p className="mb-4">© 2026 契約書AIレビュー</p>
+        <div className="border-t border-slate-700 pt-3 text-xs">
+          <p className="mb-1">ポッコリラボの他のサービス</p>
+          <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-slate-600">
+            <a href="https://claim-ai-beryl.vercel.app" className="hover:text-slate-400">クレームAI</a>
+            <a href="https://hojyokin-ai-delta.vercel.app" className="hover:text-slate-400">補助金AI</a>
+            <a href="https://pawahara-ai.vercel.app" className="hover:text-slate-400">パワハラ対策AI</a>
+            <a href="https://rougo-sim-ai.vercel.app" className="hover:text-slate-400">老後シミュレーターAI</a>
+            <a href="https://ai-keiei-keikaku.vercel.app" className="hover:text-slate-400">AI経営計画書</a>
+          </div>
+        </div>
       </footer>
     </main>
   );
