@@ -30,9 +30,59 @@ export const metadata: Metadata = {
   metadataBase: new URL(SITE_URL),
 };
 
+const jsonLd = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "WebApplication",
+      "name": "契約書AIレビュー",
+      "url": SITE_URL,
+      "applicationCategory": "BusinessApplication",
+      "operatingSystem": "Web",
+      "offers": { "@type": "Offer", "price": "980", "priceCurrency": "JPY", "description": "プレミアムプラン ¥980/月" },
+      "description": DESC,
+    },
+    {
+      "@type": "FAQPage",
+      "mainEntity": [
+        {
+          "@type": "Question",
+          "name": "どんな種類の契約書に対応していますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "業務委託契約・NDA（秘密保持契約）・雇用契約・売買契約・SaaS利用規約など、ほぼすべての日本語契約書に対応しています。リスク箇所の指摘・修正提案文・交渉ポイントをセットで生成します。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "弁護士の代わりになりますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "本サービスはAIによる参考情報の提供であり、法的アドバイスではありません。ただし、AIで1次スクリーニングを行い、問題箇所だけを弁護士に相談することで弁護士費用を大幅に削減できます。重要な案件には必ず弁護士にご相談ください。"
+          }
+        },
+        {
+          "@type": "Question",
+          "name": "無料で使えますか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "登録不要で1件の契約書レビューを無料でお試しいただけます。プレミアムプラン（¥980/月）で20,000文字対応・無制限レビューが可能になります。"
+          }
+        },
+      ],
+    },
+  ],
+};
+
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="ja">
+      <head>
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(jsonLd) }}
+        />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         {children}
         <Analytics />
