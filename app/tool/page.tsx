@@ -65,25 +65,42 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   );
 }
 
-function ResultTabs({ parsed }: { parsed: ParsedResult }) {
+function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; isPremium: boolean; onUpgrade: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const section = parsed.sections[activeTab];
+  const isAdvantageTab = section.title === "有利不利";
   return (
     <div className="flex flex-col gap-3">
       <div className="flex gap-1 flex-wrap">
-        {parsed.sections.map((s, i) => (
-          <button key={i} onClick={() => setActiveTab(i)}
-            className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
-            <span>{s.icon}</span><span>{s.title}</span>
-          </button>
-        ))}
+        {parsed.sections.map((s, i) => {
+          const locked = !isPremium && s.title === "有利不利";
+          return (
+            <button key={i} onClick={() => setActiveTab(i)}
+              className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
+              <span>{s.icon}</span><span>{s.title}</span>{locked && <span>🔒</span>}
+            </button>
+          );
+        })}
       </div>
       <div className="bg-white border border-gray-200 rounded-xl p-4 min-h-[360px]">
-        <div className="flex items-center justify-between mb-3">
-          <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
-          <CopyButton text={section.content} />
-        </div>
-        <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+        {!isPremium && isAdvantageTab ? (
+          <div className="flex flex-col items-center justify-center h-full gap-4 py-12">
+            <span className="text-4xl">🔒</span>
+            <p className="text-sm font-semibold text-gray-700">有利不利タブはPremium限定</p>
+            <p className="text-xs text-gray-500 text-center">交渉すべきポイント・有利不利の整理は<br />プレミアムプランでご利用いただけます</p>
+            <button onClick={onUpgrade} className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-indigo-700">
+              プレミアムにアップグレード →
+            </button>
+          </div>
+        ) : (
+          <>
+            <div className="flex items-center justify-between mb-3">
+              <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
+              <CopyButton text={section.content} />
+            </div>
+            <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+          </>
+        )}
       </div>
       <div className="flex gap-2 justify-end">
         <CopyButton text={parsed.raw} label="全文コピー" />
@@ -212,7 +229,7 @@ export default function KeiyakushoTool() {
               </div>
             </div>
           ) : parsed ? (
-            <ResultTabs parsed={parsed} />
+            <ResultTabs parsed={parsed} isPremium={isPremium} onUpgrade={() => setShowPaywall(true)} />
           ) : (
             <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <div className="text-4xl">📋</div>

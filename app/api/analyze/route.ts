@@ -79,6 +79,16 @@ export async function POST(req: NextRequest) {
   }
 
   const isTruncated = contractText.length > 8000;
+  const premiumSection = isPremium ? `
+---
+
+## 有利不利
+この契約書について：
+【あなたに有利な点】
+【あなたに不利な点】
+【交渉すべきポイント】
+` : "";
+
   const prompt = `あなたは契約書レビューの専門家です。以下の契約書を詳細にレビューしてください。
 
 ## 総合評価
@@ -91,15 +101,7 @@ export async function POST(req: NextRequest) {
 - 該当箇所（条文番号や文言）
 - 問題の内容
 - なぜリスクなのか
-
----
-
-## 有利不利
-この契約書について：
-【あなたに有利な点】
-【あなたに不利な点】
-【交渉すべきポイント】
-
+${premiumSection}
 ---
 
 ## 修正提案
