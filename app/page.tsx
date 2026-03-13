@@ -26,6 +26,13 @@ export default function Home() {
           onClose={() => setShowPayjpSub(false)}
         />
       )}
+      {/* 免責バナー */}
+      <div className="bg-amber-900/40 border-b border-amber-700/50 px-6 py-3 text-center">
+        <p className="text-xs text-amber-200 font-medium">
+          ⚠️ <strong>本サービスは弁護士業務・法的助言ではありません。</strong>AIによる参考情報の提供です。契約の最終判断・法的トラブルには必ず弁護士にご相談ください。
+        </p>
+      </div>
+
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
         <div className="inline-block bg-indigo-600 text-white text-sm font-bold px-4 py-1 rounded-full mb-6">
@@ -108,6 +115,67 @@ export default function Home() {
                 {t.tab}
               </div>
               <p className="text-slate-300">{t.desc}</p>
+            </div>
+          ))}
+        </div>
+      </section>
+
+      {/* Sample Output */}
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <div className="inline-block bg-indigo-900 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">実際の分析例</div>
+          <h2 className="text-3xl font-black mb-2">AIがこんな分析を出力します</h2>
+          <p className="text-slate-400 text-sm">業務委託契約書を貼り付けた場合の実際の出力例</p>
+        </div>
+        <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
+          <div className="bg-slate-700 px-5 py-3 flex items-center gap-2 border-b border-slate-600">
+            <span className="inline-block bg-indigo-600 text-white text-xs font-bold px-2 py-0.5 rounded">総合評価</span>
+            <span className="text-slate-300 text-sm">業務委託契約書 — フリーランス Webエンジニア向け</span>
+          </div>
+          <div className="p-5 space-y-4">
+            <div className="flex items-center gap-3">
+              <span className="text-2xl font-black text-red-400">D</span>
+              <div>
+                <p className="font-bold text-white text-sm">リスクレベル: 高</p>
+                <p className="text-slate-400 text-xs">受注者（フリーランス）に不利な条項が3件検出されました</p>
+              </div>
+            </div>
+            <div className="space-y-2">
+              <p className="text-xs font-bold text-red-400">⚠ 検出された問題条項</p>
+              <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-3">
+                <p className="text-xs font-bold text-red-300 mb-1">第8条（著作権）— 危険度: 高</p>
+                <p className="text-xs text-slate-300 mb-2">「本業務で生じた成果物の著作権は、完成と同時に発注者に帰属する」</p>
+                <p className="text-xs text-indigo-300">💡 修正提案: 「著作権は納品・検収完了後、かつ報酬全額支払い完了をもって発注者に移転する」に変更してください。未払いリスクへの防御になります。</p>
+              </div>
+              <div className="bg-orange-900/20 border border-orange-700/40 rounded-lg p-3">
+                <p className="text-xs font-bold text-orange-300 mb-1">第12条（競業禁止）— 危険度: 中</p>
+                <p className="text-xs text-slate-300 mb-2">「契約終了後2年間、同業他社への役務提供を禁止する」</p>
+                <p className="text-xs text-indigo-300">💡 修正提案: 期間を「6ヶ月以内」に短縮、または「直接競合する同一プロダクトへの参画」に限定する表現に変更を交渉してください。</p>
+              </div>
+            </div>
+          </div>
+        </div>
+        <p className="text-center text-xs text-slate-500 mt-4">※上記はサンプルです。実際の出力は契約書の内容によって異なります。</p>
+        <div className="text-center mt-6">
+          <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all text-sm">
+            自分の契約書を無料でチェック →
+          </Link>
+        </div>
+      </section>
+
+      {/* Social Proof */}
+      <section className="max-w-4xl mx-auto px-4 py-8 pb-16">
+        <h2 className="text-2xl font-black text-center mb-8">ご利用者の声</h2>
+        <div className="grid md:grid-cols-3 gap-5">
+          {[
+            { role: "Webデザイナー・フリーランス", text: "業務委託の契約書で著作権条項が危険だと指摘してもらい、交渉し直せました。弁護士に相談する手間と費用が省けました。" },
+            { role: "ITエンジニア・副業", text: "副業の契約書を毎回¥980でチェックしてから署名するようにしました。一度、損害賠償条項の問題を発見できてかなり助かりました。" },
+            { role: "EC事業者・個人", text: "取引先との業務提携NDAをチェックしたら秘密保持期間が無制限になっていた。修正提案そのままで交渉して直せました。" },
+          ].map((v, i) => (
+            <div key={i} className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+              <div className="flex text-yellow-400 text-sm mb-3">★★★★★</div>
+              <p className="text-sm text-slate-300 mb-3 leading-relaxed">{v.text}</p>
+              <p className="text-xs text-slate-500">{v.role}</p>
             </div>
           ))}
         </div>
