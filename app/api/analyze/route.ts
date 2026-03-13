@@ -39,11 +39,19 @@ export async function POST(req: NextRequest) {
     }
   }
 
+  const supabase = getSupabaseAdmin();
   if (!isPremium) {
     const cookiePremium = req.cookies.get("premium")?.value;
-    if (cookiePremium === "1") isPremium = true;
+    // subscription IDをSupabaseで検証（"1"等の手動設定を拒否）
+    if (cookiePremium?.startsWith("sub_")) {
+      const { data: subData } = await supabase
+        .from("usage_counts")
+        .select("updated_at")
+        .eq("key", `sub:${cookiePremium}`)
+        .single();
+      if (subData && new Date(subData.updated_at) > new Date()) isPremium = true;
+    }
   }
-  const supabase = getSupabaseAdmin();
   if (!isPremium) {
     const oneTimePremium = req.cookies.get("one_time_premium")?.value;
     // charge IDをSupabaseで検証（"1"等の手動設定を拒否）

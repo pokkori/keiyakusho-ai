@@ -1,4 +1,5 @@
 import { NextRequest, NextResponse } from "next/server";
+import { getSupabaseAdmin } from "@/lib/supabase";
 
 export const dynamic = "force-dynamic";
 
@@ -38,8 +39,16 @@ export async function POST(req: NextRequest) {
       return NextResponse.json({ error: sub.error.message }, { status: 400 });
     }
 
+    // subscription IDをSupabaseに保存（サーバー側検証用）
+    const supabase = getSupabaseAdmin();
+    const expiresAt = new Date(Date.now() + 60 * 60 * 24 * 366 * 1000).toISOString();
+    await supabase.from("usage_counts").upsert(
+      { key: `sub:${sub.id}`, count: 1, updated_at: expiresAt },
+      { onConflict: "key" }
+    );
+
     const res = NextResponse.json({ ok: true });
-    res.cookies.set("premium", "1", {
+    res.cookies.set("premium", sub.id, {
       httpOnly: true,
       secure: true,
       sameSite: "lax",
