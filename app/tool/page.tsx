@@ -182,7 +182,13 @@ export default function KeiyakushoTool() {
             placeholder={"例:\n第1条（委託業務）\n甲は乙に対し、以下の業務を委託する。\n...\n\n第2条（委託料）\n乙の業務に対する委託料は月額〇〇円とする。\n..."}
             className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none font-mono"
           />
-          <p className="text-xs text-gray-400">{contractText.length.toLocaleString()}文字 入力済み</p>
+          <p className="text-xs text-gray-400">
+            {contractText.length.toLocaleString()}文字 入力済み
+            {contractText.length > 8000 && (
+              <span className="ml-2 text-orange-500 font-medium">※ 8,000文字を超えた部分は分析対象外となります</span>
+            )}
+          </p>
+          <p className="text-xs text-gray-400">※ 最大8,000文字まで対応（長い契約書は分割してご利用ください）</p>
 
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-xs text-indigo-800">
             ⚠️ <strong>免責事項</strong>：このレビューはAIによる参考情報です。法的効力はありません。重要な契約は必ず弁護士にご相談ください。

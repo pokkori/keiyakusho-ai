@@ -281,7 +281,7 @@ export default function Home() {
           <Link href="/privacy" className="hover:text-white">プライバシーポリシー</Link>
           <Link href="/terms" className="hover:text-white">利用規約</Link>
         </div>
-        <p>© 2025 契約書AIレビュー</p>
+        <p>© 2026 契約書AIレビュー</p>
       </footer>
     </main>
   );

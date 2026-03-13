@@ -69,6 +69,7 @@ export async function POST(req: NextRequest) {
     count = count + 1;
   }
 
+  const isTruncated = contractText.length > 8000;
   const prompt = `あなたは契約書レビューの専門家です。以下の契約書を詳細にレビューしてください。
 
 ## 総合評価
@@ -108,7 +109,8 @@ ${contractText.slice(0, 8000)}`;
       messages: [{ role: "user", content: prompt }],
     });
     const result = message.content[0].type === "text" ? message.content[0].text : "";
-    return NextResponse.json({ result, count });
+    const warning = isTruncated ? "※ 8,000文字を超えた部分は分析対象外となります" : undefined;
+    return NextResponse.json({ result, count, ...(warning ? { warning } : {}) });
   } catch {
     return NextResponse.json({ error: "AI処理中にエラーが発生しました" }, { status: 500 });
   }
