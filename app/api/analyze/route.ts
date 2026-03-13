@@ -86,7 +86,8 @@ export async function POST(req: NextRequest) {
     count = count + 1;
   }
 
-  const isTruncated = contractText.length > 8000;
+  const charLimit = isPremium ? 20000 : 8000;
+  const isTruncated = contractText.length > charLimit;
   const premiumSection = isPremium ? `
 ---
 
@@ -118,7 +119,7 @@ ${premiumSection}
 ---
 
 契約書の内容：
-${contractText.slice(0, 8000)}`;
+${contractText.slice(0, charLimit)}`;
 
   try {
     const client = getClient();
@@ -128,7 +129,7 @@ ${contractText.slice(0, 8000)}`;
       messages: [{ role: "user", content: prompt }],
     });
     const result = message.content[0].type === "text" ? message.content[0].text : "";
-    const warning = isTruncated ? "※ 8,000文字を超えた部分は分析対象外となります" : undefined;
+    const warning = isTruncated ? `※ ${charLimit.toLocaleString()}文字を超えた部分は分析対象外となります` : undefined;
     return NextResponse.json({ result, count, ...(warning ? { warning } : {}) });
   } catch {
     return NextResponse.json({ error: "AI処理中にエラーが発生しました" }, { status: 500 });
