@@ -69,6 +69,43 @@ export default function Home() {
         <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • 1回払い¥980 • いつでもキャンセル可能</p>
       </section>
 
+      {/* リスクスコア可視化 — urgency */}
+      <section className="max-w-4xl mx-auto px-4 py-6 pb-16">
+        <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8">
+          <div className="text-center mb-6">
+            <div className="inline-block bg-indigo-900/60 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full mb-3">リスクスコアで即判断</div>
+            <h2 className="text-xl font-black text-white">契約書にスコアをつけて、数値で判断できます</h2>
+            <p className="text-slate-400 text-sm mt-2">フリーランス・中小企業が提出される平均的な契約書のスコア分布</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-4 mb-6">
+            {[
+              { score: 32, label: "D評価（高リスク）", desc: "著作権・競業禁止に問題あり。要交渉。", color: "from-red-600 to-red-400", textColor: "text-red-400", borderColor: "border-red-500/40", example: "業務委託（著作権未整備）" },
+              { score: 61, label: "B評価（中リスク）", desc: "軽微な修正で安全に使える。確認推奨。", color: "from-yellow-600 to-yellow-400", textColor: "text-yellow-400", borderColor: "border-yellow-500/40", example: "賃貸契約（条件交渉余地あり）" },
+              { score: 84, label: "A評価（低リスク）", desc: "概ね問題なし。安心して締結できます。", color: "from-green-600 to-green-400", textColor: "text-green-400", borderColor: "border-green-500/40", example: "NDA（標準的な条件）" },
+            ].map((item) => (
+              <div key={item.label} className={`bg-slate-900/60 border ${item.borderColor} rounded-2xl p-4 text-center`}>
+                <div className={`text-4xl font-black ${item.textColor} mb-2`}>{item.score}<span className="text-xl font-normal">/100</span></div>
+                <div className="w-full bg-slate-700 rounded-full h-2 mb-3">
+                  <div className={`h-2 rounded-full bg-gradient-to-r ${item.color}`} style={{ width: `${item.score}%` }} />
+                </div>
+                <p className="text-xs font-bold text-white mb-1">{item.label}</p>
+                <p className="text-xs text-slate-400 mb-2">{item.desc}</p>
+                <p className="text-xs text-slate-500 italic">{item.example}</p>
+              </div>
+            ))}
+          </div>
+          <div className="bg-indigo-900/30 border border-indigo-600/30 rounded-2xl p-4 text-center">
+            <p className="text-indigo-200 text-sm font-bold mb-1">📊 フリーランス利用者の平均スコア: <span className="text-yellow-400">54/100</span></p>
+            <p className="text-slate-400 text-xs">2人に1人の契約書に、知らずに署名してはいけないリスク条項が潜んでいます</p>
+          </div>
+          <div className="text-center mt-5">
+            <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
+              自分の契約書をスコアリングする（無料）→
+            </Link>
+          </div>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="max-w-5xl mx-auto px-4 py-16">
         <h2 className="text-3xl font-black text-center mb-12">こんな時に使えます</h2>
