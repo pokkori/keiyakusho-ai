@@ -9,6 +9,24 @@ export async function GET(req: NextRequest) {
   const email = req.cookies.get("user_email")?.value;
   const legacyCookie = req.cookies.get("stripe_premium")?.value;
 
+  // PAY.JPサブスク購入後のpremium cookie (sub_xxx) チェック
+  const premiumCookie = req.cookies.get("premium")?.value;
+  const oneTimeCookie = req.cookies.get("one_time_premium")?.value;
+  if (premiumCookie || oneTimeCookie) {
+    try {
+      const supabase = getSupabaseAdmin();
+      const cookieKey = premiumCookie ? `sub:${premiumCookie}` : `charge:${oneTimeCookie}`;
+      const { data: subData } = await supabase
+        .from("usage_counts")
+        .select("updated_at")
+        .eq("key", cookieKey)
+        .single();
+      if (subData && new Date(subData.updated_at) > new Date()) {
+        return NextResponse.json({ premium: true, email: email ?? null, remaining: subData.updated_at });
+      }
+    } catch { /* fallthrough */ }
+  }
+
   if (!email) {
     return NextResponse.json({
       premium: legacyCookie === "1",
