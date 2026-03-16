@@ -153,13 +153,32 @@ export default function KeiyakushoTool() {
         body: JSON.stringify({ contractText, checkMode, partyRole }),
       });
       if (res.status === 429) { setShowPaywall(true); setLoading(false); return; }
-      const data = await res.json();
-      if (!res.ok) { setError(data.error || "エラーが発生しました"); setLoading(false); return; }
-      const newCount = data.count ?? count + 1;
-      localStorage.setItem(KEY, String(newCount));
-      setCount(newCount);
-      setParsed(parseResult(data.result || ""));
-      if (!isPremium && newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+      if (!res.ok) {
+        const data = await res.json().catch(() => ({}));
+        setError(data.error || "エラーが発生しました"); setLoading(false); return;
+      }
+      const reader = res.body?.getReader();
+      const decoder = new TextDecoder();
+      let accumulated = "";
+      while (reader) {
+        const { done, value } = await reader.read();
+        if (done) break;
+        const chunk = decoder.decode(value, { stream: true });
+        if (chunk.includes("\nDONE:")) {
+          const idx = chunk.indexOf("\nDONE:");
+          accumulated += chunk.slice(0, idx);
+          try {
+            const meta = JSON.parse(chunk.slice(idx + 6));
+            const newCount = meta.count ?? count + 1;
+            localStorage.setItem(KEY, String(newCount));
+            setCount(newCount);
+            if (!isPremium && newCount >= FREE_LIMIT) setTimeout(() => setShowPaywall(true), 1500);
+          } catch { /* ignore */ }
+        } else {
+          accumulated += chunk;
+        }
+        setParsed(parseResult(accumulated));
+      }
     } catch { setError("通信エラーが発生しました。"); }
     finally { setLoading(false); }
   };
