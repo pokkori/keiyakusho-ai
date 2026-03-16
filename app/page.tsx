@@ -316,6 +316,22 @@ export default function Home() {
         </div>
       </section>
 
+      {/* X(Twitter) Share */}
+      <section className="max-w-4xl mx-auto px-4 py-10 text-center">
+        <p className="text-slate-400 text-sm mb-4">契約書のリスクを知って、同じ悩みを持つ人にシェアしませんか？</p>
+        <a
+          href="https://twitter.com/intent/tweet?text=%E5%A5%91%E7%B4%84%E6%9B%B8%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%82%92AI%E3%81%8C%E7%84%A1%E6%96%99%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%97%E3%81%A6%E3%81%8F%E3%82%8C%E3%82%8B%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%80%82%E6%A5%AD%E5%8B%99%E5%A7%94%E8%A8%97%E3%83%BBND%E3%83%BB%E5%8F%96%E9%81%A9%E6%B3%95%E5%AF%BE%E5%BF%9C%E3%80%82%E7%84%A1%E6%96%993%E5%9B%9E%E3%81%8B%E3%82%89%E8%A9%A6%E3%81%9B%E3%82%8B%E3%80%82&url=https%3A%2F%2Fkeiyakusho-ai.vercel.app"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all text-sm"
+        >
+          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+          </svg>
+          X(Twitter)でシェアする
+        </a>
+      </section>
+
       {/* Footer */}
       <footer className="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
         <div className="flex justify-center gap-6 mb-4">

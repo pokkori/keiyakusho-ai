@@ -7,8 +7,8 @@ const geistSans = Geist({ variable: "--font-geist-sans", subsets: ["latin"] });
 const geistMono = Geist_Mono({ variable: "--font-geist-mono", subsets: ["latin"] });
 
 const SITE_URL = "https://keiyakusho-ai.vercel.app";
-const TITLE = "契約書AIレビュー｜契約書のリスクをAIが即チェック・修正案を自動生成";
-const DESC = "契約書をアップロードするだけ。AIが不利な条項・リスク箇所を即時指摘し、修正案・交渉ポイントまで自動生成。弁護士費用ゼロで契約書を守る。¥1,980/回〜。";
+const TITLE = "契約書AIレビュー｜契約書のリスクをAIが即チェック・修正案を自動生成・無料3回・取適法対応";
+const DESC = "契約書をアップロードするだけ。AIが不利な条項・リスク箇所を即時指摘し、修正案・交渉ポイントまで自動生成。弁護士費用ゼロで契約書を守る。業務委託・NDA・取引適正化法（取適法）対応。登録不要で無料3回から。¥980/回〜。";
 
 export const metadata: Metadata = {
   title: TITLE,
@@ -39,7 +39,8 @@ const jsonLd = {
       "url": SITE_URL,
       "applicationCategory": "BusinessApplication",
       "operatingSystem": "Web",
-      "offers": { "@type": "Offer", "price": "980", "priceCurrency": "JPY", "description": "プレミアムプラン ¥980/月" },
+      "keywords": "契約書,AIレビュー,取引適正化法,取適法,業務委託,NDA,リスクチェック,修正案,無料",
+      "offers": { "@type": "Offer", "price": "0", "priceCurrency": "JPY", "description": "無料3回・1回払い ¥980・プレミアム ¥2,980/月" },
       "description": DESC,
     },
     {

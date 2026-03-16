@@ -149,15 +149,32 @@ ${premiumSection}${toitekihouSection}
 ${contractText.slice(0, charLimit)}`;
 
   try {
-    const client = getClient();
-    const message = await client.messages.create({
+    const warning = isTruncated ? `※ ${charLimit.toLocaleString()}文字を超えた部分は分析対象外となります` : undefined;
+    const stream = getClient().messages.stream({
       model: "claude-haiku-4-5-20251001",
       max_tokens: 3000,
       messages: [{ role: "user", content: prompt }],
     });
-    const result = message.content[0].type === "text" ? message.content[0].text : "";
-    const warning = isTruncated ? `※ ${charLimit.toLocaleString()}文字を超えた部分は分析対象外となります` : undefined;
-    return NextResponse.json({ result, count, ...(warning ? { warning } : {}) });
+    const encoder = new TextEncoder();
+    const readable = new ReadableStream({
+      async start(controller) {
+        try {
+          for await (const chunk of stream) {
+            if (chunk.type === "content_block_delta" && chunk.delta.type === "text_delta") {
+              controller.enqueue(encoder.encode(chunk.delta.text));
+            }
+          }
+          controller.enqueue(encoder.encode(`\nDONE:${JSON.stringify({ count, ...(warning ? { warning } : {}) })}`));
+          controller.close();
+        } catch (err) { console.error(err); controller.error(err); }
+      },
+    });
+    return new Response(readable, {
+      headers: {
+        "Content-Type": "text/event-stream; charset=utf-8",
+        "Cache-Control": "no-cache",
+      },
+    });
   } catch {
     return NextResponse.json({ error: "AI処理中にエラーが発生しました" }, { status: 500 });
   }
