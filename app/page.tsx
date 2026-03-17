@@ -3,6 +3,346 @@ import { useState } from "react";
 import Link from "next/link";
 import PayjpModal from "@/components/PayjpModal";
 
+// ===== 4タブサンプルデータ =====
+const SAMPLE_TABS = [
+  {
+    id: "gyoumu",
+    label: "業務委託",
+    contractType: "業務委託契約書",
+    target: "フリーランス Webエンジニア向け",
+    score: 61,
+    grade: "C",
+    gradeColor: "text-yellow-400",
+    borderColor: "border-yellow-500/40",
+    barColor: "from-yellow-600 to-yellow-400",
+    items: [
+      {
+        level: "高",
+        icon: "🔴",
+        iconBg: "bg-red-900/30 border-red-700/50",
+        titleColor: "text-red-300",
+        title: "第8条（著作権） — 危険度: 高",
+        body: "「制作物の著作権は甲に帰属する」",
+        suggestion: "「著作財産権は乙に帰属し、甲への利用許諾とする」に変更。未払い時の保護になります。",
+      },
+      {
+        level: "中",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "第12条（競業禁止） — 危険度: 中",
+        body: "「契約終了後2年間、同業他社への役務提供を禁止する」",
+        suggestion: "一般的な期間は6ヶ月〜1年。「6ヶ月以内」への短縮を交渉してください。",
+      },
+      {
+        level: "低",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "報酬支払い遅延ペナルティなし",
+        body: "支払い遅延に対するペナルティ条項が存在しない",
+        suggestion: "「支払期日を過ぎた場合、年14.6%の遅延損害金を請求できる」条項の追加を推奨します。",
+      },
+    ],
+  },
+  {
+    id: "nda",
+    label: "NDA（秘密保持）",
+    contractType: "NDA（秘密保持契約書）",
+    target: "スタートアップ間の業務提携",
+    score: 84,
+    grade: "B",
+    gradeColor: "text-green-400",
+    borderColor: "border-green-500/40",
+    barColor: "from-green-600 to-green-400",
+    items: [
+      {
+        level: "なし",
+        icon: "🟢",
+        iconBg: "bg-green-900/20 border-green-700/40",
+        titleColor: "text-green-300",
+        title: "秘密情報の定義 — 問題なし",
+        body: "秘密情報の定義が明確に記載されている",
+        suggestion: "この条項は適切です。変更不要。",
+      },
+      {
+        level: "低",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "有効期間（第5条） — 危険度: 低",
+        body: "「契約終了後3年間」秘密保持義務が続く",
+        suggestion: "業界標準は2年。削減交渉の余地があります。「契約終了後2年間」への変更を検討してください。",
+      },
+      {
+        level: "低",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "損害賠償の上限なし",
+        body: "情報漏洩時の損害賠償額に上限設定がない",
+        suggestion: "「損害賠償額は契約金額の範囲内とする」等の上限条項の追加を交渉することを推奨します。",
+      },
+    ],
+  },
+  {
+    id: "chintai",
+    label: "賃貸契約",
+    contractType: "賃貸借契約書",
+    target: "個人 → 賃借人（入居者）",
+    score: 55,
+    grade: "C",
+    gradeColor: "text-yellow-400",
+    borderColor: "border-yellow-500/40",
+    barColor: "from-yellow-600 to-yellow-400",
+    items: [
+      {
+        level: "高",
+        icon: "🔴",
+        iconBg: "bg-red-900/30 border-red-700/50",
+        titleColor: "text-red-300",
+        title: "第9条（原状回復） — 危険度: 高",
+        body: "「退去時は全室クリーニング費用を借主が負担する」",
+        suggestion: "国土交通省ガイドラインでは経年劣化は貸主負担。「通常損耗を超える損傷のみ借主負担」に修正交渉を。",
+      },
+      {
+        level: "中",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "途中解約（第4条） — 危険度: 中",
+        body: "「解約の申し入れは3ヶ月前までに行う」",
+        suggestion: "借地借家法では1ヶ月前が原則。「3ヶ月前」は過剰。「1〜2ヶ月前」への短縮交渉が可能です。",
+      },
+      {
+        level: "なし",
+        icon: "🟢",
+        iconBg: "bg-green-900/20 border-green-700/40",
+        titleColor: "text-green-300",
+        title: "敷金返還（第3条） — 問題なし",
+        body: "「退去後1ヶ月以内に敷金を返還する」と明記",
+        suggestion: "適切な条項です。変更不要。",
+      },
+    ],
+  },
+  {
+    id: "teikei",
+    label: "業務提携",
+    contractType: "業務提携契約書",
+    target: "中小企業間の販売代理店契約",
+    score: 72,
+    grade: "B",
+    gradeColor: "text-blue-400",
+    borderColor: "border-blue-500/40",
+    barColor: "from-blue-600 to-blue-400",
+    items: [
+      {
+        level: "中",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "第6条（独占販売権） — 危険度: 中",
+        body: "「乙は本製品を甲以外から仕入れてはならない」",
+        suggestion: "独占条項は競争を制限します。「本製品カテゴリに限定」または「優先販売権」への緩和交渉を推奨。",
+      },
+      {
+        level: "低",
+        icon: "🟡",
+        iconBg: "bg-orange-900/20 border-orange-700/40",
+        titleColor: "text-orange-300",
+        title: "第11条（契約解除） — 危険度: 低",
+        body: "「甲は30日前通知で本契約を解除できる」",
+        suggestion: "一方的解除が可能な条項です。「双方合意による解除」または「90日前通知」への変更を検討してください。",
+      },
+      {
+        level: "なし",
+        icon: "🟢",
+        iconBg: "bg-green-900/20 border-green-700/40",
+        titleColor: "text-green-300",
+        title: "手数料条項（第4条） — 問題なし",
+        body: "手数料率・支払いタイミングが明確に規定されている",
+        suggestion: "適切な条項です。変更不要。",
+      },
+    ],
+  },
+] as const;
+
+// ===== インタラクティブデモ用サンプルテキスト =====
+const DEMO_CONTRACT_TEXT = `業務委託契約書
+
+甲（委託者）: 株式会社〇〇
+乙（受託者）: フリーランス 山田太郎
+
+第1条（委託業務）
+甲は乙に対し、Webサイト制作業務を委託する。
+
+第2条（委託料）
+甲は乙に対し、委託料として金300,000円（税別）を支払う。
+支払い期日は納品確認後60日以内とする。
+
+第3条（著作権）
+乙が本業務で制作した成果物の著作権は、完成と同時に甲に帰属する。
+
+第4条（競業禁止）
+乙は本契約終了後2年間、甲の競合他社に対して同種の業務を提供してはならない。
+
+第5条（秘密保持）
+乙は業務上知り得た甲の業務情報を第三者に開示してはならない。本条の効力は契約終了後も存続する。
+
+第6条（損害賠償）
+乙の業務上の過失により甲が損害を被った場合、乙は甲に生じた全ての損害を賠償する。`;
+
+// ===== サンプルタブコンポーネント =====
+function SampleAnalysisTabs() {
+  const [activeTab, setActiveTab] = useState(0);
+  const tab = SAMPLE_TABS[activeTab];
+  return (
+    <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
+      {/* タブバー */}
+      <div className="bg-slate-700/60 px-4 pt-4 flex flex-wrap gap-2 border-b border-slate-600">
+        {SAMPLE_TABS.map((t, i) => (
+          <button
+            key={t.id}
+            onClick={() => setActiveTab(i)}
+            className={`px-4 py-2 text-xs font-bold rounded-t-lg border-b-2 transition-all whitespace-nowrap ${
+              activeTab === i
+                ? "border-indigo-400 bg-slate-800 text-indigo-300"
+                : "border-transparent text-slate-400 hover:text-slate-200 hover:bg-slate-600/40"
+            }`}
+          >
+            {t.label}
+          </button>
+        ))}
+      </div>
+
+      {/* ヘッダー */}
+      <div className="px-5 py-4 flex flex-col sm:flex-row sm:items-center gap-3 border-b border-slate-600">
+        <div className="flex-1">
+          <p className="text-sm font-bold text-white">{tab.contractType}</p>
+          <p className="text-xs text-slate-400">{tab.target}</p>
+        </div>
+        <div className="flex items-center gap-3">
+          <span className={`text-3xl font-black ${tab.gradeColor}`}>{tab.grade}</span>
+          <div>
+            <p className="text-xs text-slate-400">リスクスコア</p>
+            <div className="flex items-center gap-2">
+              <div className="w-24 bg-slate-700 rounded-full h-1.5">
+                <div className={`h-1.5 rounded-full bg-gradient-to-r ${tab.barColor}`} style={{ width: `${tab.score}%` }} />
+              </div>
+              <span className="text-xs font-bold text-white">{tab.score}/100</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      {/* 問題条項リスト */}
+      <div className="p-5 space-y-3">
+        {tab.items.map((item, i) => (
+          <div key={i} className={`border rounded-lg p-3 ${item.iconBg}`}>
+            <p className={`text-xs font-bold mb-1 ${item.titleColor}`}>
+              {item.icon} {item.title}
+            </p>
+            <p className="text-xs text-slate-300 mb-2 font-mono bg-slate-900/40 rounded px-2 py-1">{item.body}</p>
+            <p className="text-xs text-indigo-300">💡 修正提案: {item.suggestion}</p>
+          </div>
+        ))}
+      </div>
+    </div>
+  );
+}
+
+// ===== インタラクティブデモコンポーネント =====
+function InteractiveDemo() {
+  const [demoText, setDemoText] = useState("");
+  const [phase, setPhase] = useState<"idle" | "filled" | "result">("idle");
+
+  const fillSample = () => {
+    setDemoText(DEMO_CONTRACT_TEXT);
+    setPhase("filled");
+  };
+
+  const runAnalysis = () => {
+    setPhase("result");
+  };
+
+  return (
+    <div className="bg-slate-800 border border-slate-700 rounded-2xl overflow-hidden">
+      {/* デモヘッダー */}
+      <div className="bg-slate-700 px-4 py-3 flex items-center gap-2 border-b border-slate-600">
+        <div className="flex gap-1.5">
+          <span className="w-3 h-3 rounded-full bg-red-500/70" />
+          <span className="w-3 h-3 rounded-full bg-yellow-500/70" />
+          <span className="w-3 h-3 rounded-full bg-green-500/70" />
+        </div>
+        <span className="text-slate-400 text-xs ml-2">契約書AIレビュー — デモ</span>
+      </div>
+
+      <div className="p-4 space-y-3">
+        {/* テキストエリア */}
+        <div className="relative">
+          <textarea
+            value={demoText}
+            onChange={e => { setDemoText(e.target.value); setPhase(e.target.value ? "filled" : "idle"); }}
+            rows={6}
+            placeholder="📄 契約書テキストをここに貼り付けてください..."
+            className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-xs text-slate-300 placeholder:text-slate-500 resize-none focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
+          />
+          {phase === "idle" && (
+            <button
+              onClick={fillSample}
+              className="absolute bottom-3 right-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
+            >
+              サンプル業務委託契約書を入力する
+            </button>
+          )}
+        </div>
+
+        {/* 分析ボタン */}
+        <button
+          onClick={runAnalysis}
+          disabled={!demoText.trim()}
+          className={`w-full font-bold py-2.5 rounded-lg text-sm transition-all ${
+            demoText.trim()
+              ? "bg-indigo-600 hover:bg-indigo-700 text-white"
+              : "bg-slate-700 text-slate-500 cursor-not-allowed"
+          }`}
+        >
+          {phase === "result" ? "✓ 分析完了" : "分析する →"}
+        </button>
+
+        {/* 結果プレビュー */}
+        {phase === "result" && (
+          <div className="bg-slate-900 border border-slate-600 rounded-lg p-4 space-y-3 animate-pulse-once">
+            <div className="flex items-center justify-between border-b border-slate-700 pb-3">
+              <span className="text-xs font-bold text-slate-400">📊 分析結果</span>
+              <span className="text-lg font-black text-yellow-400">C評価 61/100</span>
+            </div>
+            <div className="space-y-2">
+              {[
+                { icon: "🔴", label: "著作権条項", status: "要注意", color: "text-red-400" },
+                { icon: "🟡", label: "競業禁止期間", status: "中リスク（2年）", color: "text-yellow-400" },
+                { icon: "🟡", label: "報酬遅延ペナルティ", status: "中リスク（未記載）", color: "text-yellow-400" },
+                { icon: "🟢", label: "秘密保持条項", status: "問題なし", color: "text-green-400" },
+              ].map((r, i) => (
+                <div key={i} className="flex items-center justify-between text-xs">
+                  <span className="text-slate-300">{r.icon} {r.label}</span>
+                  <span className={`font-bold ${r.color}`}>{r.status}</span>
+                </div>
+              ))}
+            </div>
+            <Link
+              href="/tool"
+              className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg text-xs transition-all mt-2"
+            >
+              自分の契約書を無料でチェック →
+            </Link>
+          </div>
+        )}
+      </div>
+    </div>
+  );
+}
+
 export default function Home() {
   const [showPayjpSub, setShowPayjpSub] = useState(false);
   const [showPayjpOnce, setShowPayjpOnce] = useState(false);
@@ -174,46 +514,54 @@ export default function Home() {
         </div>
       </section>
 
-      {/* Sample Output */}
+      {/* Sample Output — 4タブサンプル */}
       <section className="max-w-4xl mx-auto px-4 py-16">
         <div className="text-center mb-10">
           <div className="inline-block bg-indigo-900 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">実際の分析例</div>
-          <h2 className="text-3xl font-black mb-2">AIがこんな分析を出力します</h2>
-          <p className="text-slate-400 text-sm">業務委託契約書を貼り付けた場合の実際の出力例</p>
+          <h2 className="text-3xl font-black mb-2">契約書タイプ別 分析レポートサンプル</h2>
+          <p className="text-slate-400 text-sm">業務委託 / NDA / 賃貸 / 業務提携 — 4種類の実際の出力例をタブで確認</p>
         </div>
-        <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
-          <div className="bg-slate-700 px-5 py-3 flex items-center gap-2 border-b border-slate-600">
-            <span className="inline-block bg-indigo-600 text-white text-xs font-bold px-2 py-0.5 rounded">総合評価</span>
-            <span className="text-slate-300 text-sm">業務委託契約書 — フリーランス Webエンジニア向け</span>
-          </div>
-          <div className="p-5 space-y-4">
-            <div className="flex items-center gap-3">
-              <span className="text-2xl font-black text-red-400">D</span>
-              <div>
-                <p className="font-bold text-white text-sm">リスクレベル: 高</p>
-                <p className="text-slate-400 text-xs">受注者（フリーランス）に不利な条項が3件検出されました</p>
-              </div>
-            </div>
-            <div className="space-y-2">
-              <p className="text-xs font-bold text-red-400">⚠ 検出された問題条項</p>
-              <div className="bg-red-900/30 border border-red-700/50 rounded-lg p-3">
-                <p className="text-xs font-bold text-red-300 mb-1">第8条（著作権）— 危険度: 高</p>
-                <p className="text-xs text-slate-300 mb-2">「本業務で生じた成果物の著作権は、完成と同時に発注者に帰属する」</p>
-                <p className="text-xs text-indigo-300">💡 修正提案: 「著作権は納品・検収完了後、かつ報酬全額支払い完了をもって発注者に移転する」に変更してください。未払いリスクへの防御になります。</p>
-              </div>
-              <div className="bg-orange-900/20 border border-orange-700/40 rounded-lg p-3">
-                <p className="text-xs font-bold text-orange-300 mb-1">第12条（競業禁止）— 危険度: 中</p>
-                <p className="text-xs text-slate-300 mb-2">「契約終了後2年間、同業他社への役務提供を禁止する」</p>
-                <p className="text-xs text-indigo-300">💡 修正提案: 期間を「6ヶ月以内」に短縮、または「直接競合する同一プロダクトへの参画」に限定する表現に変更を交渉してください。</p>
-              </div>
-            </div>
-          </div>
-        </div>
+        <SampleAnalysisTabs />
         <p className="text-center text-xs text-slate-500 mt-4">※上記はサンプルです。実際の出力は契約書の内容によって異なります。</p>
         <div className="text-center mt-6">
           <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all text-sm">
             自分の契約書を無料でチェック →
           </Link>
+        </div>
+      </section>
+
+      {/* Interactive Demo */}
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <div className="text-center mb-10">
+          <div className="inline-block bg-indigo-900 text-indigo-300 text-xs font-semibold px-3 py-1 rounded-full mb-3">デモ体験</div>
+          <h2 className="text-3xl font-black mb-2">実際の画面で操作感を体験</h2>
+          <p className="text-slate-400 text-sm">「サンプル業務委託契約書を入力する」を押してAI分析の流れを確認できます</p>
+        </div>
+        <div className="grid md:grid-cols-2 gap-8 items-start">
+          <InteractiveDemo />
+          <div className="space-y-4">
+            <h3 className="text-lg font-bold text-white">こんな情報がわかります</h3>
+            {[
+              { icon: "📊", title: "総合評価 A〜E", desc: "契約書全体のリスクをスコアで即判断" },
+              { icon: "⚠️", title: "問題条項の特定", desc: "危険な条項の場所と理由を具体的に説明" },
+              { icon: "⚖️", title: "有利不利の整理", desc: "交渉すべきポイントを一覧化（Premium）" },
+              { icon: "✏️", title: "修正文案の提示", desc: "そのままコピーして使える修正例文" },
+            ].map((item) => (
+              <div key={item.title} className="flex gap-3 items-start">
+                <span className="text-2xl">{item.icon}</span>
+                <div>
+                  <p className="font-bold text-white text-sm">{item.title}</p>
+                  <p className="text-slate-400 text-xs">{item.desc}</p>
+                </div>
+              </div>
+            ))}
+            <Link
+              href="/tool"
+              className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all text-sm mt-4"
+            >
+              無料で3回チェックする →
+            </Link>
+          </div>
         </div>
       </section>
 
