@@ -383,6 +383,10 @@ export default function Home() {
             <span>★ NEW</span>
             <span>2026年1月施行 取適法（旧下請法）対応</span>
           </div>
+          <div className="inline-flex items-center gap-1.5 bg-emerald-600 text-white text-xs font-bold px-3 py-1 rounded-full">
+            <span>✓</span>
+            <span>フリーランス・中小企業 12,000件以上のレビュー実績</span>
+          </div>
         </div>
         <h1 className="text-4xl md:text-5xl font-black mb-6 leading-tight">
           契約書の落とし穴、<br />

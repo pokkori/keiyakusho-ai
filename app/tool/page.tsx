@@ -78,6 +78,30 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   );
 }
 
+function XShareButton({ parsed }: { parsed: ParsedResult }) {
+  // 問題条項セクションの内容からリスク件数を概算（「危険度:高」「危険度:中」の出現数で計算）
+  const issueSection = parsed.sections.find(s => s.title === "問題条項");
+  const riskCount = issueSection
+    ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, issueSection.content.split("\n").filter(l => l.trim()).length)
+    : parsed.sections.length;
+  const shareText = `契約書AIレビューで${riskCount}件のリスクを発見！フリーランスの必須ツール。 #契約書 #フリーランス #AI法務`;
+  const shareUrl = "https://keiyakusho-ai.vercel.app";
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  return (
+    <a
+      href={tweetUrl}
+      target="_blank"
+      rel="noopener noreferrer"
+      className="inline-flex items-center gap-2 bg-sky-500 hover:bg-sky-600 text-white font-bold px-4 py-2 rounded-lg text-xs transition-colors"
+    >
+      <svg className="w-3.5 h-3.5" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
+        <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
+      </svg>
+      Xでシェアする
+    </a>
+  );
+}
+
 function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; isPremium: boolean; onUpgrade: () => void }) {
   const [activeTab, setActiveTab] = useState(0);
   const section = parsed.sections[activeTab];
@@ -115,7 +139,8 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
           </>
         )}
       </div>
-      <div className="flex gap-2 justify-end">
+      <div className="flex items-center gap-2 justify-end">
+        <XShareButton parsed={parsed} />
         <CopyButton text={parsed.raw} label="全文コピー" />
       </div>
     </div>
