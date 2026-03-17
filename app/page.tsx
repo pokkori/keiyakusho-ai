@@ -456,6 +456,36 @@ export default function Home() {
         </div>
       </section>
 
+      {/* ペルソナ共感セクション */}
+      <section className="max-w-3xl mx-auto px-4 py-14">
+        <h2 className="text-2xl font-black text-center mb-2 text-white">こんな状況で困っていませんか？</h2>
+        <p className="text-center text-slate-400 text-sm mb-8">フリーランス・中小企業の方からよく聞く声です</p>
+        <div className="space-y-3">
+          {[
+            "「送られてきた業務委託契約書、著作権の条項が怪しい気がするけど確信が持てない」",
+            "「GVA assistは月¥75,000で手が出ない。でも弁護士に頼むのも大げさな気がする」",
+            "「競業禁止の期間が2年と書いてあるけど、これって普通？高すぎ？判断できない」",
+            "「フリーランスになって初めての契約。何が問題なのか全くわからない」",
+            "「印紙税・下請法違反・損害賠償上限——チェックすべき項目が多すぎて見落とす」",
+          ].map((v, i) => (
+            <div key={i} className="flex items-start gap-3 bg-slate-800 border border-slate-700 rounded-xl px-5 py-4">
+              <span className="text-red-400 font-bold text-lg mt-0.5 shrink-0">✗</span>
+              <p className="text-sm text-slate-300 leading-relaxed">{v}</p>
+            </div>
+          ))}
+        </div>
+        <div className="mt-8 bg-indigo-900/40 border border-indigo-600/40 rounded-xl p-6 text-center">
+          <p className="text-indigo-200 font-bold text-base mb-2">契約書AIレビューが、これら全てを解決します</p>
+          <p className="text-sm text-slate-400">契約書をペーストするだけで、リスクスコア・修正提案・コピペ用修正テキストが数秒で出力されます。</p>
+          <Link
+            href="/tool"
+            className="inline-block mt-4 bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors text-sm"
+          >
+            無料で試してみる（3回・登録不要）→
+          </Link>
+        </div>
+      </section>
+
       {/* Features */}
       <section className="max-w-5xl mx-auto px-4 py-16">
         <h2 className="text-3xl font-black text-center mb-12">こんな時に使えます</h2>
