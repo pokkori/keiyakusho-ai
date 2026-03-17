@@ -21,6 +21,39 @@ const PARTY_ROLES = [
 ] as const;
 type PartyRoleId = typeof PARTY_ROLES[number]["id"];
 
+function renderMarkdown(text: string) {
+  const lines = text.split('\n');
+  const result: string[] = [];
+  let inList = false;
+
+  for (const line of lines) {
+    if (/^## (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^## (.+)$/, '<h3 class="font-bold text-base mt-4 mb-2 text-indigo-700 border-b border-indigo-200 pb-1">$1</h3>'));
+    } else if (/^# (.+)$/.test(line)) {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push(line.replace(/^# (.+)$/, '<h2 class="font-bold text-lg mt-4 mb-2 text-indigo-800">$1</h2>'));
+    } else if (/^- (.+)$/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/^- /, '').replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (/^[①②③④⑤⑥⑦⑧⑨⑩]/.test(line)) {
+      if (!inList) { result.push('<ul class="space-y-1 mb-2">'); inList = true; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<li class="ml-4 list-disc text-gray-700 text-sm">${inner}</li>`);
+    } else if (line.trim() === '') {
+      if (inList) { result.push('</ul>'); inList = false; }
+      result.push('<div class="mt-2"></div>');
+    } else {
+      if (inList) { result.push('</ul>'); inList = false; }
+      const inner = line.replace(/\*\*(.*?)\*\*/g, '<strong class="font-bold text-gray-900">$1</strong>');
+      result.push(`<p class="text-gray-700 text-sm leading-relaxed">${inner}</p>`);
+    }
+  }
+  if (inList) result.push('</ul>');
+  return result.join('\n');
+}
+
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
     { key: "総合評価", icon: "📊" },
@@ -116,9 +149,9 @@ function XShareButton({ parsed }: { parsed: ParsedResult }) {
   const riskCount = issueSection
     ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, Math.floor(issueSection.content.split("\n").filter(l => l.trim()).length / 3))
     : parsed.sections.length;
-  const shareText = `AIが契約書から${riskCount}件のリスクを発見！弁護士いらずで契約書チェック。フリーランス・副業の必須ツール。 #契約書 #フリーランス #AI法務 #副業`;
+  const shareText = `「契約書に${riskCount}件のリスク条項が潜んでた😱 署名前に気づいてよかった。弁護士費用ゼロで発見できた → https://keiyakusho-ai.vercel.app #契約書 #フリーランス #AI法務 #副業`;
   const shareUrl = "https://keiyakusho-ai.vercel.app";
-  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
+  const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
   return (
     <a
       href={tweetUrl}
@@ -168,7 +201,7 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
               <span className="text-sm font-semibold text-gray-700">{section.icon} {section.title}</span>
               <CopyButton text={section.content} />
             </div>
-            <pre className="text-sm text-gray-800 whitespace-pre-wrap font-sans leading-relaxed">{section.content}</pre>
+            <div className="text-sm" dangerouslySetInnerHTML={{ __html: renderMarkdown(section.content) }} />
           </>
         )}
       </div>
