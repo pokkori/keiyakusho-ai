@@ -21,11 +21,13 @@ export const metadata: Metadata = {
     siteName: "契約書AIレビュー",
     locale: "ja_JP",
     type: "website",
+    images: [{ url: "/og.png", width: 1200, height: 630, alt: "契約書AIレビュー" }],
   },
   twitter: {
     card: "summary_large_image",
     title: TITLE,
     description: DESC,
+    images: ["/og.png"],
   },
   metadataBase: new URL(SITE_URL),
 };
