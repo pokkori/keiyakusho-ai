@@ -670,9 +670,9 @@ export default function Home() {
 
       {/* X(Twitter) Share */}
       <section className="max-w-4xl mx-auto px-4 py-10 text-center">
-        <p className="text-slate-400 text-sm mb-4">契約書のリスクを知って、同じ悩みを持つ人にシェアしませんか？</p>
+        <p className="text-slate-400 text-sm mb-4">AIが契約書のリスクを発見！フリーランス・副業の方にシェアしませんか？</p>
         <a
-          href="https://twitter.com/intent/tweet?text=%E5%A5%91%E7%B4%84%E6%9B%B8%E3%81%AE%E3%83%AA%E3%82%B9%E3%82%AF%E3%82%92AI%E3%81%8C%E7%84%A1%E6%96%99%E3%83%81%E3%82%A7%E3%83%83%E3%82%AF%E3%81%97%E3%81%A6%E3%81%8F%E3%82%8C%E3%82%8B%E3%82%B5%E3%83%BC%E3%83%93%E3%82%B9%E3%80%82%E6%A5%AD%E5%8B%99%E5%A7%94%E8%A8%97%E3%83%BBND%E3%83%BB%E5%8F%96%E9%81%A9%E6%B3%95%E5%AF%BE%E5%BF%9C%E3%80%82%E7%84%A1%E6%96%993%E5%9B%9E%E3%81%8B%E3%82%89%E8%A9%A6%E3%81%9B%E3%82%8B%E3%80%82&url=https%3A%2F%2Fkeiyakusho-ai.vercel.app"
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書から複数件のリスクを発見！弁護士いらずで契約書チェック。フリーランス・副業の方に必須ツール。業務委託・NDA・取適法対応。無料3回から試せる。 #契約書 #フリーランス #AI法務 #副業")}&url=${encodeURIComponent("https://keiyakusho-ai.vercel.app")}`}
           target="_blank"
           rel="noopener noreferrer"
           className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all text-sm"

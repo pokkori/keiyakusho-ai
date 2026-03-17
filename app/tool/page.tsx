@@ -78,13 +78,45 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   );
 }
 
-function XShareButton({ parsed }: { parsed: ParsedResult }) {
-  // 問題条項セクションの内容からリスク件数を概算（「危険度:高」「危険度:中」の出現数で計算）
+function useCountUp(target: number, duration = 800) {
+  const [count, setCount] = useState(0);
+  useEffect(() => {
+    if (target === 0) { setCount(0); return; }
+    const steps = 20;
+    const increment = target / steps;
+    const interval = duration / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) { setCount(target); clearInterval(timer); }
+      else { setCount(Math.floor(current)); }
+    }, interval);
+    return () => clearInterval(timer);
+  }, [target, duration]);
+  return count;
+}
+
+function RiskCountBanner({ parsed }: { parsed: ParsedResult }) {
   const issueSection = parsed.sections.find(s => s.title === "問題条項");
   const riskCount = issueSection
-    ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, issueSection.content.split("\n").filter(l => l.trim()).length)
+    ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, Math.floor(issueSection.content.split("\n").filter(l => l.trim()).length / 3))
+    : Math.max(1, parsed.sections.length);
+  const displayCount = useCountUp(riskCount, 1000);
+  return (
+    <div className="bg-red-50 border-2 border-red-300 rounded-xl p-4 mb-3 text-center">
+      <p className="text-xs text-red-600 font-bold mb-1">AIが発見したリスク件数</p>
+      <p className="text-5xl font-black text-red-600">{displayCount}<span className="text-2xl font-normal ml-1">件</span></p>
+      <p className="text-xs text-gray-500 mt-1">詳細は「問題条項」タブで確認できます</p>
+    </div>
+  );
+}
+
+function XShareButton({ parsed }: { parsed: ParsedResult }) {
+  const issueSection = parsed.sections.find(s => s.title === "問題条項");
+  const riskCount = issueSection
+    ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, Math.floor(issueSection.content.split("\n").filter(l => l.trim()).length / 3))
     : parsed.sections.length;
-  const shareText = `契約書AIレビューで${riskCount}件のリスクを発見！フリーランスの必須ツール。 #契約書 #フリーランス #AI法務`;
+  const shareText = `AIが契約書から${riskCount}件のリスクを発見！弁護士いらずで契約書チェック。フリーランス・副業の必須ツール。 #契約書 #フリーランス #AI法務 #副業`;
   const shareUrl = "https://keiyakusho-ai.vercel.app";
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}&url=${encodeURIComponent(shareUrl)}`;
   return (
@@ -108,6 +140,7 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
   const isAdvantageTab = section.title === "有利不利";
   return (
     <div className="flex flex-col gap-3">
+      <RiskCountBanner parsed={parsed} />
       <div className="flex gap-1 flex-wrap">
         {parsed.sections.map((s, i) => {
           const locked = !isPremium && s.title === "有利不利";
