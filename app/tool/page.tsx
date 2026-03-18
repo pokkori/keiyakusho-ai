@@ -390,7 +390,25 @@ export default function KeiyakushoTool() {
               </div>
             </div>
           ) : parsed ? (
-            <ResultTabs parsed={parsed} isPremium={isPremium} onUpgrade={() => setShowPaywall(true)} />
+            <>
+              <ResultTabs parsed={parsed} isPremium={isPremium} onUpgrade={() => setShowPaywall(true)} />
+              {/* 次のアクション3選 */}
+              <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mt-4">
+                <p className="text-sm font-bold text-indigo-800 mb-3">📋 次にやるべきこと3選</p>
+                <ol className="space-y-2">
+                  {[
+                    { icon: "✏️", text: "「修正提案」タブの内容をコピーして先方に修正依頼を出す" },
+                    { icon: "💬", text: "リスクが高い条項は弁護士ドットコムで専門家に相談する" },
+                    { icon: "📁", text: "契約書と今回の分析結果を同じフォルダに保存して記録を残す" },
+                  ].map((item, i) => (
+                    <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
+                      <span className="text-lg leading-none">{item.icon}</span>
+                      <span>{i + 1}. {item.text}</span>
+                    </li>
+                  ))}
+                </ol>
+              </div>
+            </>
           ) : (
             <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <div className="text-4xl">📋</div>
