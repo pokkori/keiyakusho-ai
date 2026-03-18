@@ -425,6 +425,35 @@ export default function KeiyakushoTool() {
         </div>
       </div>
 
+      {/* 弁護士相談アフィリエイト（A8.net申請後URLを差し替え） */}
+      <div className="max-w-2xl mx-auto px-4 pb-6">
+        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+          <p className="text-sm font-black text-indigo-900 mb-1">⚖️ 弁護士に契約書を確認してもらう</p>
+          <p className="text-xs text-indigo-700 mb-4">AIレビューで問題点を把握したら、重要な契約は弁護士の最終確認で安心。初回相談無料の事務所多数。</p>
+          <div className="space-y-2">
+            {/* TODO: Replace href with A8.net affiliate URL after approval */}
+            <a href="https://www.bengo4.com/c_1009/" target="_blank" rel="noopener noreferrer sponsored"
+              className="flex items-center justify-between bg-white border border-indigo-300 rounded-xl px-4 py-3 hover:bg-indigo-50 transition-colors">
+              <div>
+                <div className="text-sm font-bold text-slate-800">弁護士ドットコム — 契約書・法務</div>
+                <div className="text-xs text-slate-500 mt-0.5">初回相談無料 • フリーランス・中小企業向け</div>
+              </div>
+              <span className="text-indigo-600 font-bold text-xs bg-indigo-100 px-2 py-1 rounded-full">無料相談 →</span>
+            </a>
+            {/* TODO: Replace href with A8.net affiliate URL after approval */}
+            <a href="https://www.legal-mall.com/s/keiyaku" target="_blank" rel="noopener noreferrer sponsored"
+              className="flex items-center justify-between bg-white border border-indigo-300 rounded-xl px-4 py-3 hover:bg-indigo-50 transition-colors">
+              <div>
+                <div className="text-sm font-bold text-slate-800">ベンナビ — 契約書トラブル専門</div>
+                <div className="text-xs text-slate-500 mt-0.5">地域・費用で絞り込み • 報酬の目安を事前確認</div>
+              </div>
+              <span className="text-indigo-600 font-bold text-xs bg-indigo-100 px-2 py-1 rounded-full">弁護士を探す →</span>
+            </a>
+          </div>
+          <p className="text-xs text-slate-400 text-center mt-3">※ 広告・PR掲載（各社公式サイトに遷移します）</p>
+        </div>
+      </div>
+
       <footer className="text-center py-6 text-xs text-gray-400 border-t mt-4 space-x-4">
         <a href="/legal" className="hover:text-gray-600">特定商取引法に基づく表記</a>
         <span>·</span>
