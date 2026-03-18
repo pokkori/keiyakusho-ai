@@ -408,6 +408,24 @@ export default function KeiyakushoTool() {
                   ))}
                 </ol>
               </div>
+              {/* 契約後の会計・経費管理アフィリエイト */}
+              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mt-4">
+                <p className="text-sm font-bold text-green-800 mb-1">💼 契約後の会計・経費管理に</p>
+                <p className="text-xs text-green-700 mb-3">契約締結後は請求書・経費・確定申告の管理も重要。クラウド会計で一括管理しましょう。</p>
+                <a
+                  href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+3LSINM+3SPO+9FDPYR"
+                  target="_blank"
+                  rel="noopener noreferrer sponsored"
+                  className="flex items-center justify-between bg-white border border-green-300 rounded-xl px-4 py-3 hover:bg-green-50 transition-colors"
+                >
+                  <div>
+                    <div className="text-sm font-bold text-slate-800">freee会計 — 請求書・確定申告をまとめて管理</div>
+                    <div className="text-xs text-slate-500 mt-0.5">フリーランス・中小企業向け • 初月無料で試せる</div>
+                  </div>
+                  <span className="text-green-700 font-bold text-xs bg-green-100 px-2 py-1 rounded-full">無料で試す →</span>
+                </a>
+                <p className="text-xs text-slate-400 text-center mt-2">※ 広告・PR掲載（公式サイトに遷移します）</p>
+              </div>
             </>
           ) : (
             <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
