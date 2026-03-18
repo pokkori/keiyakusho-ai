@@ -1,7 +1,7 @@
 "use client";
 import { useState } from "react";
 import Link from "next/link";
-import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 
 // ===== 4タブサンプルデータ =====
 const SAMPLE_TABS = [
@@ -350,21 +350,22 @@ export default function Home() {
   return (
     <main className="min-h-screen bg-slate-900 text-white">
       {showPayjpOnce && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="1回払い ¥980 — 30日間有効（契約書レビュー何回でも使用可）"
-          apiPath="/api/payjp/charge"
-          onSuccess={() => { setShowPayjpOnce(false); window.location.href = "/tool"; }}
-          onClose={() => setShowPayjpOnce(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjpOnce(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
+            <KomojuButton planId="standard" planLabel="プレミアムプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+          </div>
+        </div>
       )}
       {showPayjpSub && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="プレミアム ¥2,980/月 — 無制限"
-          onSuccess={() => { setShowPayjpSub(false); window.location.href = "/tool"; }}
-          onClose={() => setShowPayjpSub(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjpSub(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
+            <KomojuButton planId="standard" planLabel="プレミアムプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
+          </div>
+        </div>
       )}
       {/* 免責バナー */}
       <div className="bg-amber-900/40 border-b border-amber-700/50 px-6 py-3 text-center">
