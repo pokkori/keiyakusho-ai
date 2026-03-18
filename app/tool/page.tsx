@@ -1,7 +1,6 @@
 "use client";
 import { useState, useEffect } from "react";
 import Link from "next/link";
-import PayjpModal from "@/components/PayjpModal";
 import KomojuButton from "@/components/KomojuButton";
 import { track } from '@vercel/analytics';
 
@@ -284,21 +283,22 @@ export default function KeiyakushoTool() {
   return (
     <main className="min-h-screen bg-gray-50">
       {showPayjp && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="契約書AIレビュー プレミアム ¥2,980/月（いつでもキャンセル可）"
-          onSuccess={() => { setShowPayjp(false); setShowPaywall(false); setIsPremium(true); }}
-          onClose={() => setShowPayjp(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <h2 className="text-lg font-bold mb-4 text-center">プランに登録</h2>
+            <KomojuButton planId="business" planLabel="ビジネス ¥2,980/月を始める" className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 disabled:opacity-50" />
+          </div>
+        </div>
       )}
       {showPayjpOnce && (
-        <PayjpModal
-          publicKey={process.env.NEXT_PUBLIC_PAYJP_PUBLIC_KEY!}
-          planLabel="1回払い ¥980 — 30日間有効（契約書レビュー使い放題）"
-          apiPath="/api/payjp/charge"
-          onSuccess={() => { setShowPayjpOnce(false); setShowPaywall(false); setIsPremium(true); }}
-          onClose={() => setShowPayjpOnce(false)}
-        />
+        <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
+          <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
+            <button onClick={() => setShowPayjpOnce(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <h2 className="text-lg font-bold mb-4 text-center">プランに登録</h2>
+            <KomojuButton planId="standard" planLabel="スタンダード ¥980（30日間有効）を始める" className="w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-xl hover:bg-yellow-500 disabled:opacity-50" />
+          </div>
+        </div>
       )}
       {showPaywall && (
         <Paywall
