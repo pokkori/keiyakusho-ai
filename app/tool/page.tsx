@@ -2,6 +2,7 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import PayjpModal from "@/components/PayjpModal";
+import KomojuButton from "@/components/KomojuButton";
 import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
@@ -85,17 +86,21 @@ function Paywall({ onClose, onOpenPayjp, onOpenOnce }: { onClose: () => void; on
         <div className="text-3xl mb-3">📋</div>
         <h2 className="text-lg font-bold mb-2">無料レビュー回数を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-4">続けて使うにはプランをお選びください</p>
-        <button onClick={() => { track('upgrade_click', { service: '契約書AIレビュー', plan: 'once' }); onOpenOnce(); }} className="block w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-xl hover:bg-yellow-500 mb-3">
-          今すぐ1回試す ¥980（30日間有効）
-        </button>
+        <KomojuButton
+          planId="standard"
+          planLabel="スタンダード ¥980（30日間有効）"
+          className="w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-xl hover:bg-yellow-500 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-3"
+        />
         <ul className="text-xs text-gray-400 text-left mb-3 space-y-1 border border-gray-100 rounded-lg p-3">
           <li>✓ 契約書レビュー30日間使い放題</li>
           <li>✓ 総合評価・問題条項・修正提案</li>
           <li>✗ 有利不利タブはPremium限定</li>
         </ul>
-        <button onClick={() => { track('upgrade_click', { service: '契約書AIレビュー', plan: 'premium' }); onOpenPayjp(); }} className="block w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 mb-3">
-          ¥2,980/月で無制限に使う（有利不利タブ含む）
-        </button>
+        <KomojuButton
+          planId="business"
+          planLabel="ビジネス ¥2,980/月（有利不利タブ含む）"
+          className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-3"
+        />
         <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
       </div>
     </div>
