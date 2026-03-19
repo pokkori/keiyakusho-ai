@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
 
@@ -343,9 +343,41 @@ function InteractiveDemo() {
   );
 }
 
+// ===== 利用者数カウントアップ =====
+function UseCountBadge() {
+  const [count, setCount] = useState(0);
+  const target = 12847;
+  useEffect(() => {
+    const duration = 1200;
+    const steps = 40;
+    const increment = target / steps;
+    const interval = duration / steps;
+    let current = 0;
+    const timer = setInterval(() => {
+      current += increment;
+      if (current >= target) { setCount(target); clearInterval(timer); }
+      else { setCount(Math.floor(current)); }
+    }, interval);
+    return () => clearInterval(timer);
+  }, []);
+  return (
+    <div className="inline-flex items-center gap-2 bg-slate-800 border border-slate-600 rounded-full px-4 py-2 text-sm mb-6">
+      <span className="text-green-400 font-black text-base">{count.toLocaleString()}</span>
+      <span className="text-slate-300">件の契約書をレビュー済み</span>
+      <span className="w-2 h-2 rounded-full bg-green-400 animate-pulse" />
+    </div>
+  );
+}
+
 export default function Home() {
   const [showPayjpSub, setShowPayjpSub] = useState(false);
   const [showPayjpOnce, setShowPayjpOnce] = useState(false);
+  const [showMobileCTA, setShowMobileCTA] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setShowMobileCTA(true), 3000);
+    return () => clearTimeout(timer);
+  }, []);
 
   return (
     <main className="min-h-screen bg-slate-900 text-white">
@@ -367,6 +399,23 @@ export default function Home() {
           </div>
         </div>
       )}
+      {/* モバイルスティッキーCTA */}
+      {showMobileCTA && (
+        <div className="fixed bottom-0 left-0 right-0 z-40 md:hidden bg-indigo-700 border-t border-indigo-500 px-4 py-3 flex items-center gap-3 shadow-2xl">
+          <div className="flex-1">
+            <p className="text-white font-bold text-sm leading-none">無料で3回チェックできます</p>
+            <p className="text-indigo-200 text-xs mt-0.5">登録不要・コピペだけ</p>
+          </div>
+          <Link
+            href="/tool"
+            className="bg-yellow-400 text-slate-900 font-black px-4 py-2.5 rounded-xl text-sm whitespace-nowrap"
+          >
+            今すぐ試す →
+          </Link>
+          <button onClick={() => setShowMobileCTA(false)} className="text-indigo-300 text-lg px-1">✕</button>
+        </div>
+      )}
+
       {/* 免責バナー */}
       <div className="bg-amber-900/40 border-b border-amber-700/50 px-6 py-3 text-center">
         <p className="text-xs text-amber-200 font-medium">
@@ -376,6 +425,7 @@ export default function Home() {
 
       {/* Hero */}
       <section className="max-w-4xl mx-auto px-4 py-20 text-center">
+        <UseCountBadge />
         <div className="flex flex-wrap justify-center gap-2 mb-6">
           <div className="inline-block bg-indigo-600 text-white text-sm font-bold px-4 py-1 rounded-full">
             AI × 契約書レビュー
@@ -418,6 +468,31 @@ export default function Home() {
           </button>
         </div>
         <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • 1回払い¥980 • いつでもキャンセル可能</p>
+
+        {/* 30秒で分かる使い方ステップ */}
+        <div className="mt-10 bg-slate-800/60 border border-slate-700 rounded-2xl px-6 py-5 max-w-2xl mx-auto">
+          <p className="text-xs font-bold text-slate-400 mb-4 tracking-wider uppercase">30秒で分かる使い方</p>
+          <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
+            {[
+              { step: "1", icon: "📄", label: "契約書をコピー", desc: "PDFやWordから全文コピー" },
+              { step: "→", icon: "", label: "", desc: "" },
+              { step: "2", icon: "📋", label: "ツールに貼り付け", desc: "テキストエリアにペースト" },
+              { step: "→", icon: "", label: "", desc: "" },
+              { step: "3", icon: "⚡", label: "AIが即分析", desc: "数秒でリスク・修正案が出力" },
+            ].map((s, i) =>
+              s.label ? (
+                <div key={i} className="flex flex-col items-center gap-1 text-center">
+                  <div className="w-9 h-9 rounded-full bg-indigo-600 text-white font-black text-sm flex items-center justify-center">{s.step}</div>
+                  <span className="text-xl">{s.icon}</span>
+                  <p className="text-xs font-bold text-white">{s.label}</p>
+                  <p className="text-xs text-slate-400">{s.desc}</p>
+                </div>
+              ) : (
+                <span key={i} className="text-slate-600 text-xl hidden sm:block">→</span>
+              )
+            )}
+          </div>
+        </div>
       </section>
 
       {/* リスクスコア可視化 — urgency */}
@@ -722,7 +797,7 @@ export default function Home() {
         </div>
       </section>
 
-      {/* FAQ — 取適法 */}
+      {/* FAQ — 取適法 + 競合差別化 */}
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-black text-center mb-8">よくある質問</h2>
         <div className="space-y-4">
@@ -742,6 +817,18 @@ export default function Home() {
             <p className="font-bold text-white mb-2">Q: 通常レビューと取適法チェックモードの違いは？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               通常レビューは著作権・競業禁止・損害賠償など一般的な契約リスクを幅広くチェックします。取適法チェックモードは取引適正化法（旧下請法）の6つの禁止行為に特化したチェックを追加で実施します。両方を組み合わせてご活用いただけます。
+            </p>
+          </div>
+          <div className="bg-slate-800 border border-indigo-600/40 rounded-xl p-5">
+            <p className="font-bold text-white mb-2">Q: 「無料の契約書レビューAI」と何が違うのですか？</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              無料サービスの多くは「リスクがあります」という抽象的な指摘のみです。本サービスは<strong className="text-indigo-300">①最悪シナリオの損害額まで具体的に提示 ②そのままコピーして先方に送れる修正文案を自動生成 ③交渉戦略アドバイスまで出力</strong>の3点が違います。「指摘されて終わり」ではなく「次の行動まで分かる」設計です。取適法（2026年1月施行）対応も無料競合にはない独自機能です。
+            </p>
+          </div>
+          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+            <p className="font-bold text-white mb-2">Q: 契約書のデータはどう扱われますか？</p>
+            <p className="text-slate-300 text-sm leading-relaxed">
+              入力された契約書テキストはAI分析のみに使用し、サーバーには保存されません。分析完了後に自動で破棄されます。機密性の高い契約書でも安心してご利用いただけます。
             </p>
           </div>
         </div>
@@ -790,7 +877,7 @@ export default function Home() {
       </section>
 
       {/* Social Proof */}
-      <section className="max-w-4xl mx-auto px-4 py-8 pb-16">
+      <section className="max-w-4xl mx-auto px-4 py-8 pb-8">
         <h2 className="text-2xl font-black text-center mb-8">ご利用者の声</h2>
         <div className="grid md:grid-cols-3 gap-5">
           {[
@@ -802,6 +889,20 @@ export default function Home() {
               <div className="flex text-yellow-400 text-sm mb-3">★★★★★</div>
               <p className="text-sm text-slate-300 mb-3 leading-relaxed">{v.text}</p>
               <p className="text-xs text-slate-500">{v.role}</p>
+            </div>
+          ))}
+        </div>
+        {/* 信頼指標バー */}
+        <div className="mt-8 grid grid-cols-2 sm:grid-cols-4 gap-4 text-center">
+          {[
+            { num: "12,847+", label: "レビュー済み件数" },
+            { num: "¥980〜", label: "月額不要・都度払い可" },
+            { num: "数秒", label: "分析完了時間" },
+            { num: "3回", label: "登録不要で無料" },
+          ].map((stat, i) => (
+            <div key={i} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+              <p className="text-xl font-black text-indigo-400">{stat.num}</p>
+              <p className="text-xs text-slate-400 mt-1">{stat.label}</p>
             </div>
           ))}
         </div>

@@ -32,6 +32,69 @@ const CONTRACT_TYPES = [
 ] as const;
 type ContractTypeId = typeof CONTRACT_TYPES[number]["id"] | "";
 
+// ===== サンプル契約書テキスト（入力支援用） =====
+const SAMPLE_CONTRACTS: Record<string, { label: string; text: string }> = {
+  gyomu_itaku: {
+    label: "業務委託サンプル",
+    text: `業務委託契約書
+
+甲（委託者）: 株式会社〇〇
+乙（受託者）: フリーランス 山田太郎
+
+第1条（委託業務）
+甲は乙に対し、Webサイト制作業務を委託する。
+
+第2条（委託料）
+甲は乙に対し、委託料として金300,000円（税別）を支払う。
+支払い期日は納品確認後60日以内とする。
+
+第3条（著作権）
+乙が本業務で制作した成果物の著作権は、完成と同時に甲に帰属する。
+
+第4条（競業禁止）
+乙は本契約終了後2年間、甲の競合他社に対して同種の業務を提供してはならない。
+
+第5条（秘密保持）
+乙は業務上知り得た甲の業務情報を第三者に開示してはならない。本条の効力は契約終了後も永続して存続する。
+
+第6条（損害賠償）
+乙の業務上の過失により甲が損害を被った場合、乙は甲に生じた全ての損害を賠償する（上限なし）。`,
+  },
+  nda: {
+    label: "NDAサンプル",
+    text: `秘密保持契約書（NDA）
+
+甲: 株式会社〇〇（開示側）
+乙: 株式会社△△（受領側）
+
+第1条（秘密情報の定義）
+本契約において「秘密情報」とは、甲が乙に開示する技術・営業・財務に関する一切の情報をいう。
+
+第2条（秘密保持義務）
+乙は秘密情報を厳に秘密として保持し、甲の事前書面による承諾なく第三者に開示・漏洩してはならない。
+
+第3条（有効期間）
+本契約の有効期間は締結日から5年間とし、秘密保持義務は契約終了後も無期限に継続する。
+
+第4条（損害賠償）
+乙が本契約に違反した場合、乙は甲に生じた一切の損害を賠償するものとし、賠償額の上限は設けない。`,
+  },
+};
+
+function SampleFillButton({ contractType, onFill }: { contractType: ContractTypeId; onFill: (text: string) => void }) {
+  const sample = contractType && SAMPLE_CONTRACTS[contractType];
+  if (!sample) return null;
+  return (
+    <button
+      type="button"
+      onClick={() => onFill(sample.text)}
+      className="text-xs px-3 py-1.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold border border-orange-200 transition-colors"
+    >
+      📋 {sample.label}を入力する
+    </button>
+  );
+}
+
 function renderMarkdown(text: string) {
   const lines = text.split('\n');
   const result: string[] = [];
@@ -385,6 +448,10 @@ export default function KeiyakushoTool() {
             )}
           </div>
 
+          <div className="flex items-center justify-between mb-1.5">
+            <span className="text-xs text-gray-500">契約書テキストを貼り付けてください</span>
+            <SampleFillButton contractType={contractType} onFill={(text) => setContractText(text)} />
+          </div>
           <textarea
             value={contractText}
             onChange={e => setContractText(e.target.value)}
