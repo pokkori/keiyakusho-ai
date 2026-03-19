@@ -454,7 +454,6 @@ export default function KeiyakushoTool() {
           <p className="text-sm font-black text-indigo-900 mb-1">⚖️ 弁護士に契約書を確認してもらう</p>
           <p className="text-xs text-indigo-700 mb-4">AIレビューで問題点を把握したら、重要な契約は弁護士の最終確認で安心。初回相談無料の事務所多数。</p>
           <div className="space-y-2">
-            {/* TODO: Replace href with A8.net affiliate URL after approval */}
             <a href="https://www.bengo4.com/c_1009/" target="_blank" rel="noopener noreferrer sponsored"
               className="flex items-center justify-between bg-white border border-indigo-300 rounded-xl px-4 py-3 hover:bg-indigo-50 transition-colors">
               <div>
@@ -463,7 +462,6 @@ export default function KeiyakushoTool() {
               </div>
               <span className="text-indigo-600 font-bold text-xs bg-indigo-100 px-2 py-1 rounded-full">無料相談 →</span>
             </a>
-            {/* TODO: Replace href with A8.net affiliate URL after approval */}
             <a href="https://www.legal-mall.com/s/keiyaku" target="_blank" rel="noopener noreferrer sponsored"
               className="flex items-center justify-between bg-white border border-indigo-300 rounded-xl px-4 py-3 hover:bg-indigo-50 transition-colors">
               <div>

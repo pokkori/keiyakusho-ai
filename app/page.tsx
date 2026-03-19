@@ -625,6 +625,48 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 取引適正化法（取適法）解説セクション — SEO */}
+      <section className="max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-gradient-to-br from-slate-800 to-slate-900 border border-slate-700 rounded-2xl p-8">
+          <div className="flex items-center gap-3 mb-6">
+            <span className="text-2xl">⚖️</span>
+            <div>
+              <h2 className="text-xl font-black text-white">取引適正化法（取適法）とは？</h2>
+              <p className="text-slate-400 text-xs mt-0.5">2026年1月施行・中小企業約358万社が対象</p>
+            </div>
+          </div>
+          <div className="grid md:grid-cols-2 gap-6 mb-6">
+            <div>
+              <p className="text-slate-300 text-sm leading-relaxed mb-4">
+                取引適正化法（正式名称：特定受託事業者に係る取引の適正化等に関する法律）は、2023年制定・2026年1月1日施行の法律です。
+                フリーランスや中小企業が大企業・中小企業との取引で不当な条件を強いられないよう保護する目的で制定されました。
+              </p>
+              <p className="text-slate-300 text-sm leading-relaxed">
+                旧下請法が「資本金基準」だったのに対し、取適法は<strong className="text-white">「業務委託全般」を対象</strong>とし、フリーランス・個人事業主も保護されます。
+              </p>
+            </div>
+            <div>
+              <p className="text-indigo-300 text-xs font-bold mb-3">取適法が禁止する6つの行為</p>
+              <ul className="space-y-2">
+                {["受領拒否（納品した成果物の受け取り拒否）", "報酬減額（合意なき報酬の引き下げ）", "返品（引き取った成果物の返品）", "買いたたき（不当に低い報酬設定）", "不当な利益提供要請（協賛金・手数料等の強制）", "報復措置（申告・相談への不利益取扱い）"].map((item, i) => (
+                  <li key={i} className="flex items-start gap-2 text-xs text-slate-300">
+                    <span className="text-red-400 mt-0.5 font-bold">✗</span>
+                    <span>{item}</span>
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+          <div className="bg-indigo-900/40 border border-indigo-700 rounded-xl p-4 text-center">
+            <p className="text-sm text-white font-bold mb-1">契約書に取適法違反リスクが潜んでいないか、無料でチェック</p>
+            <p className="text-xs text-indigo-300 mb-3">契約書テキストをペーストするだけで取適法チェックモードが起動します</p>
+            <a href="/tool" className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-black px-6 py-2.5 rounded-xl text-sm transition-colors">
+              無料で取適法チェックを試す →
+            </a>
+          </div>
+        </div>
+      </section>
+
       {/* Social Proof */}
       <section className="max-w-4xl mx-auto px-4 py-8 pb-16">
         <h2 className="text-2xl font-black text-center mb-8">ご利用者の声</h2>
