@@ -1,5 +1,5 @@
 "use client";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
 import { track } from '@vercel/analytics';
@@ -291,6 +291,172 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
   );
 }
 
+type FileUploadStatus = "idle" | "reading" | "success" | "error";
+
+function FileUploadSection({ onTextExtracted }: { onTextExtracted: (text: string) => void }) {
+  const [status, setStatus] = useState<FileUploadStatus>("idle");
+  const [fileName, setFileName] = useState<string>("");
+  const [errorMsg, setErrorMsg] = useState<string>("");
+  const fileInputRef = useRef<HTMLInputElement>(null);
+
+  const extractTextFromFile = async (file: File) => {
+    setStatus("reading");
+    setFileName(file.name);
+    setErrorMsg("");
+
+    try {
+      // テキストファイル・Word .docx（プレーンテキストとして試みる）
+      if (file.type === "text/plain" || file.name.endsWith(".txt")) {
+        const text = await file.text();
+        onTextExtracted(text);
+        setStatus("success");
+        return;
+      }
+
+      // PDF: FileReader でバイナリ読み込み → テキスト部分を抽出
+      if (file.type === "application/pdf" || file.name.endsWith(".pdf")) {
+        const arrayBuffer = await file.arrayBuffer();
+        const bytes = new Uint8Array(arrayBuffer);
+        // PDFバイナリからBT...ETブロック内のテキストを抽出する簡易パーサー
+        let pdfText = "";
+        const decoder = new TextDecoder("latin1");
+        const rawStr = decoder.decode(bytes);
+
+        // BT (Begin Text) ... ET (End Text) ブロック内のTj/TJオペレータからテキストを拾う
+        const btEtRegex = /BT([\s\S]*?)ET/g;
+        let btMatch;
+        while ((btMatch = btEtRegex.exec(rawStr)) !== null) {
+          const block = btMatch[1];
+          // (テキスト) Tj または [(テキスト)] TJ パターン
+          const tjRegex = /\(((?:[^()\\]|\\.)*)\)\s*Tj/g;
+          const tjArrayRegex = /\[((?:[^\[\]]*\([^)]*\)[^\[\]]*)*)\]\s*TJ/g;
+          let tjMatch;
+          while ((tjMatch = tjRegex.exec(block)) !== null) {
+            pdfText += decodeOctalEscapes(tjMatch[1]) + " ";
+          }
+          while ((tjMatch = tjArrayRegex.exec(block)) !== null) {
+            const inner = tjMatch[1];
+            const innerTj = /\(((?:[^()\\]|\\.)*)\)/g;
+            let innerMatch;
+            while ((innerMatch = innerTj.exec(inner)) !== null) {
+              pdfText += decodeOctalEscapes(innerMatch[1]);
+            }
+            pdfText += " ";
+          }
+        }
+
+        // テキストが取れなかった場合はストリーム内の可読文字列をフォールバック抽出
+        if (pdfText.trim().length < 50) {
+          const printable = rawStr.replace(/[^\x20-\x7E\n\r\t\u3040-\u9FFF\uFF00-\uFFEF]/g, " ");
+          const cleaned = printable.replace(/\s{3,}/g, "\n").trim();
+          pdfText = cleaned.slice(0, 8000);
+        }
+
+        const finalText = pdfText.trim().slice(0, 8000);
+        if (finalText.length < 20) {
+          setStatus("error");
+          setErrorMsg("PDFからテキストを取得できませんでした。テキスト選択でコピーして貼り付けてください。");
+          return;
+        }
+        onTextExtracted(finalText);
+        setStatus("success");
+        return;
+      }
+
+      // .docx: ZIPベースのXML → 簡易テキスト抽出
+      if (file.name.endsWith(".docx")) {
+        const text = await file.text();
+        // XMLタグを除去して本文を取得
+        const stripped = text.replace(/<[^>]+>/g, " ").replace(/\s{2,}/g, "\n").trim();
+        const finalText = stripped.slice(0, 8000);
+        if (finalText.length < 10) {
+          setStatus("error");
+          setErrorMsg(".docxからテキストを取得できませんでした。テキストをコピーして貼り付けてください。");
+          return;
+        }
+        onTextExtracted(finalText);
+        setStatus("success");
+        return;
+      }
+
+      setStatus("error");
+      setErrorMsg("対応していないファイル形式です。PDF・.txt ファイルをお試しください。");
+    } catch {
+      setStatus("error");
+      setErrorMsg("ファイルの読み込みに失敗しました。テキストをコピーして貼り付けてください。");
+    }
+  };
+
+  function decodeOctalEscapes(str: string): string {
+    return str.replace(/\\([0-7]{3})/g, (_, oct) => String.fromCharCode(parseInt(oct, 8)));
+  }
+
+  const handleFileChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (file) extractTextFromFile(file);
+  };
+
+  const handleDrop = (e: React.DragEvent<HTMLDivElement>) => {
+    e.preventDefault();
+    const file = e.dataTransfer.files?.[0];
+    if (file) extractTextFromFile(file);
+  };
+
+  return (
+    <div className="bg-blue-50 border border-blue-200 rounded-xl p-4 space-y-2">
+      <p className="text-xs font-semibold text-blue-700">📁 ファイルからテキストを取り込む（任意）</p>
+      <div
+        onDrop={handleDrop}
+        onDragOver={(e) => e.preventDefault()}
+        className="border-2 border-dashed border-blue-300 rounded-lg p-4 text-center cursor-pointer hover:border-blue-400 hover:bg-blue-100/50 transition-colors"
+        onClick={() => fileInputRef.current?.click()}
+      >
+        <input
+          ref={fileInputRef}
+          type="file"
+          accept=".pdf,.txt,.docx"
+          onChange={handleFileChange}
+          className="hidden"
+        />
+        {status === "idle" && (
+          <>
+            <p className="text-sm text-blue-600 font-medium">クリックまたはドラッグ&ドロップ</p>
+            <p className="text-xs text-blue-400 mt-1">PDF / .txt / .docx 対応 • ファイルはサーバーに送信されません</p>
+          </>
+        )}
+        {status === "reading" && (
+          <p className="text-sm text-blue-600 animate-pulse">読み込み中...</p>
+        )}
+        {status === "success" && (
+          <div className="flex items-center justify-center gap-2 text-green-700">
+            <span className="text-lg">✓</span>
+            <div className="text-left">
+              <p className="text-sm font-bold">{fileName}</p>
+              <p className="text-xs text-green-600">テキストを取り込みました</p>
+            </div>
+          </div>
+        )}
+        {status === "error" && (
+          <div>
+            <p className="text-sm text-red-600 font-medium">取り込み失敗</p>
+            <p className="text-xs text-red-500 mt-1">{errorMsg}</p>
+          </div>
+        )}
+      </div>
+      {status === "success" && (
+        <button
+          type="button"
+          onClick={() => { setStatus("idle"); setFileName(""); if (fileInputRef.current) fileInputRef.current.value = ""; }}
+          className="text-xs text-blue-500 hover:text-blue-700"
+        >
+          別のファイルを選択
+        </button>
+      )}
+      <p className="text-xs text-blue-400">※ テキスト選択式PDFのみ対応。スキャンPDFはコピー貼り付けをご利用ください。</p>
+    </div>
+  );
+}
+
 export default function KeiyakushoTool() {
   const [contractText, setContractText] = useState("");
   const [parsed, setParsed] = useState<ParsedResult | null>(null);
@@ -447,6 +613,8 @@ export default function KeiyakushoTool() {
               <p className="text-xs text-orange-600 mt-1">✓ 選択した契約書種別に合わせたリスク箇所を重点チェックします</p>
             )}
           </div>
+
+          <FileUploadSection onTextExtracted={(text) => setContractText(text)} />
 
           <div className="flex items-center justify-between mb-1.5">
             <span className="text-xs text-gray-500">契約書テキストを貼り付けてください</span>
