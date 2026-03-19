@@ -457,6 +457,128 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 競合比較表 — 価格訴求 */}
+      <section className="max-w-4xl mx-auto px-4 py-16">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-yellow-500/20 text-yellow-300 text-xs font-bold px-3 py-1 rounded-full mb-3">価格比較</div>
+          <h2 className="text-2xl font-black text-white">「弁護士に頼むほどでも…」を解決する価格</h2>
+          <p className="text-slate-400 text-sm mt-2">フリーランス・個人が実際に使える料金帯</p>
+        </div>
+        <div className="overflow-x-auto">
+          <table className="w-full text-sm">
+            <thead>
+              <tr className="border-b border-slate-700">
+                <th className="text-left py-3 px-4 text-slate-400 font-medium">サービス</th>
+                <th className="text-center py-3 px-4 text-slate-400 font-medium">料金</th>
+                <th className="text-center py-3 px-4 text-slate-400 font-medium">個人利用</th>
+                <th className="text-center py-3 px-4 text-slate-400 font-medium">即日利用</th>
+                <th className="text-center py-3 px-4 text-slate-400 font-medium">取適法対応</th>
+              </tr>
+            </thead>
+            <tbody>
+              {[
+                { name: "弁護士（単発）", price: "¥5万〜15万/件", personal: "○", instant: "✗（数日〜数週間）", toitekihou: "○", highlight: false },
+                { name: "弁護士（顧問）", price: "¥3万〜5万/月", personal: "△（個人は割高）", instant: "✗（予約が必要）", toitekihou: "○", highlight: false },
+                { name: "GVA assist (OLGA)", price: "¥7.5万〜/月", personal: "✗（法人向け）", instant: "✗（導入稟議が必要）", toitekihou: "○", highlight: false },
+                { name: "契約書AIレビュー", price: "¥980/30日 〜", personal: "◎（個人・フリーランス専用）", instant: "◎（登録不要・即日）", toitekihou: "◎（2026年1月対応済）", highlight: true },
+              ].map((row) => (
+                <tr key={row.name} className={`border-b ${row.highlight ? "border-indigo-500/50 bg-indigo-900/20" : "border-slate-800"}`}>
+                  <td className={`py-4 px-4 font-bold ${row.highlight ? "text-indigo-300" : "text-slate-300"}`}>
+                    {row.highlight && <span className="inline-block bg-indigo-600 text-white text-[10px] font-black px-2 py-0.5 rounded mr-2">このサービス</span>}
+                    {row.name}
+                  </td>
+                  <td className={`py-4 px-4 text-center font-bold ${row.highlight ? "text-yellow-400 text-base" : "text-slate-400"}`}>{row.price}</td>
+                  <td className={`py-4 px-4 text-center text-xs ${row.highlight ? "text-green-400 font-bold" : "text-slate-400"}`}>{row.personal}</td>
+                  <td className={`py-4 px-4 text-center text-xs ${row.highlight ? "text-green-400 font-bold" : "text-slate-400"}`}>{row.instant}</td>
+                  <td className={`py-4 px-4 text-center text-xs ${row.highlight ? "text-green-400 font-bold" : "text-slate-400"}`}>{row.toitekihou}</td>
+                </tr>
+              ))}
+            </tbody>
+          </table>
+        </div>
+        <div className="mt-6 bg-yellow-500/10 border border-yellow-500/30 rounded-xl p-4 text-center">
+          <p className="text-yellow-300 font-bold text-sm">GVA assist（月¥75,000）の<span className="text-2xl font-black text-yellow-400 mx-1">1/76</span>の価格で、個人・フリーランスに使いやすい形で提供</p>
+          <p className="text-slate-400 text-xs mt-1">弁護士への単発依頼（¥5万〜）と比べても、¥980で同等レベルの事前確認が可能</p>
+        </div>
+        <div className="text-center mt-5">
+          <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
+            無料3回でまず試す →
+          </Link>
+        </div>
+      </section>
+
+      {/* フリーランス特化セクション */}
+      <section className="max-w-4xl mx-auto px-4 py-12">
+        <div className="bg-gradient-to-br from-indigo-900/50 to-slate-900 border border-indigo-600/40 rounded-3xl p-8">
+          <div className="text-center mb-8">
+            <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">フリーランス・個人特化</div>
+            <h2 className="text-2xl font-black text-white">「契約書の専門家がいない個人」のために設計</h2>
+            <p className="text-slate-400 text-sm mt-2">企業法務部向けのGVA assistと違い、知識ゼロでも使える設計</p>
+          </div>
+          <div className="grid md:grid-cols-3 gap-5">
+            {[
+              {
+                icon: "🎯",
+                title: "知識ゼロでも判断できる",
+                desc: "「危険度: 高/中/低」の3段階表示で、法律知識がなくても即座に判断可能。専門用語を噛み砕いた修正提案つき。",
+              },
+              {
+                icon: "⚡",
+                title: "署名前5分で完了",
+                desc: "契約書テキストをコピペするだけ。弁護士予約不要・登録不要・待ち時間ゼロ。締め切り直前でも即対応。",
+              },
+              {
+                icon: "🛡️",
+                title: "個人事業主に多いリスクに特化",
+                desc: "著作権の丸ごと譲渡・2年超の競業禁止・損害賠償上限なし——フリーランスが実際に遭う不利条項を重点チェック。",
+              },
+            ].map((item) => (
+              <div key={item.title} className="bg-slate-800/60 rounded-2xl p-5 border border-slate-700/50">
+                <div className="text-3xl mb-3">{item.icon}</div>
+                <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
+                <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+              </div>
+            ))}
+          </div>
+          <div className="mt-6 grid md:grid-cols-2 gap-4">
+            <div className="bg-slate-800/40 rounded-xl p-4 border border-slate-700/40">
+              <p className="text-xs font-bold text-slate-300 mb-2">対応する典型的なトラブル</p>
+              <ul className="space-y-1.5">
+                {[
+                  "著作権の全部譲渡で後から使えなくなった",
+                  "競業禁止2年で副業・転職ができなかった",
+                  "損害賠償上限なしで全額請求された",
+                  "報酬支払い60日超えで資金繰りが苦しくなった",
+                  "秘密保持「永続」で過去の実績をポートフォリオに使えない",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-slate-400">
+                    <span className="text-red-400 font-bold shrink-0">✗</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+            <div className="bg-slate-800/40 rounded-xl p-4 border border-slate-700/40">
+              <p className="text-xs font-bold text-slate-300 mb-2">AIレビュー後のユーザー行動</p>
+              <ul className="space-y-1.5">
+                {[
+                  "「修正提案」をコピーして先方に修正依頼",
+                  "リスクを把握した上で締結を決断",
+                  "問題条項を弁護士に相談する際の「証拠」として活用",
+                  "月次で複数の案件を事前スクリーニング",
+                  "取適法チェックで発注側リスクも確認",
+                ].map((item, i) => (
+                  <li key={i} className="flex items-center gap-2 text-xs text-slate-400">
+                    <span className="text-green-400 font-bold shrink-0">✓</span>
+                    {item}
+                  </li>
+                ))}
+              </ul>
+            </div>
+          </div>
+        </div>
+      </section>
+
       {/* ペルソナ共感セクション */}
       <section className="max-w-3xl mx-auto px-4 py-14">
         <h2 className="text-2xl font-black text-center mb-2 text-white">こんな状況で困っていませんか？</h2>
