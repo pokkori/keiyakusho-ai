@@ -22,6 +22,16 @@ const PARTY_ROLES = [
 ] as const;
 type PartyRoleId = typeof PARTY_ROLES[number]["id"];
 
+const CONTRACT_TYPES = [
+  { id: "gyomu_itaku", label: "業務委託", icon: "📝" },
+  { id: "fudosan_chintai", label: "不動産賃貸", icon: "🏠" },
+  { id: "baibai", label: "売買", icon: "🤝" },
+  { id: "koyo_rodo", label: "雇用・労働", icon: "👥" },
+  { id: "nda", label: "秘密保持(NDA)", icon: "🔐" },
+  { id: "franchise", label: "フランチャイズ", icon: "💼" },
+] as const;
+type ContractTypeId = typeof CONTRACT_TYPES[number]["id"] | "";
+
 function renderMarkdown(text: string) {
   const lines = text.split('\n');
   const result: string[] = [];
@@ -230,6 +240,7 @@ export default function KeiyakushoTool() {
   const [isPremium, setIsPremium] = useState(false);
   const [checkMode, setCheckMode] = useState<CheckModeId>("standard");
   const [partyRole, setPartyRole] = useState<PartyRoleId>("consignee");
+  const [contractType, setContractType] = useState<ContractTypeId>("");
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
@@ -247,7 +258,7 @@ export default function KeiyakushoTool() {
       const res = await fetch("/api/analyze", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
-        body: JSON.stringify({ contractText, checkMode, partyRole }),
+        body: JSON.stringify({ contractText, checkMode, partyRole, contractType: contractType || undefined }),
       });
       if (res.status === 429) { track('paywall_shown', { service: '契約書AIレビュー' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
@@ -350,6 +361,27 @@ export default function KeiyakushoTool() {
                   ))}
                 </div>
               </div>
+            )}
+          </div>
+
+          {/* 契約書種別クイック選択 */}
+          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 space-y-2">
+            <p className="text-xs font-semibold text-orange-700">契約書の種類（任意）</p>
+            <div className="flex flex-wrap gap-2">
+              {CONTRACT_TYPES.map(ct => (
+                <button
+                  key={ct.id}
+                  type="button"
+                  onClick={() => setContractType(contractType === ct.id ? "" : ct.id)}
+                  className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${contractType === ct.id ? "border-orange-500 bg-orange-500 text-white" : "border-orange-300 bg-white text-orange-700 hover:border-orange-400 hover:bg-orange-50"}`}
+                >
+                  <span>{ct.icon}</span>
+                  <span>{ct.label}</span>
+                </button>
+              ))}
+            </div>
+            {contractType && (
+              <p className="text-xs text-orange-600 mt-1">✓ 選択した契約書種別に合わせたリスク箇所を重点チェックします</p>
             )}
           </div>
 
