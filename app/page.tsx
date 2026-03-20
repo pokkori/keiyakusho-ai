@@ -964,6 +964,83 @@ export default function Home() {
         </div>
       </section>
 
+      {/* 差別化セクション — 契約書AIレビューだけができること */}
+      <section className="max-w-4xl mx-auto px-4 py-14">
+        <div className="text-center mb-8">
+          <div className="inline-block bg-indigo-600/20 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full mb-3">他サービスとの違い</div>
+          <h2 className="text-2xl font-black text-white">契約書AIレビューだけができる3つのこと</h2>
+          <p className="text-slate-400 text-sm mt-2">GVA assist・弁護士・汎用AIにはない、フリーランス特化の機能</p>
+        </div>
+        <div className="grid md:grid-cols-3 gap-5 mb-8">
+          {[
+            {
+              icon: "📊",
+              title: "リスクスコアA〜Eで即判断",
+              desc: "契約書全体を100点満点でスコア化。「どこが問題か」「どれくらい危険か」を数値で判断できます。GVA assistは企業法務向けで個人には使いにくい形式。",
+              badge: "GVA assistにはない個人特化",
+              badgeColor: "bg-red-900/30 text-red-300 border-red-700/40",
+            },
+            {
+              icon: "✏️",
+              title: "コピペ修正案を即生成",
+              desc: "「著作財産権は受託者に帰属し〜」のようなコピペして即使える修正文案を自動生成。先方へのメールにそのまま貼り付けて交渉できます。",
+              badge: "汎用AIより具体的な修正文",
+              badgeColor: "bg-yellow-900/30 text-yellow-300 border-yellow-700/40",
+            },
+            {
+              icon: "⚖️",
+              title: "取適法チェックモード搭載",
+              desc: "2026年1月施行の取引適正化法（旧下請法）に対応した専用チェックモード。フリーランス約462万人が対象。他の契約書AIには存在しない独自機能。",
+              badge: "競合他社にはない独自機能",
+              badgeColor: "bg-orange-900/30 text-orange-300 border-orange-700/40",
+            },
+          ].map((item) => (
+            <div key={item.title} className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+              <div className="text-3xl mb-3">{item.icon}</div>
+              <div className={`inline-block border text-[10px] font-bold px-2 py-0.5 rounded mb-3 ${item.badgeColor}`}>{item.badge}</div>
+              <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
+              <p className="text-sm text-slate-400 leading-relaxed">{item.desc}</p>
+            </div>
+          ))}
+        </div>
+        {/* 3サービス価格比較 */}
+        <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
+          <p className="text-xs font-bold text-slate-400 mb-4 text-center">3サービス 価格・機能比較</p>
+          <div className="overflow-x-auto">
+            <table className="w-full text-xs">
+              <thead>
+                <tr className="border-b border-slate-700">
+                  <th className="text-left py-2 px-3 text-slate-400 font-medium">比較項目</th>
+                  <th className="text-center py-2 px-3 text-indigo-300 font-bold">契約書AIレビュー</th>
+                  <th className="text-center py-2 px-3 text-slate-400 font-medium">GVA assist</th>
+                  <th className="text-center py-2 px-3 text-slate-400 font-medium">弁護士（単発）</th>
+                </tr>
+              </thead>
+              <tbody>
+                {[
+                  ["料金", "¥980/30日〜", "¥75,000/月〜", "¥5万〜15万/件"],
+                  ["対象ユーザー", "個人・フリーランス", "企業法務部", "すべて"],
+                  ["即日利用", "◎ 登録不要", "✗ 稟議が必要", "✗ 予約が必要"],
+                  ["修正文案生成", "◎ コピペ可", "△ 要カスタマイズ", "○（別途費用）"],
+                  ["取適法チェック", "◎ 専用モード", "○", "○（別途費用）"],
+                  ["匿名利用", "◎", "✗", "✗"],
+                ].map(([label, ours, gva, lawyer], i) => (
+                  <tr key={i} className="border-b border-slate-700/50">
+                    <td className="py-2.5 px-3 text-slate-400">{label}</td>
+                    <td className="py-2.5 px-3 text-center text-indigo-300 font-bold">{ours}</td>
+                    <td className="py-2.5 px-3 text-center text-slate-400">{gva}</td>
+                    <td className="py-2.5 px-3 text-center text-slate-400">{lawyer}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
+          </div>
+          <div className="mt-4 text-center">
+            <p className="text-yellow-300 font-bold text-sm">GVA assist（月¥75,000）の<span className="text-xl font-black text-yellow-400 mx-1">1/76</span>の価格で、フリーランス・個人に最適な形で提供</p>
+          </div>
+        </div>
+      </section>
+
       {/* X(Twitter) Share */}
       <section className="max-w-4xl mx-auto px-4 py-10 text-center">
         <p className="text-slate-400 text-sm mb-4">AIが契約書のリスクを発見！フリーランス・副業の方にシェアしませんか？</p>
