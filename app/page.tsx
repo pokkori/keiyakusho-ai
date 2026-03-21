@@ -343,6 +343,186 @@ function InteractiveDemo() {
   );
 }
 
+// ===== サンプルレポートダウンロード =====
+function SampleReportDownload() {
+  const [activeTab, setActiveTab] = useState(0);
+  const tabs = SAMPLE_TABS;
+
+  const generateReport = () => {
+    const tab = tabs[activeTab];
+    const canvas = document.createElement("canvas");
+    canvas.width = 1200;
+    canvas.height = 1600;
+    const ctx = canvas.getContext("2d");
+    if (!ctx) return;
+
+    // 背景
+    ctx.fillStyle = "#0f172a";
+    ctx.fillRect(0, 0, 1200, 1600);
+
+    // ヘッダーバー
+    const headerGrad = ctx.createLinearGradient(0, 0, 1200, 0);
+    headerGrad.addColorStop(0, "#4f46e5");
+    headerGrad.addColorStop(1, "#6366f1");
+    ctx.fillStyle = headerGrad;
+    ctx.fillRect(0, 0, 1200, 120);
+
+    ctx.fillStyle = "#ffffff";
+    ctx.font = "bold 36px sans-serif";
+    ctx.fillText("契約書AIレビュー 診断レポート", 50, 55);
+    ctx.font = "20px sans-serif";
+    ctx.fillStyle = "#c7d2fe";
+    const today = new Date();
+    ctx.fillText(`発行日: ${today.getFullYear()}/${String(today.getMonth() + 1).padStart(2, "0")}/${String(today.getDate()).padStart(2, "0")}  |  契約種別: ${tab.contractType}`, 50, 95);
+
+    // 対象
+    ctx.fillStyle = "#94a3b8";
+    ctx.font = "22px sans-serif";
+    ctx.fillText(`対象: ${tab.target}`, 50, 180);
+
+    // スコア
+    const gradeColors: Record<string, string> = { A: "#4ade80", B: "#60a5fa", C: "#facc15", D: "#f87171", E: "#ef4444" };
+    ctx.fillStyle = gradeColors[tab.grade] || "#facc15";
+    ctx.font = "bold 120px sans-serif";
+    ctx.fillText(tab.grade, 50, 330);
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "bold 48px sans-serif";
+    ctx.fillText(`${tab.score} / 100`, 200, 315);
+
+    // スコアバー背景
+    ctx.fillStyle = "#334155";
+    ctx.beginPath();
+    ctx.roundRect(50, 370, 1100, 24, 12);
+    ctx.fill();
+    // スコアバー
+    const barGrad = ctx.createLinearGradient(50, 0, 50 + 1100 * (tab.score / 100), 0);
+    barGrad.addColorStop(0, gradeColors[tab.grade] || "#facc15");
+    barGrad.addColorStop(1, gradeColors[tab.grade] || "#facc15");
+    ctx.fillStyle = barGrad;
+    ctx.beginPath();
+    ctx.roundRect(50, 370, 1100 * (tab.score / 100), 24, 12);
+    ctx.fill();
+
+    // 区切り線
+    ctx.strokeStyle = "#334155";
+    ctx.lineWidth = 2;
+    ctx.beginPath();
+    ctx.moveTo(50, 430);
+    ctx.lineTo(1150, 430);
+    ctx.stroke();
+
+    // タイトル
+    ctx.fillStyle = "#e2e8f0";
+    ctx.font = "bold 32px sans-serif";
+    ctx.fillText("検出された問題条項", 50, 480);
+
+    // 問題条項リスト
+    let y = 530;
+    const levelColors: Record<string, string> = { "高": "#f87171", "中": "#fb923c", "低": "#facc15", "なし": "#4ade80" };
+    tab.items.forEach((item) => {
+      // 背景ボックス
+      ctx.fillStyle = "#1e293b";
+      ctx.beginPath();
+      ctx.roundRect(50, y, 1100, 280, 16);
+      ctx.fill();
+      ctx.strokeStyle = levelColors[item.level] || "#64748b";
+      ctx.lineWidth = 2;
+      ctx.beginPath();
+      ctx.roundRect(50, y, 1100, 280, 16);
+      ctx.stroke();
+
+      // レベルバッジ
+      ctx.fillStyle = levelColors[item.level] || "#64748b";
+      ctx.beginPath();
+      ctx.roundRect(80, y + 20, 80, 32, 8);
+      ctx.fill();
+      ctx.fillStyle = "#0f172a";
+      ctx.font = "bold 18px sans-serif";
+      ctx.fillText(`危険度:${item.level}`, 88, y + 43);
+
+      // タイトル
+      ctx.fillStyle = levelColors[item.level] || "#e2e8f0";
+      ctx.font = "bold 24px sans-serif";
+      ctx.fillText(item.title, 180, y + 45);
+
+      // 本文
+      ctx.fillStyle = "#cbd5e1";
+      ctx.font = "20px sans-serif";
+      ctx.fillText(item.body, 80, y + 100);
+
+      // 提案
+      ctx.fillStyle = "#818cf8";
+      ctx.font = "18px sans-serif";
+      const suggestion = `修正提案: ${item.suggestion}`;
+      // 折り返し処理
+      const maxW = 1040;
+      const words = suggestion.split("");
+      let line = "";
+      let lineY = y + 150;
+      for (const char of words) {
+        const test = line + char;
+        if (ctx.measureText(test).width > maxW) {
+          ctx.fillText(line, 80, lineY);
+          line = char;
+          lineY += 28;
+        } else {
+          line = test;
+        }
+      }
+      ctx.fillText(line, 80, lineY);
+
+      y += 300;
+    });
+
+    // フッター
+    ctx.fillStyle = "#475569";
+    ctx.font = "16px sans-serif";
+    ctx.fillText("※ 本レポートはサンプルです。実際の分析は契約書の内容に基づいて生成されます。", 50, 1540);
+    ctx.fillText("契約書AIレビュー https://keiyakusho-ai.vercel.app", 50, 1570);
+
+    // ダウンロード
+    const link = document.createElement("a");
+    link.download = `契約書AIレビュー_サンプルレポート_${tab.label}.png`;
+    link.href = canvas.toDataURL("image/png");
+    link.click();
+  };
+
+  return (
+    <div className="mt-8 max-w-2xl mx-auto">
+      <div className="bg-slate-800/80 border border-indigo-500/40 rounded-2xl p-6 text-center">
+        <p className="text-indigo-300 text-xs font-bold mb-3 tracking-wider uppercase">無料サンプル</p>
+        <h3 className="text-lg font-black text-white mb-4">サンプル診断レポートをダウンロード</h3>
+        <div className="flex flex-wrap justify-center gap-2 mb-5">
+          {tabs.map((t, i) => (
+            <button
+              key={t.id}
+              onClick={() => setActiveTab(i)}
+              className={`px-4 py-2 text-xs font-bold rounded-full transition-all ${
+                activeTab === i
+                  ? "bg-indigo-600 text-white"
+                  : "bg-slate-700 text-slate-400 hover:text-white hover:bg-slate-600"
+              }`}
+            >
+              {t.label}
+            </button>
+          ))}
+        </div>
+        <p className="text-slate-400 text-sm mb-4">
+          {tabs[activeTab].contractType}（{tabs[activeTab].target}）の分析レポート例
+        </p>
+        <button
+          onClick={generateReport}
+          className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-bold py-3.5 px-8 rounded-xl text-sm transition-all shadow-lg shadow-indigo-900/40"
+        >
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          無料サンプルレポートをダウンロード
+        </button>
+        <p className="text-slate-500 text-xs mt-3">PNG画像形式・登録不要</p>
+      </div>
+    </div>
+  );
+}
+
 // ===== 利用者数カウントアップ =====
 function UseCountBadge() {
   const [count, setCount] = useState(0);
@@ -468,6 +648,8 @@ export default function Home() {
           </button>
         </div>
         <p className="text-slate-400 text-sm">クレジットカード不要で3回無料 • 1回払い¥980 • いつでもキャンセル可能</p>
+
+        <SampleReportDownload />
 
         {/* 30秒で分かる使い方ステップ */}
         <div className="mt-10 bg-slate-800/60 border border-slate-700 rounded-2xl px-6 py-5 max-w-2xl mx-auto">
