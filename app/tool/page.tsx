@@ -23,12 +23,12 @@ const PARTY_ROLES = [
 type PartyRoleId = typeof PARTY_ROLES[number]["id"];
 
 const CONTRACT_TYPES = [
-  { id: "gyomu_itaku", label: "業務委託", icon: "📝" },
-  { id: "fudosan_chintai", label: "不動産賃貸", icon: "🏠" },
-  { id: "baibai", label: "売買", icon: "🤝" },
-  { id: "koyo_rodo", label: "雇用・労働", icon: "👥" },
-  { id: "nda", label: "秘密保持(NDA)", icon: "🔐" },
-  { id: "franchise", label: "フランチャイズ", icon: "💼" },
+  { id: "gyomu_itaku", label: "業務委託" },
+  { id: "fudosan_chintai", label: "不動産賃貸" },
+  { id: "baibai", label: "売買" },
+  { id: "koyo_rodo", label: "雇用・労働" },
+  { id: "nda", label: "秘密保持(NDA)" },
+  { id: "franchise", label: "フランチャイズ" },
 ] as const;
 type ContractTypeId = typeof CONTRACT_TYPES[number]["id"] | "";
 
@@ -90,7 +90,7 @@ function SampleFillButton({ contractType, onFill }: { contractType: ContractType
       onClick={() => onFill(sample.text)}
       className="text-xs px-3 py-1.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold border border-orange-200 transition-colors"
     >
-      📋 {sample.label}を入力する
+      {sample.label}を入力する
     </button>
   );
 }
@@ -130,11 +130,11 @@ function renderMarkdown(text: string) {
 
 function parseResult(text: string): ParsedResult {
   const sectionDefs = [
-    { key: "総合評価", icon: "📊" },
-    { key: "問題条項", icon: "⚠️" },
-    { key: "有利不利", icon: "⚖️" },
-    { key: "取適法チェック", icon: "⚖️" },
-    { key: "修正提案", icon: "✏️" },
+    { key: "総合評価", icon: "[評価]" },
+    { key: "問題条項", icon: "[リスク]" },
+    { key: "有利不利", icon: "[比較]" },
+    { key: "取適法チェック", icon: "[取適法]" },
+    { key: "修正提案", icon: "[修正案]" },
   ];
   const sections: Section[] = [];
   const parts = text.split(/^---$/m);
@@ -147,7 +147,7 @@ function parseResult(text: string): ParsedResult {
       sections.push({ title: matched.key, icon: matched.icon, content });
     }
   }
-  if (sections.length === 0) sections.push({ title: "レビュー結果", icon: "📄", content: text });
+  if (sections.length === 0) sections.push({ title: "レビュー結果", icon: "[結果]", content: text });
   return { sections, raw: text };
 }
 
@@ -155,7 +155,11 @@ function Paywall({ onClose, onOpenPayjp, onOpenOnce }: { onClose: () => void; on
   return (
     <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
       <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl text-center">
-        <div className="text-3xl mb-3">📋</div>
+        <div className="mb-3 flex justify-center">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-10 h-10 text-indigo-500" aria-hidden="true">
+            <path strokeLinecap="round" strokeLinejoin="round" d="M9 12h6m-6 4h6m2 5H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" />
+          </svg>
+        </div>
         <h2 className="text-lg font-bold mb-2">無料レビュー回数を使い切りました</h2>
         <p className="text-sm text-gray-500 mb-4">続けて使うにはプランをお選びください</p>
         <KomojuButton
@@ -258,7 +262,7 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
           return (
             <button key={i} onClick={() => setActiveTab(i)}
               className={`flex items-center gap-1 px-3 py-1.5 rounded-lg text-xs font-medium transition-colors ${activeTab === i ? "bg-indigo-600 text-white" : "bg-gray-100 text-gray-600 hover:bg-gray-200"}`}>
-              <span>{s.icon}</span><span>{s.title}</span>{locked && <span>🔒</span>}
+              <span>{s.icon}</span><span>{s.title}</span>{locked && <span aria-label="プレミアム限定">[P]</span>}
             </button>
           );
         })}
@@ -266,7 +270,10 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
       <div className="bg-white border border-gray-200 rounded-xl p-4 min-h-[360px]">
         {!isPremium && isAdvantageTab ? (
           <div className="flex flex-col items-center justify-center h-full gap-4 py-12">
-            <span className="text-4xl">🔒</span>
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth={2} className="w-10 h-10 text-indigo-400" aria-hidden="true">
+              <rect x="3" y="11" width="18" height="11" rx="2" ry="2" />
+              <path strokeLinecap="round" strokeLinejoin="round" d="M7 11V7a5 5 0 0110 0v4" />
+            </svg>
             <p className="text-sm font-semibold text-gray-700">有利不利タブはPremium限定</p>
             <p className="text-xs text-gray-500 text-center">交渉すべきポイント・有利不利の整理は<br />プレミアムプランでご利用いただけます</p>
             <button onClick={onUpgrade} className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-indigo-700">
@@ -604,7 +611,6 @@ export default function KeiyakushoTool() {
                   onClick={() => setContractType(contractType === ct.id ? "" : ct.id)}
                   className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${contractType === ct.id ? "border-orange-500 bg-orange-500 text-white" : "border-orange-300 bg-white text-orange-700 hover:border-orange-400 hover:bg-orange-50"}`}
                 >
-                  <span>{ct.icon}</span>
                   <span>{ct.label}</span>
                 </button>
               ))}
@@ -656,8 +662,8 @@ export default function KeiyakushoTool() {
                 <p className="text-sm text-gray-500 font-medium">契約書を分析しています...</p>
                 <p className="text-xs text-gray-400 mt-2">
                   {checkMode === "toitekihou"
-                    ? "📊 総合評価 → ⚠️ 問題条項 → ⚖️ 取適法チェック → ✏️ 修正提案"
-                    : "📊 総合評価 → ⚠️ 問題条項 → ✏️ 修正提案"}
+                    ? "総合評価 → 問題条項 → 取適法チェック → 修正提案"
+                    : "総合評価 → 問題条項 → 修正提案"}
                 </p>
               </div>
             </div>
@@ -666,23 +672,23 @@ export default function KeiyakushoTool() {
               <ResultTabs parsed={parsed} isPremium={isPremium} onUpgrade={() => setShowPaywall(true)} />
               {/* 次のアクション3選 */}
               <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mt-4">
-                <p className="text-sm font-bold text-indigo-800 mb-3">📋 次にやるべきこと3選</p>
+                <p className="text-sm font-bold text-indigo-800 mb-3">次にやるべきこと3選</p>
                 <ol className="space-y-2">
                   {[
-                    { icon: "✏️", text: "「修正提案」タブの内容をコピーして先方に修正依頼を出す" },
-                    { icon: "💬", text: "リスクが高い条項は弁護士ドットコムで専門家に相談する" },
-                    { icon: "📁", text: "契約書と今回の分析結果を同じフォルダに保存して記録を残す" },
-                  ].map((item, i) => (
+                    "「修正提案」タブの内容をコピーして先方に修正依頼を出す",
+                    "リスクが高い条項は弁護士ドットコムで専門家に相談する",
+                    "契約書と今回の分析結果を同じフォルダに保存して記録を残す",
+                  ].map((text, i) => (
                     <li key={i} className="flex items-start gap-3 text-sm text-gray-700">
-                      <span className="text-lg leading-none">{item.icon}</span>
-                      <span>{i + 1}. {item.text}</span>
+                      <span className="font-bold text-indigo-600 leading-none min-w-[1.25rem]">{i + 1}.</span>
+                      <span>{text}</span>
                     </li>
                   ))}
                 </ol>
               </div>
               {/* 契約後の会計・経費管理アフィリエイト */}
               <div className="bg-green-50 border border-green-200 rounded-xl p-4 mt-4">
-                <p className="text-sm font-bold text-green-800 mb-1">💼 契約後の会計・経費管理に</p>
+                <p className="text-sm font-bold text-green-800 mb-1">契約後の会計・経費管理に</p>
                 <p className="text-xs text-green-700 mb-3">契約締結後は請求書・経費・確定申告の管理も重要。クラウド会計で一括管理しましょう。</p>
                 <a
                   href="https://px.a8.net/svt/ejp?a8mat=4AZIOF+3LSINM+3SPO+9FDPYR"

@@ -1,36 +1,14 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
+  const base = "https://keiyakusho-ai.vercel.app";
   return [
-    {
-      url: "https://keiyakusho-ai.vercel.app",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 1,
-    },
-    {
-      url: "https://keiyakusho-ai.vercel.app/tool",
-      lastModified: new Date(),
-      changeFrequency: "weekly",
-      priority: 0.8,
-    },
-    {
-      url: "https://keiyakusho-ai.vercel.app/legal",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: "https://keiyakusho-ai.vercel.app/terms",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
-    {
-      url: "https://keiyakusho-ai.vercel.app/privacy",
-      lastModified: new Date(),
-      changeFrequency: "monthly",
-      priority: 0.3,
-    },
+    { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
+    { url: `${base}/tool`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
+    { url: `${base}/blog`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.7 },
+    { url: `${base}/blog/freelance-contract-checklist`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.7 },
+    { url: `${base}/legal`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${base}/terms`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
+    { url: `${base}/privacy`, lastModified: new Date(), changeFrequency: "monthly", priority: 0.3 },
   ];
 }

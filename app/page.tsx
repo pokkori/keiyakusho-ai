@@ -284,7 +284,7 @@ function InteractiveDemo() {
             value={demoText}
             onChange={e => { setDemoText(e.target.value); setPhase(e.target.value ? "filled" : "idle"); }}
             rows={6}
-            placeholder="📄 契約書テキストをここに貼り付けてください..."
+            placeholder="契約書テキストをここに貼り付けてください..."
             className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-xs text-slate-300 placeholder:text-slate-500 resize-none focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
           />
           {phase === "idle" && (
@@ -314,18 +314,18 @@ function InteractiveDemo() {
         {phase === "result" && (
           <div className="bg-slate-900 border border-slate-600 rounded-lg p-4 space-y-3 animate-pulse-once">
             <div className="flex items-center justify-between border-b border-slate-700 pb-3">
-              <span className="text-xs font-bold text-slate-400">📊 分析結果</span>
+              <span className="text-xs font-bold text-slate-400">分析結果</span>
               <span className="text-lg font-black text-yellow-400">C評価 61/100</span>
             </div>
             <div className="space-y-2">
               {[
-                { icon: "🔴", label: "著作権条項", status: "要注意", color: "text-red-400" },
-                { icon: "🟡", label: "競業禁止期間", status: "中リスク（2年）", color: "text-yellow-400" },
-                { icon: "🟡", label: "報酬遅延ペナルティ", status: "中リスク（未記載）", color: "text-yellow-400" },
-                { icon: "🟢", label: "秘密保持条項", status: "問題なし", color: "text-green-400" },
+                { risk: "高", label: "著作権条項", status: "要注意", color: "text-red-400" },
+                { risk: "中", label: "競業禁止期間", status: "中リスク（2年）", color: "text-yellow-400" },
+                { risk: "中", label: "報酬遅延ペナルティ", status: "中リスク（未記載）", color: "text-yellow-400" },
+                { risk: "低", label: "秘密保持条項", status: "問題なし", color: "text-green-400" },
               ].map((r, i) => (
                 <div key={i} className="flex items-center justify-between text-xs">
-                  <span className="text-slate-300">{r.icon} {r.label}</span>
+                  <span className="text-slate-300">[{r.risk}] {r.label}</span>
                   <span className={`font-bold ${r.color}`}>{r.status}</span>
                 </div>
               ))}
@@ -599,7 +599,7 @@ export default function Home() {
       {/* 免責バナー */}
       <div className="bg-amber-900/40 border-b border-amber-700/50 px-6 py-3 text-center">
         <p className="text-xs text-amber-200 font-medium">
-          ⚠️ <strong>本サービスは弁護士業務・法的助言ではありません。</strong>AIによる参考情報の提供です。契約の最終判断・法的トラブルには必ず弁護士にご相談ください。
+          <strong>注意: 本サービスは弁護士業務・法的助言ではありません。</strong>AIによる参考情報の提供です。契約の最終判断・法的トラブルには必ず弁護士にご相談ください。
         </p>
       </div>
 
@@ -656,16 +656,15 @@ export default function Home() {
           <p className="text-xs font-bold text-slate-400 mb-4 tracking-wider uppercase">30秒で分かる使い方</p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
             {[
-              { step: "1", icon: "📄", label: "契約書をコピー", desc: "PDFやWordから全文コピー" },
-              { step: "→", icon: "", label: "", desc: "" },
-              { step: "2", icon: "📋", label: "ツールに貼り付け", desc: "テキストエリアにペースト" },
-              { step: "→", icon: "", label: "", desc: "" },
-              { step: "3", icon: "⚡", label: "AIが即分析", desc: "数秒でリスク・修正案が出力" },
+              { step: "1", label: "契約書をコピー", desc: "PDFやWordから全文コピー" },
+              { step: "→", label: "", desc: "" },
+              { step: "2", label: "ツールに貼り付け", desc: "テキストエリアにペースト" },
+              { step: "→", label: "", desc: "" },
+              { step: "3", label: "AIが即分析", desc: "数秒でリスク・修正案が出力" },
             ].map((s, i) =>
               s.label ? (
                 <div key={i} className="flex flex-col items-center gap-1 text-center">
                   <div className="w-9 h-9 rounded-full bg-indigo-600 text-white font-black text-sm flex items-center justify-center">{s.step}</div>
-                  <span className="text-xl">{s.icon}</span>
                   <p className="text-xs font-bold text-white">{s.label}</p>
                   <p className="text-xs text-slate-400">{s.desc}</p>
                 </div>
