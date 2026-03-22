@@ -616,7 +616,7 @@ export default function KeiyakushoTool() {
               ))}
             </div>
             {contractType && (
-              <p className="text-xs text-orange-600 mt-1">✓ 選択した契約書種別に合わせたリスク箇所を重点チェックします</p>
+              <p className="text-xs text-orange-600 mt-1">選択した契約書種別に合わせたリスク箇所を重点チェックします</p>
             )}
           </div>
 
@@ -631,6 +631,7 @@ export default function KeiyakushoTool() {
             onChange={e => setContractText(e.target.value)}
             rows={14}
             required
+            aria-label="契約書テキスト入力欄"
             placeholder={"例:\n第1条（委託業務）\n甲は乙に対し、以下の業務を委託する。\n...\n\n第2条（委託料）\n乙の業務に対する委託料は月額〇〇円とする。\n..."}
             className="w-full border border-gray-300 rounded-lg px-4 py-3 text-sm focus:outline-none focus:ring-2 focus:ring-indigo-500 resize-none font-mono"
           />
@@ -643,10 +644,11 @@ export default function KeiyakushoTool() {
           <p className="text-xs text-gray-400">※ 最大8,000文字まで対応（長い契約書は分割してご利用ください）</p>
 
           <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-xs text-indigo-800">
-            ⚠️ <strong>免責事項</strong>：このレビューはAIによる参考情報です。法的効力はありません。重要な契約は必ず弁護士にご相談ください。
+            <strong>免責事項</strong>：このレビューはAIによる参考情報です。法的効力はありません。重要な契約は必ず弁護士にご相談ください。
           </div>
 
           <button type="submit" disabled={loading || !contractText.trim()}
+            aria-label={loading ? "AI分析実行中" : "入力した契約書をAIでレビューする"}
             className={`w-full font-bold py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300"}`}>
             {loading ? "分析中..." : isLimit ? "プレミアムで無制限にチェック" : "契約書をAIレビュー（無料）"}
           </button>
