@@ -8,10 +8,20 @@ const FREE_LIMIT = 3;
 const KEY = "keiyakusho_count";
 const HISTORY_KEY = "keiyakusho_history";
 const MAX_HISTORY = 5;
+const REVIEW_HISTORY_KEY = "keiyakusho_review_history";
+const MAX_REVIEW_HISTORY = 10;
 
 type Section = { title: string; icon: string; content: string };
 type ParsedResult = { sections: Section[]; raw: string };
 type HistoryItem = { date: string; contractType: string; riskCount: number; result: string };
+
+interface ReviewHistory {
+  id: string;
+  date: string;
+  fileName: string;
+  riskCount: number;
+  summary: string;
+}
 
 // StreamingWordReveal: ストリーミング中のテキストを単語単位でフェードイン表示
 function StreamingWordReveal({ text, className = "" }: { text: string; className?: string }) {
@@ -55,6 +65,57 @@ function StreamingWordReveal({ text, className = "" }: { text: string; className
         <span className="animate-pulse opacity-50">{pendingWords[0]}</span>
       )}
     </span>
+  );
+}
+
+function saveReviewHistory(fileName: string, riskCount: number, summary: string) {
+  try {
+    const existing: ReviewHistory[] = JSON.parse(localStorage.getItem(REVIEW_HISTORY_KEY) ?? "[]");
+    const item: ReviewHistory = {
+      id: Date.now().toString(),
+      date: new Date().toLocaleDateString("ja-JP"),
+      fileName: fileName.slice(0, 40),
+      riskCount,
+      summary: summary.slice(0, 100).replace(/\n/g, " "),
+    };
+    localStorage.setItem(REVIEW_HISTORY_KEY, JSON.stringify([item, ...existing].slice(0, MAX_REVIEW_HISTORY)));
+  } catch { /* noop */ }
+}
+
+function ReviewHistoryPanel() {
+  const [history, setHistory] = useState<ReviewHistory[]>([]);
+  const [open, setOpen] = useState(false);
+  useEffect(() => {
+    try { setHistory(JSON.parse(localStorage.getItem(REVIEW_HISTORY_KEY) ?? "[]")); } catch { /* noop */ }
+  }, []);
+  if (history.length === 0) return null;
+  return (
+    <div className="border border-indigo-200 rounded-xl mb-4 overflow-hidden bg-white">
+      <button type="button" onClick={() => setOpen(o => !o)}
+        aria-expanded={open} aria-label="過去のレビュー履歴を表示"
+        className="w-full flex items-center justify-between px-4 py-3 hover:bg-indigo-50 transition-colors text-left">
+        <span className="text-sm font-bold text-indigo-800">過去のレビュー履歴（直近{history.length}件）</span>
+        <span className="text-gray-400 text-xs">{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <ul className="border-t border-indigo-100 divide-y divide-indigo-50">
+          {history.map(h => (
+            <li key={h.id} className="px-4 py-2">
+              <div className="flex items-center justify-between mb-0.5">
+                <span className="text-xs font-medium text-gray-700 truncate mr-2">{h.fileName}</span>
+                <span className="text-xs text-gray-500 shrink-0">{h.date}</span>
+              </div>
+              <div className="flex items-center gap-2">
+                <span className={`text-xs font-bold px-2 py-0.5 rounded-full ${h.riskCount >= 3 ? "bg-red-100 text-red-700" : h.riskCount >= 1 ? "bg-orange-100 text-orange-700" : "bg-green-100 text-green-700"}`}>
+                  リスク{h.riskCount}件
+                </span>
+                <p className="text-xs text-gray-400 truncate">{h.summary}</p>
+              </div>
+            </li>
+          ))}
+        </ul>
+      )}
+    </div>
   );
 }
 
@@ -650,6 +711,7 @@ export default function KeiyakushoTool() {
           const prev: HistoryItem[] = JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]");
           localStorage.setItem(HISTORY_KEY, JSON.stringify([newItem, ...prev].slice(0, MAX_HISTORY)));
         } catch { /* ignore */ }
+        saveReviewHistory(contractLabel, riskCount, accumulated);
       }
     } catch { setError("通信エラーが発生しました。"); }
     finally { setLoading(false); }
@@ -693,6 +755,7 @@ export default function KeiyakushoTool() {
 
       <div className="max-w-5xl mx-auto px-6 py-8 grid grid-cols-1 md:grid-cols-2 gap-8">
         <form onSubmit={handleSubmit} className="space-y-4">
+          <ReviewHistoryPanel />
           <div>
             <h1 className="text-xl font-bold text-gray-900">契約書を貼り付けてください</h1>
             <p className="text-sm text-gray-500 mt-1">全文またはチェックしたい条項をそのまま貼り付けてください。AIが4つの視点で分析します。</p>
