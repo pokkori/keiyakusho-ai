@@ -532,7 +532,7 @@ export default function KeiyakushoTool() {
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjp(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button type="button" onClick={() => setShowPayjp(false)} aria-label="プレミアムプランモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プランに登録</h2>
             <KomojuButton planId="business" planLabel="ビジネス ¥2,980/月を始める" className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 disabled:opacity-50" />
           </div>
@@ -541,7 +541,7 @@ export default function KeiyakushoTool() {
       {showPayjpOnce && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjpOnce(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button type="button" onClick={() => setShowPayjpOnce(false)} aria-label="スタンダードプランモーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プランに登録</h2>
             <KomojuButton planId="standard" planLabel="スタンダード ¥980（30日間有効）を始める" className="w-full bg-yellow-400 text-slate-900 font-bold py-3 rounded-xl hover:bg-yellow-500 disabled:opacity-50" />
           </div>
@@ -609,6 +609,8 @@ export default function KeiyakushoTool() {
                   key={ct.id}
                   type="button"
                   onClick={() => setContractType(contractType === ct.id ? "" : ct.id)}
+                  aria-label={`契約書の種類「${ct.label}」を選択`}
+                  aria-pressed={contractType === ct.id}
                   className={`flex items-center gap-1 px-3 py-1.5 rounded-full text-xs font-medium border transition-colors ${contractType === ct.id ? "border-orange-500 bg-orange-500 text-white" : "border-orange-300 bg-white text-orange-700 hover:border-orange-400 hover:bg-orange-50"}`}
                 >
                   <span>{ct.label}</span>
