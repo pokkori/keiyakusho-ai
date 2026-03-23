@@ -3,6 +3,7 @@ import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
 import { track } from '@vercel/analytics';
+import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
 const FREE_LIMIT = 3;
 const KEY = "keiyakusho_count";
@@ -647,10 +648,13 @@ export default function KeiyakushoTool() {
   const [checkMode, setCheckMode] = useState<CheckModeId>("standard");
   const [partyRole, setPartyRole] = useState<PartyRoleId>("consignee");
   const [contractType, setContractType] = useState<ContractTypeId>("");
+  const [streak, setStreak] = useState<StreakData | null>(null);
+  const [streakMsg, setStreakMsg] = useState<string | null>(null);
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
     fetch("/api/auth/status").then(r => r.json()).then(d => setIsPremium(d.premium));
+    setStreak(loadStreak("keiyakusho"));
   }, []);
 
   const isLimit = !isPremium && count >= FREE_LIMIT;
@@ -712,6 +716,11 @@ export default function KeiyakushoTool() {
           localStorage.setItem(HISTORY_KEY, JSON.stringify([newItem, ...prev].slice(0, MAX_HISTORY)));
         } catch { /* ignore */ }
         saveReviewHistory(contractLabel, riskCount, accumulated);
+        // ストリーク更新
+        const updatedStreak = updateStreak("keiyakusho");
+        setStreak(updatedStreak);
+        const msg = getStreakMilestoneMessage(updatedStreak.count);
+        if (msg) setStreakMsg(msg);
       }
     } catch { setError("通信エラーが発生しました。"); }
     finally { setLoading(false); }
@@ -757,12 +766,23 @@ export default function KeiyakushoTool() {
         <form onSubmit={handleSubmit} className="space-y-4">
           <ReviewHistoryPanel />
           <div>
-            <h1 className="text-xl font-bold text-gray-900">契約書を貼り付けてください</h1>
+            <div className="flex items-center gap-3 mb-1">
+              <h1 className="text-xl font-bold text-gray-900">契約書を貼り付けてください</h1>
+              {streak && streak.count > 0 && (
+                <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-sm" aria-label={`${streak.count}日連続利用中`}>
+                  {streak.count >= 7 ? "★" : streak.count >= 3 ? "+" : ""}
+                  {streak.count}日連続
+                </span>
+              )}
+            </div>
+            {streakMsg && (
+              <p className="text-xs font-semibold text-indigo-600 mb-1 animate-pulse">{streakMsg}</p>
+            )}
             <p className="text-sm text-gray-500 mt-1">全文またはチェックしたい条項をそのまま貼り付けてください。AIが4つの視点で分析します。</p>
           </div>
 
           {/* チェックモード選択 */}
-          <div className="bg-slate-50 border border-slate-200 rounded-xl p-4 space-y-3">
+          <div className="backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl p-4 space-y-3">
             <p className="text-xs font-semibold text-slate-600">チェックモード</p>
             <div className="flex flex-col gap-2">
               {CHECK_MODES.map(mode => (
@@ -792,7 +812,7 @@ export default function KeiyakushoTool() {
           </div>
 
           {/* 契約書種別クイック選択 */}
-          <div className="bg-orange-50 border border-orange-200 rounded-xl p-4 space-y-2">
+          <div className="backdrop-blur-sm bg-orange-50/80 border border-white/40 shadow-lg rounded-xl p-4 space-y-2">
             <p className="text-xs font-semibold text-orange-700">契約書の種類（任意）</p>
             <div className="flex flex-wrap gap-2">
               {CONTRACT_TYPES.map(ct => (
@@ -836,7 +856,7 @@ export default function KeiyakushoTool() {
           </p>
           <p className="text-xs text-gray-400">※ 最大8,000文字まで対応（長い契約書は分割してご利用ください）</p>
 
-          <div className="bg-indigo-50 border border-indigo-200 rounded-lg p-3 text-xs text-indigo-800">
+          <div className="backdrop-blur-sm bg-indigo-50/80 border border-white/40 shadow-lg rounded-lg p-3 text-xs text-indigo-800">
             <strong>免責事項</strong>：このレビューはAIによる参考情報です。法的効力はありません。重要な契約は必ず弁護士にご相談ください。
           </div>
 
@@ -852,7 +872,7 @@ export default function KeiyakushoTool() {
           <label className="text-sm font-medium text-gray-700 mb-2">レビュー結果</label>
           <HistoryPanel onSelect={(result) => setParsed(parseResult(result))} />
           {loading && !parsed ? (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
+            <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl flex items-center justify-center min-h-[420px]">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-3" />
                 <p className="text-sm text-gray-500 font-medium">契約書を分析しています...</p>
@@ -864,7 +884,7 @@ export default function KeiyakushoTool() {
               </div>
             </div>
           ) : loading && parsed ? (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl p-4 min-h-[420px]">
+            <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl p-4 min-h-[420px]">
               <div className="flex items-center gap-2 mb-3">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600" />
                 <span className="text-xs text-gray-500">AIがレビューを生成中...</span>
@@ -877,7 +897,7 @@ export default function KeiyakushoTool() {
             <>
               <ResultTabs parsed={parsed} isPremium={isPremium} onUpgrade={() => setShowPaywall(true)} />
               {/* 次のアクション3選 */}
-              <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-4 mt-4">
+              <div className="backdrop-blur-sm bg-indigo-50/80 border border-white/40 shadow-lg rounded-xl p-4 mt-4">
                 <p className="text-sm font-bold text-indigo-800 mb-3">次にやるべきこと3選</p>
                 <ol className="space-y-2">
                   {[
@@ -893,7 +913,7 @@ export default function KeiyakushoTool() {
                 </ol>
               </div>
               {/* 契約後の会計・経費管理アフィリエイト */}
-              <div className="bg-green-50 border border-green-200 rounded-xl p-4 mt-4">
+              <div className="backdrop-blur-sm bg-green-50/80 border border-white/40 shadow-lg rounded-xl p-4 mt-4">
                 <p className="text-sm font-bold text-green-800 mb-1">契約後の会計・経費管理に</p>
                 <p className="text-xs text-green-700 mb-3">契約締結後は請求書・経費・確定申告の管理も重要。クラウド会計で一括管理しましょう。</p>
                 <a
@@ -912,7 +932,7 @@ export default function KeiyakushoTool() {
               </div>
             </>
           ) : (
-            <div className="flex-1 bg-white border border-gray-200 rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
+            <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
               <div className="text-4xl">📋</div>
               <p className="text-sm text-center font-medium text-gray-500">契約書を貼り付けて<br />「AIレビュー」を押してください</p>
               <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
@@ -929,7 +949,7 @@ export default function KeiyakushoTool() {
 
       {/* 弁護士相談アフィリエイト（A8.net申請後URLを差し替え） */}
       <div className="max-w-2xl mx-auto px-4 pb-6">
-        <div className="bg-indigo-50 border border-indigo-200 rounded-xl p-5">
+        <div className="backdrop-blur-sm bg-indigo-50/80 border border-white/40 shadow-lg rounded-xl p-5">
           <p className="text-sm font-black text-indigo-900 mb-1">⚖️ 弁護士に契約書を確認してもらう</p>
           <p className="text-xs text-indigo-700 mb-4">AIレビューで問題点を把握したら、重要な契約は弁護士の最終確認で安心。初回相談無料の事務所多数。</p>
           <div className="space-y-2">
