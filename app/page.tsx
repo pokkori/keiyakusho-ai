@@ -204,6 +204,8 @@ function SampleAnalysisTabs() {
           <button
             key={t.id}
             onClick={() => setActiveTab(i)}
+            aria-label={`${t.label}の契約書サンプルタブを表示`}
+            aria-pressed={activeTab === i}
             className={`px-4 py-2 text-xs font-bold rounded-t-lg border-b-2 transition-all whitespace-nowrap ${
               activeTab === i
                 ? "border-indigo-400 bg-slate-800 text-indigo-300"
@@ -290,6 +292,7 @@ function InteractiveDemo() {
           {phase === "idle" && (
             <button
               onClick={fillSample}
+              aria-label="サンプルの業務委託契約書テキストをデモ入力エリアに挿入する"
               className="absolute bottom-3 right-3 bg-indigo-600 hover:bg-indigo-700 text-white text-xs font-bold px-3 py-1.5 rounded-lg transition-all"
             >
               サンプル業務委託契約書を入力する
@@ -301,6 +304,7 @@ function InteractiveDemo() {
         <button
           onClick={runAnalysis}
           disabled={!demoText.trim()}
+          aria-label="入力した契約書テキストをAIで分析する"
           className={`w-full font-bold py-2.5 rounded-lg text-sm transition-all ${
             demoText.trim()
               ? "bg-indigo-600 hover:bg-indigo-700 text-white"
@@ -497,6 +501,8 @@ function SampleReportDownload() {
             <button
               key={t.id}
               onClick={() => setActiveTab(i)}
+              aria-label={`${t.label}のサンプルレポートを表示`}
+              aria-pressed={activeTab === i}
               className={`px-4 py-2 text-xs font-bold rounded-full transition-all ${
                 activeTab === i
                   ? "bg-indigo-600 text-white"
@@ -512,9 +518,10 @@ function SampleReportDownload() {
         </p>
         <button
           onClick={generateReport}
+          aria-label="無料サンプルレポートをダウンロードする"
           className="inline-flex items-center gap-2 bg-gradient-to-r from-indigo-600 to-indigo-500 hover:from-indigo-700 hover:to-indigo-600 text-white font-bold py-3.5 px-8 rounded-xl text-sm transition-all shadow-lg shadow-indigo-900/40"
         >
-          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
+          <svg className="w-5 h-5" fill="none" stroke="currentColor" viewBox="0 0 24 24" aria-hidden="true"><path strokeLinecap="round" strokeLinejoin="round" strokeWidth={2} d="M12 10v6m0 0l-3-3m3 3l3-3m2 8H7a2 2 0 01-2-2V5a2 2 0 012-2h5.586a1 1 0 01.707.293l5.414 5.414a1 1 0 01.293.707V19a2 2 0 01-2 2z" /></svg>
           無料サンプルレポートをダウンロード
         </button>
         <p className="text-slate-500 text-xs mt-3">PNG画像形式・登録不要</p>
@@ -636,12 +643,14 @@ export default function Home() {
           </Link>
           <button
             onClick={() => setShowPayjpOnce(true)}
+            aria-label="1回プラン（¥980）で今すぐ契約書AIレビューを使う"
             className="bg-yellow-400 text-slate-900 hover:bg-yellow-500 font-bold py-4 px-8 rounded-xl text-lg transition-all"
           >
             今すぐ1回試す ¥980
           </button>
           <button
             onClick={() => setShowPayjpSub(true)}
+            aria-label="月額¥2,980の無制限プランで契約書AIレビューを使う"
             className="bg-white text-slate-900 hover:bg-slate-100 font-bold py-4 px-8 rounded-xl text-lg transition-all"
           >
             ¥2,980/月で無制限に使う
@@ -1120,6 +1129,7 @@ export default function Home() {
             </ul>
             <button
               onClick={() => setShowPayjpOnce(true)}
+              aria-label="スタンダードプラン（¥980/30日）で契約書AIレビューを購入する"
               className="w-full bg-slate-900 text-yellow-400 hover:bg-slate-800 font-bold py-3 px-6 rounded-xl transition-all"
             >
               今すぐ1回試す ¥980
@@ -1137,6 +1147,7 @@ export default function Home() {
             </ul>
             <button
               onClick={() => setShowPayjpSub(true)}
+              aria-label="プレミアムプラン（¥2,980/月・無制限）で契約書AIレビューを購入する"
               className="w-full bg-white text-indigo-600 hover:bg-slate-100 font-bold py-3 px-6 rounded-xl transition-all"
             >
               今すぐ始める
@@ -1226,15 +1237,14 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-4 py-10 text-center">
         <p className="text-slate-400 text-sm mb-4">AIが契約書のリスクを発見！フリーランス・副業の方にシェアしませんか？</p>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書から複数件のリスクを発見！弁護士いらずで契約書チェック。フリーランス・副業の方に必須ツール。業務委託・NDA・取適法対応。無料3回から試せる。 #契約書 #フリーランス #AI法務 #副業")}&url=${encodeURIComponent("https://keiyakusho-ai.vercel.app")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書のリスクを瞬時に解析！無料で試せます #契約書AI #フリーランス")}&url=${encodeURIComponent("https://keiyakusho-ai.vercel.app")}`}
           target="_blank"
           rel="noopener noreferrer"
-          className="inline-flex items-center gap-2 bg-black hover:bg-slate-800 text-white font-bold py-3 px-6 rounded-xl transition-all text-sm"
+          aria-label="XでシェアするXでシェアする"
+          className="inline-flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors min-h-[44px]"
         >
-          <svg className="w-4 h-4" viewBox="0 0 24 24" fill="currentColor" aria-hidden="true">
-            <path d="M18.244 2.25h3.308l-7.227 8.26 8.502 11.24H16.17l-4.714-6.231-5.401 6.231H2.744l7.737-8.835L1.254 2.25H8.08l4.253 5.622L18.244 2.25zm-1.161 17.52h1.833L7.084 4.126H5.117z" />
-          </svg>
-          X(Twitter)でシェアする
+          <span>𝕏</span>
+          <span>Xでシェアする</span>
         </a>
       </section>
 
