@@ -6,9 +6,118 @@ import { track } from '@vercel/analytics';
 
 const FREE_LIMIT = 3;
 const KEY = "keiyakusho_count";
+const HISTORY_KEY = "keiyakusho_history";
+const MAX_HISTORY = 5;
 
 type Section = { title: string; icon: string; content: string };
 type ParsedResult = { sections: Section[]; raw: string };
+type HistoryItem = { date: string; contractType: string; riskCount: number; result: string };
+
+// StreamingWordReveal: ストリーミング中のテキストを単語単位でフェードイン表示
+function StreamingWordReveal({ text, className = "" }: { text: string; className?: string }) {
+  const [revealedText, setRevealedText] = useState("");
+  const [pendingWords, setPendingWords] = useState<string[]>([]);
+  const prevLengthRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (text.length > prevLengthRef.current) {
+      const newChunk = text.slice(prevLengthRef.current);
+      prevLengthRef.current = text.length;
+      const words = newChunk.split(/(\s+)/).filter(w => w.length > 0);
+      setPendingWords(prev => [...prev, ...words]);
+    }
+  }, [text]);
+
+  useEffect(() => {
+    if (pendingWords.length === 0) return;
+    if (timerRef.current) return;
+    timerRef.current = setTimeout(() => {
+      timerRef.current = null;
+      setPendingWords(prev => {
+        if (prev.length === 0) return prev;
+        setRevealedText(rt => rt + prev[0]);
+        return prev.slice(1);
+      });
+    }, 15);
+    return () => {
+      if (timerRef.current) {
+        clearTimeout(timerRef.current);
+        timerRef.current = null;
+      }
+    };
+  }, [pendingWords]);
+
+  return (
+    <span className={className}>
+      <span>{revealedText}</span>
+      {pendingWords.length > 0 && (
+        <span className="animate-pulse opacity-50">{pendingWords[0]}</span>
+      )}
+    </span>
+  );
+}
+
+// 履歴パネルコンポーネント
+function HistoryPanel({ onSelect }: { onSelect: (result: string) => void }) {
+  const [history, setHistory] = useState<HistoryItem[]>([]);
+  const [open, setOpen] = useState(false);
+
+  useEffect(() => {
+    try {
+      setHistory(JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]"));
+    } catch { /* ignore */ }
+  }, [open]);
+
+  if (history.length === 0) return null;
+
+  return (
+    <div className="mb-4">
+      <button
+        type="button"
+        onClick={() => setOpen(v => !v)}
+        aria-label={open ? "レビュー履歴を非表示" : "過去のレビュー履歴を表示"}
+        aria-expanded={open}
+        className="flex items-center gap-2 text-sm font-medium text-indigo-700 hover:text-indigo-900 transition-colors"
+      >
+        <svg viewBox="0 0 24 24" width="16" height="16" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
+          <circle cx="12" cy="12" r="10" />
+          <path strokeLinecap="round" d="M12 6v6l4 2" />
+        </svg>
+        過去のレビュー履歴（{history.length}件）
+        <span>{open ? "▲" : "▼"}</span>
+      </button>
+      {open && (
+        <div className="mt-2 space-y-2">
+          {history.map((item, i) => (
+            <div key={i} className="bg-white border border-gray-200 rounded-xl p-3 flex items-center justify-between gap-2">
+              <div className="min-w-0">
+                <p className="text-xs font-semibold text-gray-700 truncate">{item.contractType || "契約書"}</p>
+                <p className="text-xs text-gray-400">{item.date} — リスク {item.riskCount}件</p>
+              </div>
+              <button
+                type="button"
+                onClick={() => onSelect(item.result)}
+                aria-label={`${item.date}のレビュー結果を表示`}
+                className="shrink-0 text-xs px-3 py-1.5 min-h-[36px] rounded-lg bg-indigo-50 hover:bg-indigo-100 text-indigo-700 font-medium transition-colors"
+              >
+                表示
+              </button>
+            </div>
+          ))}
+          <button
+            type="button"
+            onClick={() => { localStorage.removeItem(HISTORY_KEY); setHistory([]); }}
+            aria-label="レビュー履歴を全て削除"
+            className="text-xs text-gray-400 hover:text-gray-600 w-full text-center py-1"
+          >
+            履歴を削除
+          </button>
+        </div>
+      )}
+    </div>
+  );
+}
 
 const CHECK_MODES = [
   { id: "standard", label: "通常レビュー", desc: "一般的な契約書リスクチェック" },
@@ -523,6 +632,25 @@ export default function KeiyakushoTool() {
         }
         setParsed(parseResult(accumulated));
       }
+      // 完了後に履歴保存
+      if (accumulated) {
+        const finalParsed = parseResult(accumulated);
+        const issueSection = finalParsed.sections.find(s => s.title === "問題条項");
+        const riskCount = issueSection
+          ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, Math.floor(issueSection.content.split("\n").filter(l => l.trim()).length / 3))
+          : finalParsed.sections.length;
+        const contractLabel = CONTRACT_TYPES.find(ct => ct.id === contractType)?.label ?? "その他";
+        const newItem: HistoryItem = {
+          date: new Date().toLocaleDateString("ja-JP"),
+          contractType: contractLabel,
+          riskCount,
+          result: accumulated,
+        };
+        try {
+          const prev: HistoryItem[] = JSON.parse(localStorage.getItem(HISTORY_KEY) ?? "[]");
+          localStorage.setItem(HISTORY_KEY, JSON.stringify([newItem, ...prev].slice(0, MAX_HISTORY)));
+        } catch { /* ignore */ }
+      }
     } catch { setError("通信エラーが発生しました。"); }
     finally { setLoading(false); }
   };
@@ -659,7 +787,8 @@ export default function KeiyakushoTool() {
 
         <div className="flex flex-col">
           <label className="text-sm font-medium text-gray-700 mb-2">レビュー結果</label>
-          {loading ? (
+          <HistoryPanel onSelect={(result) => setParsed(parseResult(result))} />
+          {loading && !parsed ? (
             <div className="flex-1 bg-white border border-gray-200 rounded-xl flex items-center justify-center min-h-[420px]">
               <div className="text-center">
                 <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-3" />
@@ -669,6 +798,16 @@ export default function KeiyakushoTool() {
                     ? "総合評価 → 問題条項 → 取適法チェック → 修正提案"
                     : "総合評価 → 問題条項 → 修正提案"}
                 </p>
+              </div>
+            </div>
+          ) : loading && parsed ? (
+            <div className="flex-1 bg-white border border-gray-200 rounded-xl p-4 min-h-[420px]">
+              <div className="flex items-center gap-2 mb-3">
+                <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600" />
+                <span className="text-xs text-gray-500">AIがレビューを生成中...</span>
+              </div>
+              <div className="text-sm text-gray-700 leading-relaxed whitespace-pre-wrap">
+                <StreamingWordReveal text={parsed.raw} />
               </div>
             </div>
           ) : parsed ? (
