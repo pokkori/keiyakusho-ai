@@ -197,7 +197,7 @@ function SampleAnalysisTabs() {
   const [activeTab, setActiveTab] = useState(0);
   const tab = SAMPLE_TABS[activeTab];
   return (
-    <div className="bg-slate-800 rounded-2xl overflow-hidden border border-slate-700">
+    <div className="bg-slate-800/90 backdrop-blur-sm rounded-2xl overflow-hidden border border-slate-700">
       {/* タブバー */}
       <div className="bg-slate-700/60 px-4 pt-4 flex flex-wrap gap-2 border-b border-slate-600">
         {SAMPLE_TABS.map((t, i) => (
