@@ -287,6 +287,7 @@ function InteractiveDemo() {
             onChange={e => { setDemoText(e.target.value); setPhase(e.target.value ? "filled" : "idle"); }}
             rows={6}
             placeholder="契約書テキストをここに貼り付けてください..."
+            aria-label="契約書テキストを入力するデモエリア"
             className="w-full bg-slate-900 border border-slate-600 rounded-lg px-3 py-2.5 text-xs text-slate-300 placeholder:text-slate-500 resize-none focus:outline-none focus:ring-1 focus:ring-indigo-500 font-mono"
           />
           {phase === "idle" && (
@@ -336,6 +337,7 @@ function InteractiveDemo() {
             </div>
             <Link
               href="/tool"
+              aria-label="ツールページへ移動して自分の契約書を無料でチェックする"
               className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-2 rounded-lg text-xs transition-all mt-2"
             >
               自分の契約書を無料でチェック →
@@ -571,7 +573,7 @@ export default function Home() {
       {showPayjpOnce && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjpOnce(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button onClick={() => setShowPayjpOnce(false)} aria-label="1回払いプランの登録モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
             <KomojuButton planId="standard" planLabel="プレミアムプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
           </div>
@@ -580,7 +582,7 @@ export default function Home() {
       {showPayjpSub && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
-            <button onClick={() => setShowPayjpSub(false)} className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
+            <button onClick={() => setShowPayjpSub(false)} aria-label="月額プランの登録モーダルを閉じる" className="absolute top-3 right-3 text-gray-400 text-xl">✕</button>
             <h2 className="text-lg font-bold mb-4 text-center">プレミアムプランに登録</h2>
             <KomojuButton planId="standard" planLabel="プレミアムプラン ¥980/月を始める" className="w-full bg-blue-600 text-white font-bold py-3 rounded-xl hover:bg-blue-700 disabled:opacity-50" />
           </div>
@@ -595,11 +597,12 @@ export default function Home() {
           </div>
           <Link
             href="/tool"
+            aria-label="ツールページへ移動して契約書を無料でチェックする"
             className="bg-yellow-400 text-slate-900 font-black px-4 py-2.5 rounded-xl text-sm whitespace-nowrap"
           >
             今すぐ試す →
           </Link>
-          <button onClick={() => setShowMobileCTA(false)} className="text-indigo-300 text-lg px-1">✕</button>
+          <button onClick={() => setShowMobileCTA(false)} aria-label="モバイル用の案内バナーを閉じる" className="text-indigo-300 text-lg px-1">✕</button>
         </div>
       )}
 
@@ -637,6 +640,7 @@ export default function Home() {
         <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
           <Link
             href="/tool"
+            aria-label="ツールページへ移動して契約書を無料で3回チェックする"
             className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all"
           >
             無料で試す（3回）
@@ -715,7 +719,7 @@ export default function Home() {
             <p className="text-slate-400 text-xs">2人に1人の契約書に、知らずに署名してはいけないリスク条項が潜んでいます</p>
           </div>
           <div className="text-center mt-5">
-            <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
+            <Link href="/tool" aria-label="ツールページへ移動して自分の契約書を無料でスコアリングする" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
               自分の契約書をスコアリングする（無料）→
             </Link>
           </div>
@@ -766,7 +770,7 @@ export default function Home() {
           <p className="text-slate-400 text-xs mt-1">弁護士への単発依頼（¥5万〜）と比べても、¥980で同等レベルの事前確認が可能</p>
         </div>
         <div className="text-center mt-5">
-          <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
+          <Link href="/tool" aria-label="ツールページへ移動して契約書を無料3回試す" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
             無料3回でまず試す →
           </Link>
         </div>
@@ -867,6 +871,7 @@ export default function Home() {
           <p className="text-sm text-slate-400">契約書をペーストするだけで、リスクスコア・修正提案・コピペ用修正テキストが数秒で出力されます。</p>
           <Link
             href="/tool"
+            aria-label="ツールページへ移動して契約書を無料で試す（3回・登録不要）"
             className="inline-block mt-4 bg-indigo-600 text-white font-bold px-6 py-3 rounded-xl hover:bg-indigo-700 transition-colors text-sm"
           >
             無料で試してみる（3回・登録不要）→
@@ -946,7 +951,7 @@ export default function Home() {
         <SampleAnalysisTabs />
         <p className="text-center text-xs text-slate-500 mt-4">※上記はサンプルです。実際の出力は契約書の内容によって異なります。</p>
         <div className="text-center mt-6">
-          <Link href="/tool" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all text-sm">
+          <Link href="/tool" aria-label="ツールページへ移動して自分の契約書を無料でチェックする" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3.5 px-8 rounded-xl transition-all text-sm">
             自分の契約書を無料でチェック →
           </Link>
         </div>
@@ -979,6 +984,7 @@ export default function Home() {
             ))}
             <Link
               href="/tool"
+              aria-label="ツールページへ移動して契約書を無料で3回チェックする"
               className="block text-center bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 rounded-xl transition-all text-sm mt-4"
             >
               無料で3回チェックする →
@@ -1059,7 +1065,7 @@ export default function Home() {
           <div className="bg-indigo-900/40 border border-indigo-700 rounded-xl p-4 text-center">
             <p className="text-sm text-white font-bold mb-1">契約書に取適法違反リスクが潜んでいないか、無料でチェック</p>
             <p className="text-xs text-indigo-300 mb-3">契約書テキストをペーストするだけで取適法チェックモードが起動します</p>
-            <a href="/tool" className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-black px-6 py-2.5 rounded-xl text-sm transition-colors">
+            <a href="/tool" aria-label="ツールページへ移動して取引適正化法チェックを無料で試す" className="inline-block bg-indigo-500 hover:bg-indigo-400 text-white font-black px-6 py-2.5 rounded-xl text-sm transition-colors">
               無料で取適法チェックを試す →
             </a>
           </div>
@@ -1111,7 +1117,7 @@ export default function Home() {
               <li>✓ 総合評価・問題条項・修正提案</li>
               <li>✗ 回数制限あり</li>
             </ul>
-            <Link href="/tool" className="block bg-slate-700 hover:bg-slate-600 font-bold py-3 px-6 rounded-xl transition-all">
+            <Link href="/tool" aria-label="ツールページへ移動して契約書を無料で試す（3回）" className="block bg-slate-700 hover:bg-slate-600 font-bold py-3 px-6 rounded-xl transition-all">
               無料で試す
             </Link>
           </div>
@@ -1240,7 +1246,7 @@ export default function Home() {
           href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書のリスクを瞬時に解析！無料で試せます #契約書AI #フリーランス")}&url=${encodeURIComponent("https://keiyakusho-ai.vercel.app")}`}
           target="_blank"
           rel="noopener noreferrer"
-          aria-label="XでシェアするXでシェアする"
+          aria-label="X（Twitter）で契約書AIレビューをシェアする"
           className="inline-flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors min-h-[44px]"
         >
           <span>𝕏</span>
@@ -1251,19 +1257,19 @@ export default function Home() {
       {/* Footer */}
       <footer className="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
         <div className="flex justify-center gap-6 mb-4">
-          <Link href="/legal" className="hover:text-white">特定商取引法</Link>
-          <Link href="/privacy" className="hover:text-white">プライバシーポリシー</Link>
-          <Link href="/terms" className="hover:text-white">利用規約</Link>
+          <Link href="/legal" aria-label="特定商取引法に基づく表記を確認する" className="hover:text-white">特定商取引法</Link>
+          <Link href="/privacy" aria-label="プライバシーポリシーを確認する" className="hover:text-white">プライバシーポリシー</Link>
+          <Link href="/terms" aria-label="利用規約を確認する" className="hover:text-white">利用規約</Link>
         </div>
         <p className="mb-4">© 2026 契約書AIレビュー</p>
         <div className="border-t border-slate-700 pt-3 text-xs">
           <p className="mb-1">ポッコリラボの他のサービス</p>
           <div className="flex flex-wrap justify-center gap-x-4 gap-y-1 text-slate-600">
-            <a href="https://claim-ai-beryl.vercel.app" className="hover:text-slate-400">クレームAI</a>
-            <a href="https://hojyokin-ai-delta.vercel.app" className="hover:text-slate-400">補助金AI</a>
-            <a href="https://pawahara-ai.vercel.app" className="hover:text-slate-400">パワハラ対策AI</a>
-            <a href="https://rougo-sim-ai.vercel.app" className="hover:text-slate-400">老後シミュレーターAI</a>
-            <a href="https://ai-keiei-keikaku.vercel.app" className="hover:text-slate-400">AI経営計画書</a>
+            <a href="https://claim-ai-beryl.vercel.app" aria-label="クレームAIのサイトを開く（外部リンク）" className="hover:text-slate-400">クレームAI</a>
+            <a href="https://hojyokin-ai-delta.vercel.app" aria-label="補助金AIのサイトを開く（外部リンク）" className="hover:text-slate-400">補助金AI</a>
+            <a href="https://pawahara-ai.vercel.app" aria-label="パワハラ対策AIのサイトを開く（外部リンク）" className="hover:text-slate-400">パワハラ対策AI</a>
+            <a href="https://rougo-sim-ai.vercel.app" aria-label="老後シミュレーターAIのサイトを開く（外部リンク）" className="hover:text-slate-400">老後シミュレーターAI</a>
+            <a href="https://ai-keiei-keikaku.vercel.app" aria-label="AI経営計画書のサイトを開く（外部リンク）" className="hover:text-slate-400">AI経営計画書</a>
           </div>
         </div>
       </footer>
