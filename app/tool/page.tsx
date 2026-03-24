@@ -402,8 +402,8 @@ function XShareButton({ parsed }: { parsed: ParsedResult }) {
   const riskCount = issueSection
     ? (issueSection.content.match(/危険度[：:]/g) || []).length || Math.max(1, Math.floor(issueSection.content.split("\n").filter(l => l.trim()).length / 3))
     : parsed.sections.length;
-  const shareText = `「契約書に${riskCount}件のリスク条項が潜んでた😱 署名前に気づいてよかった。弁護士費用ゼロで発見できた → https://keiyakusho-ai.vercel.app #契約書 #フリーランス #AI法務 #副業`;
-  const shareUrl = "https://keiyakusho-ai.vercel.app";
+  const shareText = `「契約書に${riskCount}件のリスク条項が潜んでた😱 署名前に気づいてよかった。弁護士費用ゼロで発見できた → https://keiyaku-review.vercel.app #契約書 #フリーランス #AI法務 #副業`;
+  const shareUrl = "https://keiyaku-review.vercel.app";
   const tweetUrl = `https://twitter.com/intent/tweet?text=${encodeURIComponent(shareText)}`;
   return (
     <a

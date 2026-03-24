@@ -16,7 +16,7 @@ export async function POST(req: Request) {
     const secretKey = process.env.KOMOJU_SECRET_KEY
     if (!secretKey) return NextResponse.json({ error: 'Payment not configured' }, { status: 500 })
 
-    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://keiyakusho-ai.vercel.app'
+    const baseUrl = process.env.NEXT_PUBLIC_BASE_URL || 'https://keiyaku-review.vercel.app'
 
     const response = await fetch('https://komoju.com/api/v1/sessions', {
       method: 'POST',

@@ -484,7 +484,7 @@ function SampleReportDownload() {
     ctx.fillStyle = "#475569";
     ctx.font = "16px sans-serif";
     ctx.fillText("※ 本レポートはサンプルです。実際の分析は契約書の内容に基づいて生成されます。", 50, 1540);
-    ctx.fillText("契約書AIレビュー https://keiyakusho-ai.vercel.app", 50, 1570);
+    ctx.fillText("契約書AIレビュー https://keiyaku-review.vercel.app", 50, 1570);
 
     // ダウンロード
     const link = document.createElement("a");
@@ -665,7 +665,7 @@ export default function Home() {
         <SampleReportDownload />
 
         {/* 30秒で分かる使い方ステップ */}
-        <div className="mt-10 bg-slate-800/60 border border-slate-700 rounded-2xl px-6 py-5 max-w-2xl mx-auto">
+        <div className="mt-10 bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl px-6 py-5 max-w-2xl mx-auto">
           <p className="text-xs font-bold text-slate-400 mb-4 tracking-wider uppercase">30秒で分かる使い方</p>
           <div className="flex flex-col sm:flex-row gap-4 items-center justify-center">
             {[
@@ -691,7 +691,7 @@ export default function Home() {
 
       {/* リスクスコア可視化 — urgency */}
       <section className="max-w-4xl mx-auto px-4 py-6 pb-16">
-        <div className="bg-slate-800 border border-slate-700 rounded-3xl p-6 md:p-8">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-3xl p-6 md:p-8">
           <div className="text-center mb-6">
             <div className="inline-block bg-indigo-900/60 text-indigo-300 text-xs font-bold px-3 py-1 rounded-full mb-3">リスクスコアで即判断</div>
             <h2 className="text-xl font-black text-white">契約書にスコアをつけて、数値で判断できます</h2>
@@ -931,7 +931,7 @@ export default function Home() {
             { tab: "有利不利", desc: "あなた側にとって有利な点・不利な点を整理。交渉ポイントが明確に" },
             { tab: "修正提案", desc: "問題条項の具体的な修正文案を提示。コピーしてそのまま使える" },
           ].map((t) => (
-            <div key={t.tab} className="bg-slate-800 border border-indigo-500/30 rounded-xl p-5">
+            <div key={t.tab} className="bg-white/10 backdrop-blur-md border border-indigo-500/30 rounded-xl p-5">
               <div className="inline-block bg-indigo-600 text-white text-xs font-bold px-3 py-1 rounded-full mb-3">
                 {t.tab}
               </div>
@@ -997,31 +997,31 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-4 py-16">
         <h2 className="text-2xl font-black text-center mb-8">よくある質問</h2>
         <div className="space-y-4">
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5">
             <p className="font-bold text-white mb-2">Q: 取引適正化法（取適法）のチェックはできますか？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               はい。2026年1月に施行された取引適正化法（旧下請法）に対応したチェックモードを搭載。委託契約書・業務委託書の違反リスク（代金減額・返品・買いたたき等）を判定します。委託者・受託者どちらの立場からのリスクかも明示します。
             </p>
           </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5">
             <p className="font-bold text-white mb-2">Q: 取適法チェックモードはどんな企業に向いていますか？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               取適法の対象となる中小企業約358万社の委託事業者に特に有効です。発注側（委託者）・受注側（受託者）どちらの立場でも利用できます。弁護士への相談前の事前確認として最適です。
             </p>
           </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5">
             <p className="font-bold text-white mb-2">Q: 通常レビューと取適法チェックモードの違いは？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               通常レビューは著作権・競業禁止・損害賠償など一般的な契約リスクを幅広くチェックします。取適法チェックモードは取引適正化法（旧下請法）の6つの禁止行為に特化したチェックを追加で実施します。両方を組み合わせてご活用いただけます。
             </p>
           </div>
-          <div className="bg-slate-800 border border-indigo-600/40 rounded-xl p-5">
+          <div className="bg-white/10 backdrop-blur-md border border-indigo-600/40 rounded-xl p-5">
             <p className="font-bold text-white mb-2">Q: 「無料の契約書レビューAI」と何が違うのですか？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               無料サービスの多くは「リスクがあります」という抽象的な指摘のみです。本サービスは<strong className="text-indigo-300">①最悪シナリオの損害額まで具体的に提示 ②そのままコピーして先方に送れる修正文案を自動生成 ③交渉戦略アドバイスまで出力</strong>の3点が違います。「指摘されて終わり」ではなく「次の行動まで分かる」設計です。取適法（2026年1月施行）対応も無料競合にはない独自機能です。
             </p>
           </div>
-          <div className="bg-slate-800 border border-slate-700 rounded-xl p-5">
+          <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-5">
             <p className="font-bold text-white mb-2">Q: 契約書のデータはどう扱われますか？</p>
             <p className="text-slate-300 text-sm leading-relaxed">
               入力された契約書テキストはAI分析のみに使用し、サーバーには保存されません。分析完了後に自動で破棄されます。機密性の高い契約書でも安心してご利用いただけます。
@@ -1081,7 +1081,7 @@ export default function Home() {
             { role: "ITエンジニア・副業", text: "副業の契約書を毎回¥980でチェックしてから署名するようにしました。一度、損害賠償条項の問題を発見できてかなり助かりました。" },
             { role: "EC事業者・個人", text: "取引先との業務提携NDAをチェックしたら秘密保持期間が無制限になっていた。修正提案そのままで交渉して直せました。" },
           ].map((v, i) => (
-            <div key={i} className="bg-slate-800 rounded-xl p-5 border border-slate-700">
+            <div key={i} className="bg-white/10 backdrop-blur-md rounded-xl p-5 border border-white/20">
               <div className="flex text-yellow-400 text-sm mb-3">★★★★★</div>
               <p className="text-sm text-slate-300 mb-3 leading-relaxed">{v.text}</p>
               <p className="text-xs text-slate-500">{v.role}</p>
@@ -1096,7 +1096,7 @@ export default function Home() {
             { num: "数秒", label: "分析完了時間" },
             { num: "3回", label: "登録不要で無料" },
           ].map((stat, i) => (
-            <div key={i} className="bg-slate-800/60 border border-slate-700/50 rounded-xl p-4">
+            <div key={i} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-xl p-4">
               <p className="text-xl font-black text-indigo-400">{stat.num}</p>
               <p className="text-xs text-slate-400 mt-1">{stat.label}</p>
             </div>
@@ -1109,7 +1109,7 @@ export default function Home() {
         <h2 className="text-3xl font-black mb-12">料金プラン</h2>
         <div className="grid md:grid-cols-3 gap-6">
           {/* 無料プラン */}
-          <div className="bg-slate-800 rounded-2xl p-8 border border-slate-700">
+          <div className="bg-white/10 backdrop-blur-md rounded-2xl p-8 border border-white/20">
             <h3 className="text-xl font-bold mb-2">無料プラン</h3>
             <div className="text-4xl font-black mb-4">¥0</div>
             <ul className="text-slate-300 space-y-2 mb-6 text-left">
@@ -1193,7 +1193,7 @@ export default function Home() {
               badgeColor: "bg-orange-900/30 text-orange-300 border-orange-700/40",
             },
           ].map((item) => (
-            <div key={item.title} className="bg-slate-800 border border-slate-700 rounded-2xl p-6">
+            <div key={item.title} className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
               <div className="text-3xl mb-3">{item.icon}</div>
               <div className={`inline-block border text-[10px] font-bold px-2 py-0.5 rounded mb-3 ${item.badgeColor}`}>{item.badge}</div>
               <h3 className="text-base font-bold text-white mb-2">{item.title}</h3>
@@ -1202,7 +1202,7 @@ export default function Home() {
           ))}
         </div>
         {/* 3サービス価格比較 */}
-        <div className="bg-slate-800/60 border border-slate-700 rounded-2xl p-6">
+        <div className="bg-white/10 backdrop-blur-md border border-white/20 rounded-2xl p-6">
           <p className="text-xs font-bold text-slate-400 mb-4 text-center">3サービス 価格・機能比較</p>
           <div className="overflow-x-auto">
             <table className="w-full text-xs">
@@ -1243,7 +1243,7 @@ export default function Home() {
       <section className="max-w-4xl mx-auto px-4 py-10 text-center">
         <p className="text-slate-400 text-sm mb-4">AIが契約書のリスクを発見！フリーランス・副業の方にシェアしませんか？</p>
         <a
-          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書のリスクを瞬時に解析！無料で試せます #契約書AI #フリーランス")}&url=${encodeURIComponent("https://keiyakusho-ai.vercel.app")}`}
+          href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書のリスクを瞬時に解析！無料で試せます #契約書AI #フリーランス")}&url=${encodeURIComponent("https://keiyaku-review.vercel.app")}`}
           target="_blank"
           rel="noopener noreferrer"
           aria-label="X（Twitter）で契約書AIレビューをシェアする"

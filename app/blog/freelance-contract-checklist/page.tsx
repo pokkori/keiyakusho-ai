@@ -9,7 +9,7 @@ export const metadata: Metadata = {
     title: "フリーランス契約書チェックリスト：絶対確認すべき10項目【2026年版】",
     description:
       "業務委託契約書の署名前に必ず確認すべき10項目。著作権・競業禁止・損害賠償上限など、フリーランスがよく見落とすリスク条項を徹底解説。",
-    url: "https://keiyakusho-ai.vercel.app/blog/freelance-contract-checklist",
+    url: "https://keiyaku-review.vercel.app/blog/freelance-contract-checklist",
     type: "article",
   },
 };

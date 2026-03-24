@@ -7,6 +7,6 @@ export default function robots(): MetadataRoute.Robots {
       allow: "/",
       disallow: ["/api/", "/success"],
     },
-    sitemap: "https://keiyakusho-ai.vercel.app/sitemap.xml",
+    sitemap: "https://keiyaku-review.vercel.app/sitemap.xml",
   };
 }

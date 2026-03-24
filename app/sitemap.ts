@@ -1,7 +1,7 @@
 import { MetadataRoute } from "next";
 
 export default function sitemap(): MetadataRoute.Sitemap {
-  const base = "https://keiyakusho-ai.vercel.app";
+  const base = "https://keiyaku-review.vercel.app";
   return [
     { url: base, lastModified: new Date(), changeFrequency: "weekly", priority: 1 },
     { url: `${base}/tool`, lastModified: new Date(), changeFrequency: "weekly", priority: 0.9 },
