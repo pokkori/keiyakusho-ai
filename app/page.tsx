@@ -606,6 +606,19 @@ export default function Home() {
         </div>
       )}
 
+      {/* ナビゲーション */}
+      <nav className="border-b border-white/10 px-6 py-4 sticky top-0 bg-slate-900/95 backdrop-blur z-10">
+        <div className="max-w-5xl mx-auto flex items-center justify-between">
+          <span className="font-bold text-white">契約書AIレビュー</span>
+          <div className="flex items-center gap-3">
+            <Link href="/business" aria-label="法人・士業向け契約書AIレビュープランを見る" className="text-indigo-300 hover:text-indigo-100 text-sm font-bold hidden sm:inline transition-colors">法人・士業向け</Link>
+            <Link href="/tool" aria-label="ツールページへ移動して契約書を無料でチェックする" className="bg-indigo-600 text-white text-sm font-medium px-4 py-2 rounded-lg hover:bg-indigo-700">
+              無料で試す
+            </Link>
+          </div>
+        </div>
+      </nav>
+
       {/* 免責バナー */}
       <div className="bg-amber-900/40 border-b border-amber-700/50 px-6 py-3 text-center">
         <p className="text-xs text-amber-200 font-medium">

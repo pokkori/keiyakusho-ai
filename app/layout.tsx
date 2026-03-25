@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
+import FeedbackButton from "@/components/FeedbackButton";
 import "./globals.css";
 
 
@@ -127,6 +128,14 @@ const jsonLd = {
             "text": "GVA assist（月¥75,000〜）は企業の法務部向けに特化しており、個人・フリーランスには高額です。本サービスは¥980/回〜と個人でも使いやすい価格帯で、取適法対応・修正提案文のコピペ・即日利用開始という点で個人・中小企業に特化しています。GVA assistの1/76の価格で同等の事前確認が可能です。"
           }
         },
+        {
+          "@type": "Question",
+          "name": "AIレビュー結果の精度はどのくらいですか？",
+          "acceptedAnswer": {
+            "@type": "Answer",
+            "text": "最新の大規模言語モデル（LLM）を使用しており、一般的な契約書のリスク箇所検出率は80〜90%水準です。ただし、AIの生成結果はあくまで参考情報であり、法的判断の代替にはなりません。重要な契約の最終確認には、必ず弁護士へのご相談をお勧めします。"
+          }
+        },
       ],
     },
   ],
@@ -147,6 +156,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
       </head>
       <body className="antialiased">
         {children}
+        <footer className="flex justify-center py-2">
+          <FeedbackButton serviceName="契約書AIレビュー" />
+        </footer>
         <Analytics />
         {/* Microsoft Clarity — プロジェクトIDが設定されたら有効化 */}
         {/* <Script id="clarity-script" strategy="afterInteractive">
