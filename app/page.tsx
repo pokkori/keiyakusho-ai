@@ -3,6 +3,8 @@ import { useState, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
 import { THEMES } from "@/lib/design-system-themes";
+import { ShareButtons } from "@/components/ShareButtons";
+import { AdBanner } from "@/components/AdBanner";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -1319,19 +1321,10 @@ export default function Home() {
  </div>
  </section>
 
- {/* X(Twitter) Share */}
+ {/* シェアセクション */}
  <section className="max-w-4xl mx-auto px-4 py-10 text-center">
- <p className="text-slate-400 text-sm mb-4">AIが契約書のリスクを発見！フリーランス・副業の方にシェアしませんか？</p>
- <a
- href={`https://twitter.com/intent/tweet?text=${encodeURIComponent("AIが契約書のリスクを瞬時に解析！無料で試せます #契約書AI #フリーランス")}&url=${encodeURIComponent("https://keiyaku-review.vercel.app")}`}
- target="_blank"
- rel="noopener noreferrer"
- aria-label="X（Twitter）で契約書AIレビューをシェアする"
- className="inline-flex items-center gap-2 bg-black text-white px-5 py-3 rounded-xl font-bold hover:bg-gray-800 transition-colors min-h-[44px]"
- >
- <span>𝕏</span>
- <span>Xでシェアする</span>
- </a>
+ <p className="text-slate-400 text-sm mb-4">契約書AIレビューを友達にシェア</p>
+ <ShareButtons url="https://keiyaku-review.vercel.app" text="契約書AIレビューを使ってみた！" hashtags="契約書AIレビュー" />
  </section>
 
  {/* Footer */}
@@ -1353,6 +1346,7 @@ export default function Home() {
  </div>
  </div>
  </footer>
+ <AdBanner slot="" />
  </main>
  );
 }

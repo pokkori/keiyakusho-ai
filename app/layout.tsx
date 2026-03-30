@@ -3,6 +3,7 @@ import { Noto_Sans_JP } from "next/font/google";
 import { Analytics } from "@vercel/analytics/react";
 import Script from "next/script";
 import FeedbackButton from "@/components/FeedbackButton";
+import { GoogleAdScript } from "@/components/GoogleAdScript";
 import "./globals.css";
 
 const notoSansJP = Noto_Sans_JP({
@@ -169,6 +170,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
           <FeedbackButton serviceName="契約書AIレビュー" />
         </footer>
         <Analytics />
+        <GoogleAdScript />
         {/* Microsoft Clarity — プロジェクトIDが設定されたら有効化 */}
         {/* <Script id="clarity-script" strategy="afterInteractive">
           {`
