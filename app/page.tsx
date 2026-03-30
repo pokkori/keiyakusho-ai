@@ -635,6 +635,36 @@ export default function Home() {
  }, []);
 
  return (
+ <>
+ <script
+   type="application/ld+json"
+   dangerouslySetInnerHTML={{
+     __html: JSON.stringify({
+       '@context': 'https://schema.org',
+       '@type': 'FAQPage',
+       mainEntity: [
+         { '@type': 'Question', name: '取引適正化法（取適法）のチェックはできますか？', acceptedAnswer: { '@type': 'Answer', text: 'はい。2026年1月に施行された取引適正化法（旧下請法）に対応したチェックモードを搭載。委託契約書・業務委託書の違反リスク（代金減額・返品・買いたたき等）を判定します。' } },
+         { '@type': 'Question', name: '取適法チェックモードはどんな企業に向いていますか？', acceptedAnswer: { '@type': 'Answer', text: '取適法の対象となる中小企業約358万社の委託事業者に特に有効です。発注側（委託者）・受注側（受託者）どちらの立場でも利用できます。' } },
+         { '@type': 'Question', name: '通常レビューと取適法チェックモードの違いは？', acceptedAnswer: { '@type': 'Answer', text: '通常レビューは著作権・競業禁止・損害賠償など一般的な契約リスクを幅広くチェックします。取適法チェックモードは取引適正化法の6つの禁止行為に特化したチェックを追加で実施します。' } },
+         { '@type': 'Question', name: '「無料の契約書レビューAI」と何が違うのですか？', acceptedAnswer: { '@type': 'Answer', text: '無料サービスの多くは抽象的な指摘のみです。本サービスは最悪シナリオの損害額まで具体的に提示、修正文案を自動生成、交渉戦略アドバイスまで出力します。取適法対応も独自機能です。' } },
+         { '@type': 'Question', name: '契約書のデータはどう扱われますか？', acceptedAnswer: { '@type': 'Answer', text: '入力された契約書テキストはAI分析のみに使用し、サーバーには保存されません。分析完了後に自動で破棄されます。' } },
+       ],
+     }).replace(/</g, '\\u003c'),
+   }}
+ />
+ <script
+   type="application/ld+json"
+   dangerouslySetInnerHTML={{
+     __html: JSON.stringify({
+       '@context': 'https://schema.org',
+       '@type': 'SoftwareApplication',
+       name: '契約書AIレビュー',
+       operatingSystem: 'Web',
+       applicationCategory: 'BusinessApplication',
+       offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
+     }).replace(/</g, '\\u003c'),
+   }}
+ />
  <main className="min-h-screen text-white relative" style={{background: T.bg}}>
  <div className="fixed inset-0 pointer-events-none overflow-hidden z-0" aria-hidden="true">
  {[{size:4,x:'10%',y:'20%',dur:'6s',delay:'0s'},{size:3,x:'85%',y:'15%',dur:'8s',delay:'1s'},{size:5,x:'70%',y:'60%',dur:'7s',delay:'2s'},{size:3,x:'25%',y:'75%',dur:'9s',delay:'0.5s'},{size:4,x:'50%',y:'40%',dur:'10s',delay:'3s'},{size:6,x:'90%',y:'80%',dur:'7s',delay:'1.5s'}].map((p,i)=>(<div key={i} className="absolute rounded-full animate-pulse" style={{width:p.size,height:p.size,left:p.x,top:p.y,background:T.particleColor,animationDuration:p.dur,animationDelay:p.delay}}/>))}
@@ -1348,5 +1378,6 @@ export default function Home() {
  </footer>
  <AdBanner slot="" />
  </main>
+ </>
  );
 }
