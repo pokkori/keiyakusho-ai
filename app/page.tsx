@@ -7,6 +7,7 @@ import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
+import { CrossSell } from "@/components/CrossSell";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -759,8 +760,9 @@ export default function Home() {
  aria-label="ツールページへ移動して契約書を無料で3回チェックする"
  className="bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-4 px-8 rounded-xl text-lg transition-all"
  >
- 無料で試す（3回）
+ 無料で契約書をAI診断
  </Link>
+ <p className="text-xs opacity-60 mt-2">※登録不要・3回まで無料</p>
  <button
  onClick={() => setShowPayjpOnce(true)}
  aria-label="1回プラン（¥980）で今すぐ契約書AIレビューを使う"
@@ -1363,6 +1365,8 @@ export default function Home() {
  </section>
 
  {/* Footer */}
+ <CrossSell currentService="契約書AIレビュー" />
+
  <footer className="border-t border-slate-800 py-8 text-center text-slate-500 text-sm">
  <div className="flex justify-center gap-6 mb-4">
  <Link href="/legal" aria-label="特定商取引法に基づく表記を確認する" className="hover:text-white">特定商取引法</Link>
