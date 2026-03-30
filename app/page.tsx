@@ -8,6 +8,7 @@ import { THEMES } from "@/lib/design-system-themes";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
 import { CrossSell } from "@/components/CrossSell";
+import { TrustBadge } from "@/components/TrustBadge";
 const T = THEMES.legal;
 
 /* ---- SVG Icon helper (replaces all emoji) ---- */
@@ -754,6 +755,7 @@ export default function Home() {
  弁護士に頼む前に、AIで契約書のリスク箇所・不利な条項・修正提案を数秒で確認。
  フリーランス・中小企業の方に最適です。
  </p>
+ <div className="mb-4"><TrustBadge /></div>
  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
  <Link
  href="/tool"
