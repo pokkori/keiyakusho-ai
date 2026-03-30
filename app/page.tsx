@@ -756,6 +756,29 @@ export default function Home() {
  フリーランス・中小企業の方に最適です。
  </p>
  <div className="mb-4"><TrustBadge /></div>
+ {/* ヒーロー内リスクプレビュー — アハモーメント */}
+ <div className="max-w-xl mx-auto mb-6 mt-2">
+   <p className="text-xs text-slate-400 text-center mb-2">AIが検出したリスク例（業務委託契約書）</p>
+   <div className="bg-slate-800/60 border border-indigo-500/30 rounded-xl overflow-hidden text-left">
+     <div className="bg-indigo-900/40 border-b border-indigo-500/20 px-4 py-2">
+       <span className="text-xs font-bold text-indigo-400">分析結果（抜粋）</span>
+     </div>
+     <div className="px-4 py-3 space-y-2">
+       <div className="flex gap-2 items-start">
+         <span className="inline-block bg-red-500 text-white text-xs font-bold px-1.5 py-0.5 rounded shrink-0">高リスク</span>
+         <p className="text-xs text-slate-300">損害賠償が無制限。上限を「月額報酬の3倍」等に修正を推奨</p>
+       </div>
+       <div className="flex gap-2 items-start">
+         <span className="inline-block bg-orange-400 text-white text-xs font-bold px-1.5 py-0.5 rounded shrink-0">要修正</span>
+         <p className="text-xs text-slate-300">著作権が甲（発注者）に帰属。成果物の二次利用権を明示すべき</p>
+       </div>
+       <div className="flex gap-2 items-start">
+         <span className="inline-block bg-yellow-400 text-slate-900 text-xs font-bold px-1.5 py-0.5 rounded shrink-0">確認推奨</span>
+         <p className="text-xs text-slate-300">支払い遅延時の遅延損害金条項が欠落</p>
+       </div>
+     </div>
+   </div>
+ </div>
  <div className="flex flex-col sm:flex-row gap-4 justify-center mb-12">
  <Link
  href="/tool"
