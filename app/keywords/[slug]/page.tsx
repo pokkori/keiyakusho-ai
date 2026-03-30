@@ -14,6 +14,7 @@ interface KeywordData {
   heroSub: string;
   features: { title: string; desc: string }[];
   faq: { q: string; a: string }[];
+  lastUpdated: string;
 }
 
 const KEYWORDS: KeywordData[] = [
@@ -32,6 +33,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "どんな種類の契約書に対応していますか？", a: "業務委託・NDA・雇用契約・売買契約・SaaS利用規約など、ほぼすべての日本語契約書に対応しています。" },
       { q: "チェック結果はどのような形式で表示されますか？", a: "リスクレベル（高・中・低）の色分け表示、該当条項の引用、修正提案文、交渉ポイントをセットで表示します。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "keiyakusho-review-muryou",
@@ -48,6 +50,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "無料版と有料版の違いは？", a: "無料版は8,000文字まで、有料版は20,000文字まで対応。さらにプレミアムでは回数無制限・優先処理が可能です。" },
       { q: "クレジットカード情報は必要ですか？", a: "無料利用にクレジットカードは不要です。有料プランへのアップグレード時のみ決済情報をご入力いただきます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "gyoumu-itaku-keiyaku-check",
@@ -64,6 +67,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "業務委託と雇用契約の違いもチェックできますか？", a: "はい。偽装請負（実質的に雇用関係にある業務委託）のリスク要素も検出し、指摘します。" },
       { q: "修正案はそのまま使えますか？", a: "一般的な修正案として使用できますが、個別の取引条件に応じた調整が必要な場合があります。重要案件は弁護士にご確認ください。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "himitsu-hoji-keiyaku",
@@ -80,6 +84,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "片務NDAと双務NDAの違いは？", a: "片務NDAは一方のみが秘密保持義務を負います。双務NDAは双方が義務を負います。対等な取引では双務NDAが推奨されます。" },
       { q: "NDAの有効期間はどのくらいが適切ですか？", a: "一般的には2〜3年が業界標準です。5年以上の期間設定は過度な制約となる可能性があり、本AIでは警告を表示します。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "keiyakusho-bengoshi-hiyou",
@@ -96,6 +101,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "料金プランを教えてください", a: "無料3回お試し、1回払い980円、プレミアム2,980円/月（無制限・20,000文字対応）の3プランです。" },
       { q: "GVA assistとの料金比較は？", a: "GVA assistは月75,000円〜で企業法務部向けです。本サービスは月2,980円と個人・中小企業でも使いやすい価格帯です。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "freelance-keiyaku-chuuiten",
@@ -112,6 +118,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "取引適正化法でフリーランスはどう守られますか？", a: "報酬の減額・買いたたき・受領拒否などの6行為が禁止されます。本AIの取適法チェックモードで、契約書が法令に適合しているか判定できます。" },
       { q: "契約書を持っていない場合は？", a: "口約束で仕事を受けているフリーランスの方も多いですが、必ず書面化することを推奨します。本AIのテンプレート生成機能で契約書の雛形を作成できます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "chinshaku-keiyaku-check",
@@ -128,6 +135,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "すでに契約済みの契約書もチェックできますか？", a: "はい。契約済みの契約書でも、不当条項の有無を確認し、更新時の交渉材料としてお使いいただけます。" },
       { q: "法人の賃貸借契約にも対応していますか？", a: "はい。居住用だけでなく、事業用の賃貸借契約書にも対応しています。定期借家契約のチェックも可能です。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "roudou-keiyaku-check",
@@ -144,6 +152,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "試用期間に関する条項もチェックできますか？", a: "はい。試用期間の長さ（3ヶ月超は注意）、本採用拒否の要件、試用期間中の待遇差などを確認します。" },
       { q: "派遣契約・業務委託との違いも判定できますか？", a: "はい。雇用契約と称しながら実質的に業務委託扱いとなっている偽装雇用のリスク要素も検出します。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "keiyakusho-template-ai",
@@ -160,6 +169,7 @@ const KEYWORDS: KeywordData[] = [
       { q: "どのような種類のテンプレートがありますか？", a: "業務委託契約・NDA・売買契約・SaaS利用規約・ライセンス契約など主要な契約書のテンプレートを生成できます。" },
       { q: "生成したテンプレートの編集はできますか？", a: "はい。生成されたテンプレートはテキスト形式で出力されるため、自由に編集・加工いただけます。" },
     ],
+    lastUpdated: "2026-03-31",
   },
   {
     slug: "risk-jyoukou-kaisetsu",
@@ -174,8 +184,9 @@ const KEYWORDS: KeywordData[] = [
     faq: [
       { q: "法律知識がなくても理解できますか？", a: "はい。AIが専門用語を平易な日本語に翻訳し、具体的な事例を交えて解説するため、法律の知識がなくても理解できます。" },
       { q: "損害賠償条項の相場はどのくらいですか？", a: "業務委託契約では委託料の範囲内（上限あり）が一般的です。上限なし条項は予期せぬ高額請求のリスクがあり、本AIでは必ず警告を表示します。" },
-      { q: "競業避止義務は拒否できますか？", a: "期間が6ヶ月〜1年を超える場合や、地域・範囲が過度に広い場合は、公序良俗違反として無効になる可能性があります。交渉の余地は十分にあります。" },
+      { q: "競業避止義務は拒否できますか？", a: "期間が6ヶ���〜1年を超える場合や、地域・範囲が過度に広い場合は、公序良俗違反として無効になる可能性があります。交渉の余地は十分にあります。" },
     ],
+    lastUpdated: "2026-03-31",
   },
 ];
 
@@ -203,6 +214,9 @@ export function generateMetadata({ params }: { params: { slug: string } }): Meta
   return {
     title,
     description,
+    other: {
+      "article:modified_time": kw.lastUpdated,
+    },
     openGraph: {
       title,
       description,
@@ -233,6 +247,7 @@ export default function KeywordPage({ params }: { params: { slug: string } }) {
   const faqLd = {
     "@context": "https://schema.org",
     "@type": "FAQPage",
+    "dateModified": kw.lastUpdated,
     mainEntity: kw.faq.map((f) => ({
       "@type": "Question",
       name: f.q,
@@ -376,6 +391,11 @@ export default function KeywordPage({ params }: { params: { slug: string } }) {
             無料で契約書をチェック
           </Link>
         </section>
+
+        {/* LastUpdated */}
+        <p className="text-center text-xs text-white/40 mt-8">
+          最終更新: 2026年3月31日
+        </p>
 
         {/* ---- CrossSell ---- */}
         <section className="mx-auto max-w-5xl px-4 pb-16">
