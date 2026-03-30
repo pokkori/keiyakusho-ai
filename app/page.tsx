@@ -2,6 +2,8 @@
 import { useState, useEffect } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
+import { StreakBanner } from "@/components/StreakBanner";
+import { UsageCounter } from "@/components/UsageCounter";
 import { THEMES } from "@/lib/design-system-themes";
 import { ShareButtons } from "@/components/ShareButtons";
 import { AdBanner } from "@/components/AdBanner";
@@ -725,6 +727,8 @@ export default function Home() {
  </p>
  </div>
 
+ <StreakBanner />
+
  {/* Hero */}
  <section className="max-w-4xl mx-auto px-4 py-20 text-center">
  <UseCountBadge />
@@ -831,6 +835,7 @@ export default function Home() {
  <p className="text-slate-400 text-xs">2人に1人の契約書に、知らずに署名してはいけないリスク条項が潜んでいます</p>
  </div>
  <div className="text-center mt-5">
+ <div className="max-w-xs mx-auto mb-4"><UsageCounter /></div>
  <Link href="/tool" aria-label="ツールページへ移動して自分の契約書を無料でスコアリングする" className="inline-block bg-indigo-600 hover:bg-indigo-700 text-white font-bold py-3 px-8 rounded-xl transition-all text-sm">
  自分の契約書をスコアリングする（無料）→
  </Link>
