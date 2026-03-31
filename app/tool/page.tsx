@@ -755,7 +755,10 @@ export default function KeiyakushoTool() {
       )}
       <nav className="bg-white border-b px-6 py-4">
         <div className="max-w-5xl mx-auto flex items-center justify-between">
-          <Link href="/" className="font-bold text-slate-900">📋 契約書AIレビュー</Link>
+          <Link href="/" className="font-bold text-slate-900 flex items-center gap-1.5">
+            <svg className="w-5 h-5 text-indigo-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14h6M9 18h6"/></svg>
+            契約書AIレビュー
+          </Link>
           <span className={`text-xs px-3 py-1 rounded-full ${isPremium ? "bg-indigo-100 text-indigo-600" : isLimit ? "bg-red-100 text-red-600" : "bg-green-100 text-green-600"}`}>
             {isPremium ? "プレミアム" : isLimit ? "無料枠終了" : `無料あと${FREE_LIMIT - count}回`}
           </span>
@@ -933,14 +936,26 @@ export default function KeiyakushoTool() {
             </>
           ) : (
             <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl flex flex-col items-center justify-center min-h-[420px] gap-3">
-              <div className="text-4xl">📋</div>
+              <svg className="w-12 h-12 text-indigo-300" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14h6M9 18h6"/></svg>
               <p className="text-sm text-center font-medium text-gray-500">契約書を貼り付けて<br />「AIレビュー」を押してください</p>
               <div className="bg-gray-50 rounded-lg p-4 text-xs space-y-2 w-full max-w-[260px]">
                 <p className="font-semibold text-gray-600">4つの視点で分析：</p>
-                <p className="text-gray-500">📊 総合評価（リスクレベルA〜E）</p>
-                <p className="text-gray-500">⚠️ 問題条項（場所と理由を明示）</p>
-                <p className="text-gray-500">⚖️ 有利不利（交渉ポイント整理）</p>
-                <p className="text-gray-500">✏️ 修正提案（コピーしてすぐ使える）</p>
+                <p className="text-gray-500">
+                  <svg className="inline w-3.5 h-3.5 mr-1 text-indigo-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg>
+                  総合評価（リスクレベルA〜E）
+                </p>
+                <p className="text-gray-500">
+                  <svg className="inline w-3.5 h-3.5 mr-1 text-amber-500" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                  問題条項（場所と理由を明示）
+                </p>
+                <p className="text-gray-500">
+                  <svg className="inline w-3.5 h-3.5 mr-1 text-amber-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 3v18M3 7l4.5-3h9L21 7M6 7c-1.5 2-1.5 4 0 5M18 7c1.5 2 1.5 4 0 5"/></svg>
+                  有利不利（交渉ポイント整理）
+                </p>
+                <p className="text-gray-500">
+                  <svg className="inline w-3.5 h-3.5 mr-1 text-blue-400" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M11 4H4a2 2 0 00-2 2v14a2 2 0 002 2h14a2 2 0 002-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 013 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
+                  修正提案（コピーしてすぐ使える）
+                </p>
               </div>
             </div>
           )}
@@ -950,7 +965,10 @@ export default function KeiyakushoTool() {
       {/* 弁護士相談アフィリエイト（A8.net申請後URLを差し替え） */}
       <div className="max-w-2xl mx-auto px-4 pb-6">
         <div className="backdrop-blur-sm bg-indigo-50/80 border border-white/40 shadow-lg rounded-xl p-5">
-          <p className="text-sm font-black text-indigo-900 mb-1">⚖️ 弁護士に契約書を確認してもらう</p>
+          <p className="text-sm font-black text-indigo-900 mb-1 flex items-center gap-1.5">
+            <svg className="w-4 h-4 text-amber-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M12 3v18M3 7l4.5-3h9L21 7M6 7c-1.5 2-1.5 4 0 5M18 7c1.5 2 1.5 4 0 5"/></svg>
+            弁護士に契約書を確認してもらう
+          </p>
           <p className="text-xs text-indigo-700 mb-4">AIレビューで問題点を把握したら、重要な契約は弁護士の最終確認で安心。初回相談無料の事務所多数。</p>
           <div className="space-y-2">
             <a href="https://www.bengo4.com/c_1009/" target="_blank" rel="noopener noreferrer sponsored"

@@ -18,7 +18,10 @@ export default function LegalPage() {
   return (
     <div className="min-h-screen bg-white">
       <nav className="bg-white border-b px-6 py-4">
-        <Link href="/" className="font-bold text-gray-900">📋 契約書AIレビュー</Link>
+        <Link href="/" className="font-bold text-gray-900">
+          <svg className="inline-block w-5 h-5 mr-1.5 text-indigo-600 align-text-bottom" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 14h6M9 18h6"/></svg>
+          契約書AIレビュー
+        </Link>
       </nav>
       <div className="max-w-2xl mx-auto px-6 py-12">
         <h1 className="text-2xl font-bold text-gray-900 mb-2">特定商取引法に基づく表記</h1>

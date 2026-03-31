@@ -14,10 +14,108 @@ export const metadata: Metadata = {
   },
 };
 
-const CHECKLIST_ITEMS = [
+/* ---- SVG Icon helpers for checklist ---- */
+function DocIcon({ className = "inline-block w-6 h-6 text-indigo-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M14 2H6a2 2 0 00-2 2v16a2 2 0 002 2h12a2 2 0 002-2V8z"/>
+      <path d="M14 2v6h6M16 13H8M16 17H8M10 9H8"/>
+    </svg>
+  );
+}
+function MoneyIcon({ className = "inline-block w-6 h-6 text-yellow-500 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M12 1v22M17 5H9.5a3.5 3.5 0 000 7h5a3.5 3.5 0 010 7H6"/>
+    </svg>
+  );
+}
+function CopyrightIcon({ className = "inline-block w-6 h-6 text-purple-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M15 9.354A4 4 0 1013 17"/>
+    </svg>
+  );
+}
+function LockIcon({ className = "inline-block w-6 h-6 text-slate-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <rect x="3" y="11" width="18" height="11" rx="2"/>
+      <path d="M7 11V7a5 5 0 0110 0v4"/>
+    </svg>
+  );
+}
+function BoltIcon({ className = "inline-block w-6 h-6 text-yellow-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M13 2L3 14h9l-1 8 10-12h-9l1-8z"/>
+    </svg>
+  );
+}
+function ScaleIcon({ className = "inline-block w-6 h-6 text-amber-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M12 3v18M3 7l4.5-3h9L21 7M6 7c-1.5 2-1.5 4 0 5M18 7c1.5 2 1.5 4 0 5"/>
+    </svg>
+  );
+}
+function RefreshIcon({ className = "inline-block w-6 h-6 text-blue-400 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2">
+      <path d="M23 4v6h-6M1 20v-6h6"/>
+      <path d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"/>
+    </svg>
+  );
+}
+function CourthouseIcon({ className = "inline-block w-6 h-6 text-slate-500 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M3 21h18M4 21V10M8 21V10M12 21V10M16 21V10M20 21V10M12 3L2 10h20L12 3z"/>
+    </svg>
+  );
+}
+function CheckCircleIcon({ className = "inline-block w-6 h-6 text-emerald-500 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M22 11.08V12a10 10 0 11-5.93-9.14"/>
+      <path d="M22 4L12 14.01l-3-3"/>
+    </svg>
+  );
+}
+function BanIcon({ className = "inline-block w-6 h-6 text-red-500 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <circle cx="12" cy="12" r="10"/>
+      <path d="M4.93 4.93l14.14 14.14"/>
+    </svg>
+  );
+}
+function ClipboardIcon({ className = "w-12 h-12 text-indigo-200 shrink-0" }: { className?: string }) {
+  return (
+    <svg className={className} viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5">
+      <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/>
+      <rect x="9" y="3" width="6" height="4" rx="1"/>
+      <path d="M9 14h6M9 18h6"/>
+    </svg>
+  );
+}
+
+type ChecklistItemType = {
+  no: number;
+  icon: React.ReactNode;
+  title: string;
+  risk: string;
+  detail: string;
+  checkPoint: string;
+  danger: string;
+  dangerColor: string;
+};
+
+const CHECKLIST_ITEMS: ChecklistItemType[] = [
   {
     no: 1,
-    icon: "📝",
+    icon: <DocIcon />,
     title: "業務内容の明確化",
     risk: "曖昧表現による追加作業の強要リスク",
     detail:
@@ -28,7 +126,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 2,
-    icon: "💴",
+    icon: <MoneyIcon />,
     title: "報酬・支払いサイト（遅延損害金の有無）",
     risk: "支払い遅延・踏み倒しリスク",
     detail:
@@ -39,7 +137,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 3,
-    icon: "©️",
+    icon: <CopyrightIcon />,
     title: "知的財産権の帰属（著作権・商標）",
     risk: "制作物の著作権を丸ごと失うリスク",
     detail:
@@ -50,7 +148,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 4,
-    icon: "🔐",
+    icon: <LockIcon />,
     title: "秘密保持義務（期間・範囲）",
     risk: "「永続」秘密保持により実績を公開できないリスク",
     detail:
@@ -61,7 +159,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 5,
-    icon: "⚡",
+    icon: <BoltIcon />,
     title: "契約解除条件（一方的解除への対応）",
     risk: "突然の契約打ち切りによる収入喪失リスク",
     detail:
@@ -72,7 +170,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 6,
-    icon: "⚖️",
+    icon: <ScaleIcon />,
     title: "損害賠償の上限（リスクヘッジ）",
     risk: "全額賠償で事業が吹き飛ぶリスク",
     detail:
@@ -83,7 +181,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 7,
-    icon: "🔄",
+    icon: <RefreshIcon />,
     title: "再委託の可否",
     risk: "外注・協力者を使えなくなるリスク",
     detail:
@@ -94,7 +192,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 8,
-    icon: "🏛️",
+    icon: <CourthouseIcon />,
     title: "準拠法・管轄裁判所",
     risk: "遠方での裁判対応コスト増大リスク",
     detail:
@@ -105,7 +203,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 9,
-    icon: "✅",
+    icon: <CheckCircleIcon />,
     title: "納期・検収条件（瑕疵担保）",
     risk: "永遠に「検収が完了しない」にされるリスク",
     detail:
@@ -116,7 +214,7 @@ const CHECKLIST_ITEMS = [
   },
   {
     no: 10,
-    icon: "🚫",
+    icon: <BanIcon />,
     title: "反社条項の有無",
     risk: "反社会的勢力との契約による社会的信用喪失リスク",
     detail:
@@ -195,7 +293,7 @@ export default function FreelanceContractChecklist() {
             <div key={item.no} className="border border-gray-200 rounded-2xl overflow-hidden">
               {/* ヘッダー */}
               <div className="bg-gray-50 px-5 py-4 flex items-start gap-3 border-b border-gray-200">
-                <span className="text-2xl">{item.icon}</span>
+                <span className="mt-0.5">{item.icon}</span>
                 <div className="flex-1">
                   <div className="flex items-center gap-2 flex-wrap">
                     <span className="text-xs font-bold text-gray-400">チェック項目 {item.no}</span>
@@ -204,14 +302,20 @@ export default function FreelanceContractChecklist() {
                     </span>
                   </div>
                   <h3 className="text-base font-bold text-gray-900 mt-1">{item.title}</h3>
-                  <p className="text-xs text-red-600 font-medium mt-0.5">⚠️ {item.risk}</p>
+                  <p className="text-xs text-red-600 font-medium mt-0.5 flex items-center gap-1">
+                    <svg className="w-3 h-3 text-red-500 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2"><path d="M12 9v4M12 17h.01"/><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/></svg>
+                    {item.risk}
+                  </p>
                 </div>
               </div>
               {/* 本文 */}
               <div className="px-5 py-4 space-y-3">
                 <p className="text-sm text-gray-700 leading-relaxed">{item.detail}</p>
                 <div className="bg-green-50 border border-green-200 rounded-xl p-3">
-                  <p className="text-xs font-bold text-green-700 mb-1">✓ チェックポイント</p>
+                  <p className="text-xs font-bold text-green-700 mb-1 flex items-center gap-1">
+                    <svg className="w-3 h-3 text-green-600 shrink-0" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="3"><path d="M5 13l4 4L19 7"/></svg>
+                    チェックポイント
+                  </p>
                   <p className="text-sm text-green-800 leading-relaxed">{item.checkPoint}</p>
                 </div>
                 <div className="text-right">
@@ -255,7 +359,9 @@ export default function FreelanceContractChecklist() {
 
         {/* 最終CTA */}
         <section className="bg-indigo-600 rounded-2xl p-8 text-center text-white">
-          <div className="text-4xl mb-3">📋</div>
+          <div className="flex justify-center mb-3">
+            <ClipboardIcon />
+          </div>
           <h2 className="text-xl font-black mb-2">この契約書、今すぐAIでレビュー</h2>
           <p className="text-indigo-200 text-sm mb-6 leading-relaxed">
             契約書テキストを貼り付けるだけで、10項目のリスクチェック＋修正提案を数秒で出力。
