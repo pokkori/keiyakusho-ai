@@ -259,6 +259,7 @@ function SampleFillButton({ contractType, onFill }: { contractType: ContractType
     <button
       type="button"
       onClick={() => onFill(sample.text)}
+      aria-label={`${sample.label}をテキスト欄に入力する`}
       className="text-xs px-3 py-1.5 rounded-lg bg-orange-100 hover:bg-orange-200 text-orange-700 font-semibold border border-orange-200 transition-colors"
     >
       {sample.label}を入力する
@@ -348,7 +349,7 @@ function Paywall({ onClose, onOpenPayjp, onOpenOnce }: { onClose: () => void; on
           planLabel="ビジネス ¥2,980/月（有利不利タブ含む）"
           className="w-full bg-indigo-600 text-white font-bold py-3 rounded-xl hover:bg-indigo-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors mb-3"
         />
-        <button onClick={onClose} className="text-xs text-gray-400">閉じる</button>
+        <button onClick={onClose} aria-label="有料プランへの案内を閉じる" className="text-xs text-gray-400">閉じる</button>
       </div>
     </div>
   );
@@ -358,6 +359,7 @@ function CopyButton({ text, label = "コピー" }: { text: string; label?: strin
   const [copied, setCopied] = useState(false);
   return (
     <button onClick={() => { navigator.clipboard.writeText(text); setCopied(true); setTimeout(() => setCopied(false), 2000); }}
+      aria-label={copied ? "コピーしました" : `${label}をクリップボードにコピーする`}
       className="text-xs px-3 py-1 rounded-lg bg-gray-100 hover:bg-gray-200 text-gray-600 font-medium transition-colors">
       {copied ? "✓ コピー済み" : label}
     </button>
@@ -447,7 +449,7 @@ function ResultTabs({ parsed, isPremium, onUpgrade }: { parsed: ParsedResult; is
             </svg>
             <p className="text-sm font-semibold text-gray-700">有利不利タブはPremium限定</p>
             <p className="text-xs text-gray-500 text-center">交渉すべきポイント・有利不利の整理は<br />プレミアムプランでご利用いただけます</p>
-            <button onClick={onUpgrade} className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-indigo-700">
+            <button onClick={onUpgrade} aria-label="プレミアムプランにアップグレードして有利不利タブを利用する" className="bg-indigo-600 text-white text-xs font-bold px-4 py-2 rounded-lg hover:bg-indigo-700">
               プレミアムにアップグレード →
             </button>
           </div>
@@ -865,10 +867,11 @@ export default function KeiyakushoTool() {
 
           <button type="submit" disabled={loading || !contractText.trim()}
             aria-label={loading ? "AI分析実行中" : "入力した契約書をAIでレビューする"}
+            aria-busy={loading}
             className={`w-full font-bold py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300"}`}>
             {loading ? "分析中..." : isLimit ? "プレミアムで無制限にチェック" : "契約書をAIレビュー（無料）"}
           </button>
-          {error && <p className="text-sm text-red-500 text-center">{error}</p>}
+          {error && <p className="text-sm text-red-500 text-center" role="alert">{error}</p>}
         </form>
 
         <div className="flex flex-col">
