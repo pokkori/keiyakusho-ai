@@ -5,6 +5,7 @@ import KomojuButton from "@/components/KomojuButton";
 import { GlowButton } from "@/components/GlowButton";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
+import ConfettiLaunch from "@/components/ConfettiLaunch";
 
 const FREE_LIMIT = 3;
 const KEY = "keiyakusho_count";
@@ -653,6 +654,7 @@ export default function KeiyakushoTool() {
   const [contractType, setContractType] = useState<ContractTypeId>("");
   const [streak, setStreak] = useState<StreakData | null>(null);
   const [streakMsg, setStreakMsg] = useState<string | null>(null);
+  const [showConfetti, setShowConfetti] = useState(false);
 
   useEffect(() => {
     setCount(parseInt(localStorage.getItem(KEY) || "0"));
@@ -724,6 +726,11 @@ export default function KeiyakushoTool() {
         setStreak(updatedStreak);
         const msg = getStreakMilestoneMessage(updatedStreak.count);
         if (msg) setStreakMsg(msg);
+        // 低リスク（0件）の場合にコンフェッティ発火
+        if (riskCount === 0) {
+          setShowConfetti(true);
+          setTimeout(() => setShowConfetti(false), 4000);
+        }
       }
     } catch { setError("通信エラーが発生しました。"); }
     finally { setLoading(false); }
@@ -731,6 +738,7 @@ export default function KeiyakushoTool() {
 
   return (
     <main className="min-h-screen bg-gray-50">
+      <ConfettiLaunch trigger={showConfetti} message="安全な契約書です！" />
       {showPayjp && (
         <div className="fixed inset-0 bg-black/50 flex items-center justify-center z-50 px-4">
           <div className="bg-white rounded-2xl p-6 max-w-sm w-full shadow-xl relative">
