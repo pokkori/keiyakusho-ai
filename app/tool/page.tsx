@@ -2,6 +2,7 @@
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 import KomojuButton from "@/components/KomojuButton";
+import { GlowButton } from "@/components/GlowButton";
 import { track } from '@vercel/analytics';
 import { updateStreak, loadStreak, getStreakMilestoneMessage, type StreakData } from "@/lib/streak";
 
@@ -772,7 +773,7 @@ export default function KeiyakushoTool() {
           <ReviewHistoryPanel />
           <div>
             <div className="flex items-center gap-3 mb-1">
-              <h1 className="text-xl font-bold text-gray-900">契約書を貼り付けてください</h1>
+              <h1 className="text-xl font-bold text-gray-900" style={{ fontFamily: 'var(--font-rounded)' }}>契約書を貼り付けてください</h1>
               {streak && streak.count > 0 && (
                 <span className="inline-flex items-center gap-1 px-2.5 py-1 rounded-full text-xs font-bold bg-gradient-to-r from-indigo-500 to-purple-500 text-white shadow-sm" aria-label={`${streak.count}日連続利用中`}>
                   {streak.count >= 7 ? "★" : streak.count >= 3 ? "+" : ""}
@@ -865,12 +866,15 @@ export default function KeiyakushoTool() {
             <strong>免責事項</strong>：このレビューはAIによる参考情報です。法的効力はありません。重要な契約は必ず弁護士にご相談ください。
           </div>
 
-          <button type="submit" disabled={loading || !contractText.trim()}
+          <GlowButton
+            type="submit"
+            disabled={loading || !contractText.trim()}
             aria-label={loading ? "AI分析実行中" : "入力した契約書をAIでレビューする"}
             aria-busy={loading}
-            className={`w-full font-bold py-3 rounded-lg text-white transition-colors ${isLimit ? "bg-orange-500 hover:bg-orange-600" : "bg-indigo-600 hover:bg-indigo-700 disabled:bg-indigo-300"}`}>
+            variant={isLimit ? "danger" : "primary"}
+          >
             {loading ? "分析中..." : isLimit ? "プレミアムで無制限にチェック" : "契約書をAIレビュー（無料）"}
-          </button>
+          </GlowButton>
           {error && <p className="text-sm text-red-500 text-center" role="alert">{error}</p>}
         </form>
 
@@ -878,10 +882,10 @@ export default function KeiyakushoTool() {
           <label className="text-sm font-medium text-gray-700 mb-2">レビュー結果</label>
           <HistoryPanel onSelect={(result) => setParsed(parseResult(result))} />
           {loading && !parsed ? (
-            <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl flex items-center justify-center min-h-[420px]">
+            <div className="flex-1 flex items-center justify-center min-h-[420px]" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }}>
               <div className="text-center">
-                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-600 mx-auto mb-3" />
-                <p className="text-sm text-gray-500 font-medium">契約書を分析しています...</p>
+                <div className="animate-spin rounded-full h-8 w-8 border-b-2 border-indigo-400 mx-auto mb-3" />
+                <p className="text-sm text-gray-300 font-medium">契約書を分析しています...</p>
                 <p className="text-xs text-gray-400 mt-2">
                   {checkMode === "toitekihou"
                     ? "総合評価 → 問題条項 → 取適法チェック → 修正提案"
@@ -890,7 +894,7 @@ export default function KeiyakushoTool() {
               </div>
             </div>
           ) : loading && parsed ? (
-            <div className="flex-1 backdrop-blur-sm bg-white/80 border border-white/40 shadow-lg rounded-xl p-4 min-h-[420px]">
+            <div className="flex-1 p-4 min-h-[420px]" style={{ background: 'rgba(255,255,255,0.05)', backdropFilter: 'blur(12px)', border: '1px solid rgba(255,255,255,0.12)', borderRadius: '20px', boxShadow: '0 8px 32px 0 rgba(0,0,0,0.36)' }}>
               <div className="flex items-center gap-2 mb-3">
                 <div className="animate-spin rounded-full h-4 w-4 border-b-2 border-indigo-600" />
                 <span className="text-xs text-gray-500">AIがレビューを生成中...</span>
