@@ -23,7 +23,7 @@ const mPlusRounded = M_PLUS_Rounded_1c({
 });
 
 
-const SITE_URL = "https://keiyaku-review.vercel.app";
+const SITE_URL = "https://keiyakusho-ai.vercel.app";
 const TITLE = "契約書AIレビュー｜契約書のリスクをAIが即チェック・修正案を自動生成・無料3回・取適法対応";
 const DESC = "契約書をアップロードするだけ。AIが不利な条項・リスク箇所を即時指摘し、修正案・交渉ポイントまで自動生成。弁護士費用ゼロで契約書を守る。業務委託・NDA・取引適正化法（取適法）対応。登録不要で無料3回から。¥980/回〜。";
 
