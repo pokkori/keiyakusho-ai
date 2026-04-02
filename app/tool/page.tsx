@@ -678,7 +678,13 @@ export default function KeiyakushoTool() {
       if (res.status === 429) { track('paywall_shown', { service: '契約書AIレビュー' }); setShowPaywall(true); setLoading(false); return; }
       if (!res.ok) {
         const data = await res.json().catch(() => ({}));
-        setError(data.error || "エラーが発生しました"); setLoading(false); return;
+        const rawMsg: string = data.error || "エラーが発生しました";
+        const friendlyMsg = rawMsg.includes("429") || rawMsg.toLowerCase().includes("rate")
+          ? "アクセスが集中しています。しばらくお待ちください。"
+          : rawMsg.includes("529") || rawMsg.toLowerCase().includes("overload")
+          ? "AIサーバーが混雑しています。少し待ってから再試行してください。"
+          : rawMsg;
+        setError(friendlyMsg); setLoading(false); return;
       }
       const reader = res.body?.getReader();
       const decoder = new TextDecoder();
@@ -732,7 +738,16 @@ export default function KeiyakushoTool() {
           setTimeout(() => setShowConfetti(false), 4000);
         }
       }
-    } catch { setError("通信エラーが発生しました。"); }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : "";
+      setError(
+        msg.includes("429") || msg.toLowerCase().includes("rate")
+          ? "アクセスが集中しています。しばらくお待ちください。"
+          : msg.includes("529") || msg.toLowerCase().includes("overload")
+          ? "AIサーバーが混雑しています。少し待ってから再試行してください。"
+          : "通信エラーが発生しました。"
+      );
+    }
     finally { setLoading(false); }
   };
 

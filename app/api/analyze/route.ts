@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import Anthropic from "@anthropic-ai/sdk";
 import { getSupabaseAdmin } from "@/lib/supabase";
+import { createErrorResponse, getClaudeErrorMessage } from "@/lib/claude-error";
 
 export const dynamic = "force-dynamic";
 
@@ -210,7 +211,12 @@ ${contractText.slice(0, charLimit)}`;
           }
           controller.enqueue(encoder.encode(`\nDONE:${JSON.stringify({ count, ...(warning ? { warning } : {}) })}`));
           controller.close();
-        } catch (err) { console.error(err); controller.error(err); }
+        } catch (err) {
+          const status = (err as { status?: number })?.status;
+          const msg = getClaudeErrorMessage(status ?? 500);
+          controller.enqueue(encoder.encode(`\nERROR:${JSON.stringify({ error: msg })}`));
+          controller.error(err);
+        }
       },
     });
     return new Response(readable, {
@@ -219,7 +225,7 @@ ${contractText.slice(0, charLimit)}`;
         "Cache-Control": "no-cache",
       },
     });
-  } catch {
-    return NextResponse.json({ error: "AI処理中にエラーが発生しました" }, { status: 500 });
+  } catch (err) {
+    return createErrorResponse(err);
   }
 }
