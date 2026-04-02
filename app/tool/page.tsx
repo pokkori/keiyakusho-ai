@@ -745,7 +745,7 @@ export default function KeiyakushoTool() {
           ? "アクセスが集中しています。しばらくお待ちください。"
           : msg.includes("529") || msg.toLowerCase().includes("overload")
           ? "AIサーバーが混雑しています。少し待ってから再試行してください。"
-          : "通信エラーが発生しました。"
+          : "少し時間をおいてもう一度お試しください。"
       );
     }
     finally { setLoading(false); }
