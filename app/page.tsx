@@ -665,6 +665,8 @@ export default function Home() {
        name: '契約書AIレビュー',
        operatingSystem: 'Web',
        applicationCategory: 'BusinessApplication',
+       description: '契約書のリスク箇所をAIが即時診断。最悪シナリオの損害額・修正文案・交渉戦略まで自動生成。2026年施行の取引適正化法（取適法）対応チェックモード搭載。フリーランス・中小企業向けの契約書レビューWebサービス。',
+       url: 'https://keiyaku-review.vercel.app',
        offers: { '@type': 'Offer', price: 0, priceCurrency: 'JPY' },
      }).replace(/</g, '\\u003c'),
    }}
